@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Step away from Login</title>
+    <link rel="stylesheet" href="pagedesign.css">
+</head>
+<body>
+    <div class="header">
+        <img src="icons/app-logo.png" alt="KU Logo" class="logo">
+        <h1>KU-iCardSIS</h1>
+    </div>
+    
+    <div class="container">
+        <h2>Configure Registration</h2>
+        <form id="passwordForm">
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <div class="password-container">
+                    <input type="password" id="newPassword" required>
+                    <img src="icons/eye-closed.png" alt="Toggle Password Visibility" class="toggle-icon">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="password-container">
+                    <input type="password" id="confirmPassword" required>
+                    <img src="icons/eye-closed.png" alt="Toggle Password Visibility" class="toggle-icon">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="photo">Upload Photo</label>
+                <input type="file" id="photo" accept="image/*" required>
+                <small class="info-text">Photo should be less than 1MB</small>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const toggleIcons = document.querySelectorAll('.toggle-icon');
+
+        toggleIcons.forEach(icon => {
+            icon.addEventListener('click', () => {
+                const newPassword = document.getElementById('newPassword');
+                const confirmPassword = document.getElementById('confirmPassword');
+
+                const isPasswordHidden = newPassword.type === 'password';
+
+                newPassword.type = isPasswordHidden ? 'text' : 'password';
+                confirmPassword.type = isPasswordHidden ? 'text' : 'password';
+
+                toggleIcons.forEach(i => {
+                    i.src = isPasswordHidden ? 'icons/eye-open.png' : 'icons/eye-closed.png';
+                });
+            });
+        });
+
+        const photoInput = document.getElementById('photo');
+        photoInput.addEventListener('change', () => {
+            const file = photoInput.files[0];
+            if (file.size > 1024 * 1024) {
+                alert('Photo size exceeds 1MB. Please upload a smaller file.');
+                photoInput.value = ''; // Reset file input
+            }
+        });
+    </script>
+</body>
+</html>
