@@ -28,43 +28,19 @@
                     <input type="password" id="confirmPassword" required>
                     <img src="icons/eye-closed.png" alt="Toggle Password Visibility" class="toggle-icon">
                 </div>
+                <small id="passwordMismatch" class="info-text" style="color: red; display: none;">
+                    Passwords do not match.
+                </small>
             </div>
             <div class="form-group">
                 <label for="photo">Upload Photo</label>
                 <input type="file" id="photo" accept="image/*" required>
                 <small class="info-text">Photo should be less than 1MB</small>
             </div>
-            <button type="submit" class="btn">Submit</button>
+            <button type="submit" id="submitButton" class="btn" disabled>Submit</button>
         </form>
     </div>
 
-    <script>
-        const toggleIcons = document.querySelectorAll('.toggle-icon');
-
-        toggleIcons.forEach(icon => {
-            icon.addEventListener('click', () => {
-                const newPassword = document.getElementById('newPassword');
-                const confirmPassword = document.getElementById('confirmPassword');
-
-                const isPasswordHidden = newPassword.type === 'password';
-
-                newPassword.type = isPasswordHidden ? 'text' : 'password';
-                confirmPassword.type = isPasswordHidden ? 'text' : 'password';
-
-                toggleIcons.forEach(i => {
-                    i.src = isPasswordHidden ? 'icons/eye-open.png' : 'icons/eye-closed.png';
-                });
-            });
-        });
-
-        const photoInput = document.getElementById('photo');
-        photoInput.addEventListener('change', () => {
-            const file = photoInput.files[0];
-            if (file.size > 1024 * 1024) {
-                alert('Photo size exceeds 1MB. Please upload a smaller file.');
-                photoInput.value = ''; // Reset file input
-            }
-        });
-    </script>
+    <script src="pagescript.js"></script>
 </body>
 </html>

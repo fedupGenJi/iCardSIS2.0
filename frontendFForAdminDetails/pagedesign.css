@@ -140,3 +140,17 @@ h1 {
 .link a:hover {
     text-decoration: underline;
 }
+
+input {
+    border: 1px solid #2d3748; 
+    background-color: #2d3748; 
+    color: white; 
+}
+
+input.matching {
+    border-color: #28cc68; 
+}
+
+input.not-matching {
+    border-color: red;
+}
