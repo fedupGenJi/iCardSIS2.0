@@ -60,7 +60,8 @@ def verify_and_assign_admin(connection, admin_name, admin_gmail, admin_status, h
         admin = cursor.fetchone()
         
         if admin:
-            return admin["adminId"]  #if-exists sends the existing adminId
+            print("Admin already exists.")  #if gmail for admin exists
+            return None 
         
         #unique adminId
         admin_id = generate_id(connection,admin_status)
