@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KU-iCardSIS - Update Database</title>
+    <link rel="stylesheet" href="/css/update.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="/script/update.js" defer></script>
+</head>
+
+<body>
+    <div class="update-page">
+        <img src="/assests/images/bbb.jpg" alt="Background" class="background-image">
+
+        
+        <header class="header">
+            <div class="logo">
+                <img src="/assests/images/logo2.png" alt="KU-iCardSIS Logo" class="logo-image">
+                <h1 class="title">KU-iCardSIS</h1>
+            </div>
+            <div>
+                <h2 class="admin-title">ADMIN</h2>
+            </div>
+            <div class="admin-info">
+                <span class="admin-name">Admin Name</span>
+                <span class="profile">Admin</span>
+                <img src="/assests/images/admin.jpg" alt="Admin Photo" class="admin-photo" onclick="showAdminDetails()">
+            </div>
+        </header>
+
+       
+        <div class="update-content">
+            <h2 class="update-title">Update Database</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Full Name</th>
+                        <th>Gender</th>
+                        <th>Age (Years)</th>
+                        <th>Blood Group</th>
+                        <th>Y.O.E</th>
+                        <th>Course</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample row -->
+                    <tr>
+                        <td>1</td>
+                        <td>abc xyz klm</td>
+                        <td>M</td>
+                        <td>18</td>
+                        <td>A+</td>
+                        <td>2023</td>
+                        <td>CS</td>
+                        <td>abc123@gmail.com</td>
+                        <td class="actions">
+                            <button class="edit-button" onclick="GoToEditPage()">✏️</button>
+                            <button class="delete-button" onclick="showDeletePopup()">🗑️</button>
+                        </td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Delete  Popup -->
+        <div class="delete-popup" id="delete-popup">
+            <div class="popup-content">
+                <h3>Confirm Deletion</h3>
+                <p>Are you sure you want to delete this entry?</p>
+                <button class="confirm-button" onclick="deleteEntry()">Confirm</button>
+                <button class="cancel-button" onclick="hideDeletePopup()">Cancel</button>
+            </div>
+        </div>
+
+
+
+                <!-- admin-popup  -->
+
+<div class="admin-popup" id="admin-popup">
+    <div class="admin-popup-content">
+        
+
+       
+
+        <img src="/assests/images/admin.jpg" alt="" class="admin-popup-photo" id="admin-popup-photo">
+        <label for="status"> Status: </label> <span id="status">Admin/librarian</span>
+        <label for="admin-name"> Name: </label><span id="admin-name">Aakash Thakur</span>
+        <label for="admin-id">Id:</label> <span id="admin-id">ABCX678769</span>
+        
+        <label for="admin-email">Email:</label> <span id="admin-email">adminemail@gmail.com</span>
+
+       
+
+        
+    </div>
+    <button class="close-popup" onclick="hideAdminDetails()">X</button>
+    </div>
+    </div>
+</body>
+
+</html>
