@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KU-iCardSIS</title>
+    <link rel="stylesheet" href="/css/homepage.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+        <script src="/script/homepage.js"></script>
+</head>
+
+<body>
+   
+    <div class="page">
+        <img src="/assests/images/bg1.jpeg" alt="" class="background-image">
+        <div class="header">
+            <div class="admin-info">
+
+                <span class="admin-name">Admin Name</span>
+                <span class="profile">Admin</span>
+                <img src="/assests/images/admin.jpg" alt="Admin" class="admin-photo" onclick="showAdminDetails()">
+            </div>
+        </div>
+        <div class="content">
+            <div class="logo">
+                <img src="/assests/images/logo2.png" alt="iCardSIS" class="iCardSIS">
+                <h1>KU-iCardSIS</h1>
+                <h1>ADMIN</h1>
+            </div>
+            <button class="scroll-icon"  onclick="GoToMenuPage()">⬇ </button>
+        </div>
+
+
+
+
+        <!-- admin-popup  -->
+
+<div class="admin-popup" id="admin-popup">
+    <div class="admin-popup-content">
+        
+
+       
+
+        <img src="/assests/images/admin.jpg" alt="" class="admin-popup-photo" id="admin-photo-photo">
+        <label for="status"> Status: </label> <span id="status">Admin/librarian</span>
+        <label for="admin-name"> Name: </label><span id="admin-name">Aakash Thakur</span>
+        <label for="admin-id">Id:</label> <span id="admin-id">ABCX678769</span>
+        
+        <label for="admin-email">Email:</label> <span id="admin-email">adminemail@gmail.com</span>
+
+       
+
+        
+    </div>
+    <button class="close-popup" onclick="hideAdminDetails()">X</button>
+    </div>
+
+    
+
+
+
+
+
+
+
+</body>
+
+</html>

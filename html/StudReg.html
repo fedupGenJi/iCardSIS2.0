@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KU-iCardSIS - Student Registration</title>
+    <link rel="stylesheet" href="/css/studreg.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="/CSS files/studreg.css">
+        <script src="/script/studreg.js"></script>
+</head>
+
+<body>
+    <div class="registration-page">
+        <img src="/assests/images/aaa.jpg" alt="Background" class="background-image">
+
+  
+        <header class="header">
+            <div class="logo">
+                <img src="/assests/images/logo2.png" alt="KU-iCardSIS Logo" class="logo-image">
+                <h1 class="title">KU-iCardSIS</h1>
+            </div>
+            <div>
+                <h2 class="admin-title">ADMIN</h2>
+            </div>
+            <div class="admin-info">
+                <span class="admin-name">Admin Name</span>
+                <span class="profile">Admin</span>
+                <img src="/assests/images/admin.jpg" alt="Admin" class="admin-photo" onclick="showAdminDetails()">
+            </div>
+        </header>
+
+       
+        <div class="form-container">
+            <h2 class="form-title">Student Registration</h2>
+
+          
+            <div class="photo-upload">
+                <label for="photo-input">
+                    <div class="upload-box">
+                        <span class="plus-icon">+</span>
+                    </div>
+                </label>
+                <input type="file" id="photo-input" accept="image/*" style="display: none;" required>
+            </div>
+
+            <form class="registration-form" onsubmit="ExtractData()">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="full-name">Full Name:</label>
+                        <input type="text" id="full-name" placeholder="Aakash Thakur" required>
+                    </div>
+
+                    <div class="form-group dob-group" >
+                        <label for="dob">Date of Birth:</label>
+                        <div class="dob-fields">
+                            <input type="number" placeholder="YYYY" id="dob-year" required>
+                            <input type="number" placeholder="MM" id="dob-month" required>
+                            <input type="number" placeholder="DD" id="dob-day" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="blood-group">Blood Group:</label>
+                        <input type="text" id="blood-group" placeholder="A+" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sex">Sex:</label>
+                        <select id="sex" required>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" placeholder="ramshyam12@gmail.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course">Course:</label>
+                        <input type="text" id="course" placeholder="e.g., B.Sc. CSIT" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="enrollment">Year of Enrollment:</label>
+                        <input type="number" id="enrollment" placeholder="YYYY" required>
+                    </div>
+                </div>
+                <div class="check-box">
+                <input type="checkbox" id="confirm" required>
+                <label for="confirm">Confirm all the details are correct</label>
+            </div>
+                <button type="submit" class="submit-button">Submit</button>
+            
+            </form>
+        </div>
+
+
+          <!-- admin-popup  -->
+
+<div class="admin-popup" id="admin-popup">
+    <div class="admin-popup-content">
+        
+
+       
+
+        <img src="/assests/images/admin.jpg" alt="" class="admin-popup-photo" id="admin-photo-photo">
+        <label for="status"> Status: </label> <span id="status">Admin/librarian</span>
+        <label for="admin-name"> Name: </label><span id="admin-name">Aakash Thakur</span>
+        <label for="admin-id">Id:</label> <span id="admin-id">ABCX678769</span>
+        
+        <label for="admin-email">Email:</label> <span id="admin-email">adminemail@gmail.com</span>
+
+       
+
+        
+    </div>
+    <button class="close-popup" onclick="hideAdminDetails()">X</button
+
+
+
+
+
+    </div>
+</body>
+
+</html>
