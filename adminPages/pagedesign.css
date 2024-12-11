@@ -30,7 +30,7 @@ body {
 }
 
 .logo {
-    width: 250px;
+    width: 200px;
     height: auto;
     margin-right: -9px;
 }
@@ -38,7 +38,7 @@ body {
 h1 {
     background: rgba(26, 32, 44, 0.8);
     padding: 5px 8px;
-    font-size: 40px;
+    font-size: 32px;
     font-weight: normal;
     color: white;
     margin: 0;
