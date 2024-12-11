@@ -36,15 +36,21 @@
         </form>
     </div>
 
-    <!-- Popup Notification -->
-    <div id="popup" class="popup">
+    <!-- Placeholder for displaying messages -->
+    <div id="popup" class="popupModal" style="display:none;">
         <div class="popup-content">
-            <h3>Success</h3>
-            <p>Your information has been successfully submitted!</p>
-            <button id="closePopup">Close</button>
+            <!-- Success/Error Message Section -->
+            <div id="popupStatus" style="font-weight: bold; display: flex; align-items: center; margin-bottom: 15px;">
+                <span id="popupIcon" style="font-size: 20px; margin-right: 10px;"></span>
+                <span id="popupMessage"></span>
+            </div>
+            <button id="popupContentButton" class="popup-content-button">Close</button>
         </div>
     </div>
 
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{url_for('static',filename='js/admin.js')}}"></script>
+
 </body>
 </html>
