@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin.css')}}">
+</head>
+<body>
+    <div class="header">
+        <img src="{{url_for('static',filename='icons/app-logo.png')}}" alt="KU Logo" class="logo">
+        <h1>KU-iCardSIS</h1>
+    </div>
+
+    <div class="form-container">
+        <h2>Admin Registration</h2>
+        <form id="adminForm">
+            <div class="form-group">
+                <label for="admin-name">Full Name</label>
+                <input type="text" id="admin-name" name="admin-name" placeholder="Enter admin full name" required>
+            </div>
+            <div class="form-group">
+                <label for="admin-email">Gmail</label>
+                <input type="email" id="admin-email" name="admin-email" placeholder="Enter admin's Gmail" required>
+            </div>
+            <div class="form-group">
+                <label for="admin-status">Admin Status</label>
+                <select id="admin-status" name="admin-status" required>
+                    <option value="KU-Admin">KU-Admin</option>
+                    <option value="Librarian">Librarian</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submitButton" disabled>Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Popup Notification -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h3>Success</h3>
+            <p>Your information has been successfully submitted!</p>
+            <button id="closePopup">Close</button>
+        </div>
+    </div>
+
+    <script src="{{url_for('static',filename='js/admin.js')}}"></script>
+</body>
+</html>
