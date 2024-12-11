@@ -58,8 +58,8 @@ h1 {
 }
 
 .form-container h2 {
-    margin-top: 10px;
-    margin-bottom: 20px; 
+    margin-top: auto;
+    margin-bottom: auto; 
     font-size: 24px; 
     font-weight: bold;
     color: #32CD32;
@@ -67,23 +67,30 @@ h1 {
 
 .form-group {
     margin-bottom: 20px;
-    text-align: left;
+    text-align: center;
 }
 
 .form-group input,
 .form-group select {
-    width: 100%; 
-    padding: 12px 15px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    box-sizing: border-box;
+    font-size: 16px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    background-color: #2d3748;
+    color: white;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     border-color: #32CD32;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #edf2f7;
 }
 
 input {
