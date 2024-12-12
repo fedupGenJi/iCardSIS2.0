@@ -1,11 +1,16 @@
 from flask import Flask, render_template, request, jsonify
 from modules.adminDetails import *
+from modules.reconfigDetail import *
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('adminPage.html')
+
+@app.route('/registrationConfig')
+def regconfig():
+    return render_template('page.html')
 
 @app.route('/', methods=['POST'])
 def admin_register():
@@ -63,4 +68,4 @@ def admin_register():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=6900)

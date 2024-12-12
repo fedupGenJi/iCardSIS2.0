@@ -3,6 +3,7 @@ import smtplib
 import bcrypt
 import random
 import string
+import hashlib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -83,7 +84,11 @@ def send_email(admin_gmail, admin_id, admin_status, plain_password):
     sender_email = "scode904@gmail.com"  
     sender_password = "jfydvoxtjuemjxsy"
     receiver_email = admin_gmail
+    encoded_email = admin_gmail.encode()
+    hash_obj = hashlib.sha256(encoded_email)
+    hex_dig = hash_obj.hexdigest()
 
+    link = "http://192.168.1.74:6900/registrationConfig?email="+hex_dig
     subject = "Admin Registration Confirmation"
     body = f"""
     Dear Admin,
@@ -93,7 +98,8 @@ def send_email(admin_gmail, admin_id, admin_status, plain_password):
     Temporary Password: {plain_password}
 
     Please click the following link to change your password and configure your registration:
-    ##LINK WOULD BE HERE##
+    *the link can only be used once*
+    {link}
 
     Best regards,
     iCardSIS Team
