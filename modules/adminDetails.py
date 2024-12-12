@@ -3,10 +3,10 @@ import smtplib
 import bcrypt
 import random
 import string
+import socket
 from cryptography.fernet import Fernet
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import base64
 from modules.reconfigDetail import encode
 
 #mysql-database connection
@@ -89,7 +89,9 @@ def send_email(admin_gmail, admin_id, admin_status, plain_password):
 
     ciphertext_base64 = encode(receiver_email)
 
-    link = "http://192.168.1.74:6900/registrationConfig?email="+ciphertext_base64
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    link = "http://"+ip_address+":6900/registrationConfig?email="+ciphertext_base64
     subject = "Admin Registration Confirmation"
     body = f"""
     Dear Admin,
