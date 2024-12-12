@@ -91,6 +91,7 @@ def send_email(admin_gmail, admin_id, admin_status, plain_password):
 
     hostname = socket.gethostname()
     ip_address = socket.gethostbyname(hostname)
+    # print(ip_address)
     link = "http://"+ip_address+":6900/registrationConfig?email="+ciphertext_base64
     subject = "Admin Registration Confirmation"
     body = f"""
