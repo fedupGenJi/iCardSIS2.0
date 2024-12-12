@@ -10,7 +10,34 @@ def home():
 
 @app.route('/registrationConfig')
 def regconfig():
-    return render_template('page.html')
+    ciphertext = request.args.get('email')
+
+    if not ciphertext:
+        return jsonify({"error": "Ciphertext missing in email parameter."}), 400
+
+    try:
+        # Decode the ciphertext (assuming base64 encoding for simplicity)
+        decoded_email = decode(ciphertext)
+        if not decoded_email.endswith("@gmail.com"):
+            return jsonify({"error": "Invalid email domain. Only Gmail addresses are allowed."}), 400
+
+        connection = connect_to_database()
+        if not connection:
+            print("Failed to connect to the database.")
+            return jsonify({"success": False, "error": "Failed to connect to the database."})
+        cursor = connection.cursor(dictionary=True)
+
+        # Check if a photo exists for the decoded email
+        query = "SELECT photo FROM adminLogin WHERE Gmail = %s"
+        cursor.execute(query, (decoded_email,))
+        result = cursor.fetchone()
+
+        if result and result.get('photo'):
+            return jsonify({"message": "Already registered."}), 200
+        else:
+            return render_template('page.html')
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 @app.route('/', methods=['POST'])
 def admin_register():

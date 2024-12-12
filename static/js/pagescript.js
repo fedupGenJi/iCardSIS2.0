@@ -37,7 +37,9 @@ const toggleIcons = document.querySelectorAll('.toggle-icon');
                 confirmPassword.type = isPasswordHidden ? 'text' : 'password';
 
                 toggleIcons.forEach(i => {
-                    i.src = isPasswordHidden ? '../icons/eye-open.png' : '../icons/eye-closed.png';
+                    const eyeOpenPath = i.src.replace('eye-closed.png', 'eye-open.png');
+                    const eyeClosedPath = i.src.replace('eye-open.png', 'eye-closed.png');
+                    i.src = isPasswordHidden ? eyeOpenPath : eyeClosedPath;
                 });
             });
         });
