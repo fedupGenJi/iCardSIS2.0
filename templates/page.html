@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Step away from Login</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/pagedesign.css')}}">
+</head>
+<body>
+    <div class="header">
+        <img src="{{url_for('static',filename='icons/app-logo.png')}}" alt="KU Logo" class="logo">
+        <h1>KU-iCardSIS</h1>
+    </div>
+    
+    <div class="container">
+        <h2>Configure Registration</h2>
+        <form id="passwordForm">
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <div class="password-container">
+                    <input type="password" id="newPassword" required>
+                    <img src="{{url_for('static',filename='icons/eye-closed.png')}}" alt="Toggle Password Visibility" class="toggle-icon">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="password-container">
+                    <input type="password" id="confirmPassword" required>
+                    <img src="{{url_for('static',filename='icons/eye-closed.png')}}" alt="Toggle Password Visibility" class="toggle-icon">
+                </div>
+                <small id="passwordMismatch" class="info-text" style="color: red; display: none;">
+                    Passwords do not match.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="photo">Upload Photo</label>
+                <input type="file" id="photo" accept="image/*" required>
+                <small class="info-text">Photo should be less than 1MB</small>
+            </div>
+            <button type="submit" id="submitButton" class="btn" disabled>Submit</button>
+        </form>
+    </div>
+
+    <script src="{{url_for('static',filename='js/pagescript.js')}}"></script>
+</body>
+</html>
