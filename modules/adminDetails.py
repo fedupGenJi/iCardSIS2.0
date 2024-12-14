@@ -7,7 +7,13 @@ import socket
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from modules.reconfigDetail import encode
-from .. import config
+import sys
+import os
+
+# Add the project root directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import config
 
 #mysql-database connection
 def connect_to_database():

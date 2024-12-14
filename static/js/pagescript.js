@@ -138,11 +138,13 @@ $(document).ready(function () {
 
     $('#popupContentButton').click(function () {
         $('#popup').hide();
+        window.close();
     });
 
     $(window).on('click', function (event) {
         if ($(event.target).is('.popup')) {
             $('#popup').hide();
+            window.close();
         }
     });
 });

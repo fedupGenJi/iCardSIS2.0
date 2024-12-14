@@ -1,5 +1,11 @@
 from cryptography.fernet import Fernet
-from .. import config
+import sys
+import os
+
+# Add the project root directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import config
 
 # Generate and save the key once
 with open("key.key", "wb") as key_file:

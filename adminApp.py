@@ -71,21 +71,21 @@ def regconfig():
     connection = None  # Initialize connection to None to avoid UnboundLocalError
 
     if not ciphertext:
-        return jsonify({"error": "Ciphertext missing in email parameter."}), 400
+        return render_template("error.html", error_message="Ciphertext missing in email parameter."), 400
 
     try:
         try:
             decoded_email = decode(ciphertext)
         except Exception as e:
-            return jsonify({"error": f"Failed to decode ciphertext: {e}"}), 400
-        
+            return render_template("error.html", error_message=f"Failed to decode ciphertext: {e}"), 400
+
         if not decoded_email.endswith("@gmail.com"):
-            return jsonify({"error": "Invalid email domain. Only Gmail addresses are allowed."}), 400
+            return render_template("error.html", error_message="Invalid email domain. Only Gmail addresses are allowed."), 400
 
         # Attempt to connect to the database
         connection = connect_to_database()
         if not connection:
-            return jsonify({"success": False, "error": "Failed to connect to the database."}), 500
+            return render_template("error.html", error_message="Failed to connect to the database."), 500
 
         # Create a cursor
         cursor = connection.cursor()
@@ -96,7 +96,7 @@ def regconfig():
         email_exists = cursor.fetchone()
 
         if not email_exists:
-            return jsonify({"error": "Email does not exist in the database."}), 404
+            return render_template("error.html", error_message="Email does not exist in the database."), 404
 
         # Check if a photo exists for the decoded email
         query = "SELECT photo FROM adminLogin WHERE Gmail = %s"
@@ -104,12 +104,12 @@ def regconfig():
         result = cursor.fetchone()
 
         if result and result[0]:
-            return jsonify({"message": "Already registered."}), 200
+            return render_template("error.html",error_message="Already registered."),200
         else:
             return render_template('page.html')
 
     except Exception as e:
-        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+        return render_template("error.html", error_message=f"An error occurred: {str(e)}"), 500
 
     finally:
         if cursor:  # Check if cursor was initialized
@@ -166,6 +166,14 @@ def updateData():
 
     finally:
         connection.close()
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html", error_message="Page not found"), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template("error.html", error_message="Internal server error"), 500
 
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
