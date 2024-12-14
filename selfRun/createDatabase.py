@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS adminLogin (
     password VARCHAR(255) NOT NULL,
     userName VARCHAR(100),
     status VARCHAR(50),
-    photo BLOB NULL
+    photo LONGBLOB NULL
 )
 """)
 

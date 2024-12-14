@@ -167,6 +167,8 @@ def updateData():
     finally:
         connection.close()
 
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=6900, debug=True)
+    app.run(host=ip_address, port=6900, debug=False)

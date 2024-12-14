@@ -4,7 +4,6 @@ import bcrypt
 import random
 import string
 import socket
-from cryptography.fernet import Fernet
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from modules.reconfigDetail import encode

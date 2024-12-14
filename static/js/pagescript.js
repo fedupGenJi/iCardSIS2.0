@@ -31,8 +31,8 @@ function validateFileInput() {
         return false;
     }
 
-    if (file.size > 1024 * 1024) {
-        alert('Photo size exceeds 1MB. Please upload a smaller file.');
+    if (file.size > 4 * 1024 * 1024) {
+        alert('Photo size exceeds 4MB. Please upload a smaller file.');
         photoInput.value = '';
         return false;
     }
