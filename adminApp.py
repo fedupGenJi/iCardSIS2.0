@@ -2,13 +2,22 @@ from flask import Flask, render_template, request, jsonify
 from modules.adminDetails import *
 from modules.reconfigDetail import *
 
-app = Flask(__name__)
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
 
-@app.route('/')
+adminApp = Flask(__name__)
+
+Allowed_IPs = [ip_address]
+
+@adminApp.route('/')
 def home():
-    return render_template('adminPage.html')
+    client_ip = request.remote_addr
+    if client_ip in Allowed_IPs:
+        return render_template('adminPage.html')
+    else:
+        return render_template('error.html',error_message = "You don't have permission to access this page."), 403
 
-@app.route('/', methods=['POST'])
+@adminApp.route('/', methods=['POST'])
 def admin_register():
     try:
         # Get form data from AJAX request
@@ -64,7 +73,7 @@ def admin_register():
     finally:
         connection.close()
 
-@app.route('/registrationConfig')
+@adminApp.route('/registrationConfig')
 def regconfig():
     ciphertext = request.args.get('email')
     cursor = None
@@ -117,7 +126,7 @@ def regconfig():
         if connection:  # Check if connection was initialized
             connection.close()
 
-@app.route('/registrationConfig', methods=['POST'])
+@adminApp.route('/registrationConfig', methods=['POST'])
 def updateData():
     # Get the ciphertext from the query parameter
     ciphertexts = request.args.get('email')
@@ -167,16 +176,13 @@ def updateData():
     finally:
         connection.close()
 
-@app.errorhandler(404)
+@adminApp.errorhandler(404)
 def page_not_found(e):
     return render_template("error.html", error_message="Page not found"), 404
 
-@app.errorhandler(500)
+@adminApp.errorhandler(500)
 def internal_server_error(e):
     return render_template("error.html", error_message="Internal server error"), 500
 
-hostname = socket.gethostname()
-ip_address = socket.gethostbyname(hostname)
-
 if __name__ == '__main__':
-    app.run(host=ip_address, port=6900, debug=False)
+    adminApp.run(host=ip_address, port=6900, debug=False)
