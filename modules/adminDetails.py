@@ -7,14 +7,15 @@ import socket
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from modules.reconfigDetail import encode
+from .. import config
 
 #mysql-database connection
 def connect_to_database():
     try:
         connection = mysql.connector.connect(
             host = "localhost",
-            user = "GenJi",
-            passwd = "okg00gle>",
+            user = config.user,
+            passwd = config.passwd,
             database="iCardSISDB"
         )
         return connection
@@ -84,8 +85,8 @@ def verify_and_assign_admin(connection, admin_name, admin_gmail, admin_status, h
 
 #sending-email
 def send_email(admin_gmail, admin_id, admin_status, plain_password):
-    sender_email = "scode904@gmail.com"  
-    sender_password = "jfydvoxtjuemjxsy"
+    sender_email = config.gmailUser 
+    sender_password = config.gmailPasswd
     receiver_email = admin_gmail
 
     ciphertext_base64 = encode(receiver_email)

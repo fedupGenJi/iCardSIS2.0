@@ -1,4 +1,5 @@
 import os
+from .. import config
 
 # Check if the file exists
 if os.path.exists("key.key"):
@@ -10,8 +11,8 @@ import mysql.connector
 
 connection = mysql.connector.connect(
     host = "localhost",
-    user = "GenJi",
-    passwd = "okg00gle>" 
+    user = config.user,
+    passwd = config.passwd 
 )
 
 cursor = connection.cursor()

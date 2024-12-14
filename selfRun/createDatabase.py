@@ -1,4 +1,5 @@
 from cryptography.fernet import Fernet
+from .. import config
 
 # Generate and save the key once
 with open("key.key", "wb") as key_file:
@@ -9,8 +10,8 @@ import mysql.connector
 
 connection = mysql.connector.connect(
     host = "localhost",
-    user = "GenJi",
-    passwd = "okg00gle>" 
+    user = config.user,
+    passwd = config.passwd 
 )
 
 cursor = connection.cursor()
