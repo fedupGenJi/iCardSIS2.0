@@ -80,6 +80,8 @@ def verify_and_assign_admin(connection, admin_name, admin_gmail, admin_status, h
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return None
+    finally:
+        cursor.close()
 
 #sending-email
 def send_email(admin_gmail, admin_id, admin_status, plain_password):

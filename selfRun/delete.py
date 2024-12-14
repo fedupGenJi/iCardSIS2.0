@@ -1,3 +1,11 @@
+import os
+
+# Check if the file exists
+if os.path.exists("key.key"):
+    os.remove("key.key")
+    print("key.key file has been deleted.")
+
+
 import mysql.connector
 
 connection = mysql.connector.connect(

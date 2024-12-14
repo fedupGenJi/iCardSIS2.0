@@ -1,3 +1,10 @@
+from cryptography.fernet import Fernet
+
+# Generate and save the key once
+with open("key.key", "wb") as key_file:
+   key_file.write(Fernet.generate_key())
+print("key.key file has created.")
+   
 import mysql.connector
 
 connection = mysql.connector.connect(

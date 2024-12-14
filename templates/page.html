@@ -40,7 +40,20 @@
             <button type="submit" id="submitButton" class="btn" disabled>Submit</button>
         </form>
     </div>
+    
+    <!-- Placeholder for displaying messages -->
+    <div id="popup" class="popupModal" style="display:none;">
+        <div class="popup-content">
+            <!-- Success/Error Message Section -->
+            <div id="popupStatus" style="font-weight: bold; display: flex; align-items: center; margin-bottom: 15px;">
+                <span id="popupIcon" style="font-size: 20px; margin-right: 10px;"></span>
+                <span id="popupMessage"></span>
+            </div>
+            <button id="popupContentButton" class="popup-content-button">Close</button>
+        </div>
+    </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{url_for('static',filename='js/pagescript.js')}}"></script>
 </body>
 </html>
