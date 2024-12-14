@@ -27,37 +27,40 @@ body {
     justify-content: flex-start;
     text-align: center;
     margin-bottom: 30px;
+    flex-wrap: wrap;
 }
 
 .logo {
-    width: 200px;
+    width: 150px;
     height: auto;
-    margin-right: -9px;
+    margin-right: 10px;
 }
 
 h1 {
     background: rgba(26, 32, 44, 0.8);
     padding: 5px 8px;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: normal;
     color: white;
     margin: 0;
+    text-align: center;
 }
 
 .container {
     background: rgba(26, 32, 44, 0.8);
-    padding: 20px 30px;
+    padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(3px);
-    width: 420px;
+    width: 90%;
+    max-width: 420px;
     color: white;
     text-align: center;
 }
 
 .container h2 {
     margin-bottom: 10px;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     color: #2ed573;
 }
@@ -173,7 +176,8 @@ input.not-matching {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    width: 350px;
+    width: 90%;
+    max-width: 350px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -226,4 +230,40 @@ input.not-matching {
 
 #popupStatus.error {
     color: #dc3545;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .logo {
+        width: 120px;
+    }
+
+    .btn {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .form-group input {
+        font-size: 14px;
+    }
+
+    .popup-content h3 {
+        font-size: 16px;
+    }
 }
