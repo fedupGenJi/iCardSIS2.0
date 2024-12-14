@@ -33,6 +33,7 @@ body {
     top: auto;
     text-align: center;
     z-index: auto;
+    margin-bottom: -20px;
 }
 
 .mainLogo h1 {
@@ -50,7 +51,7 @@ body {
 
 .container .wrapper {
     width: 420px;
-    background: transparent;
+    background: rgba(36, 46, 73, 0.7);
     border: 2px solid rgba(255, 255, 255, .2);
     backdrop-filter: blur(10px);
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);

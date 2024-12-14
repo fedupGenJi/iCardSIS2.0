@@ -23,7 +23,7 @@ body {
     height: 100vh;
     object-fit: cover; 
     z-index: -1; 
-    opacity: 50%;
+    opacity: 100%;
 }
 
 
