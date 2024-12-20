@@ -20,6 +20,28 @@ body {
     flex-direction: column;
 }
 
+.registeredUser {
+    width: 11%;
+    padding: 10px;
+    position: absolute;
+    top: 270px;
+    right: 480px;
+}
+
+.registeredUser .btn {
+    font-size: 16px;
+    color: #fff;
+    border: 1px ; 
+    padding: 10px 20px;
+    border-radius: 5px; 
+    transition: all 0.3s ease;
+}
+
+.registeredUser .btn:hover {
+    background-color: #28a745; 
+    color: #fff; 
+}
+
 .header {
     flex-direction: row;
     display: flex;
