@@ -24,8 +24,8 @@ body {
     width: 11%;
     padding: 10px;
     position: absolute;
-    top: 270px;
-    right: 480px;
+    top: 50px;
+    right: 20px;
 }
 
 .registeredUser .btn {
@@ -43,22 +43,23 @@ body {
 }
 
 .header {
+    background: rgba(26, 32, 44, 0.8);
+    width: 30%;
     flex-direction: row;
     display: flex;
     align-items: center; 
-    justify-content: flex-start;
+    justify-content: center;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
 .logo {
-    width: 200px;
+    width: 160px;
     height: auto;
     margin-right: -9px;
 }
 
 h1 {
-    background: rgba(26, 32, 44, 0.8);
     padding: 10px 15px;
     font-size: 32px;
     font-weight: normal;

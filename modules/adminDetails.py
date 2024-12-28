@@ -131,3 +131,35 @@ def send_email(admin_gmail, admin_id, admin_status, plain_password):
             print(f"Email successfully sent to {receiver_email}")
     except Exception as e:
         print(f"Error sending email: {e}")
+
+def send_removal_email(admin_gmail):
+    sender_email = config.gmailUser 
+    sender_password = config.gmailPasswd
+    receiver_email = admin_gmail
+    
+    subject = "Position Removal Notification"
+    body = f"""
+    Dear Ex-Team Member,
+
+    This is to inform you that you are no longer assigned to the position associated with your previous role.
+
+    Bye bye lol never see youu again. Adding you was the worst decision!
+
+    Best regards,
+    iCardSIS Team
+    """
+    
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+    message.attach(MIMEText(body, "plain"))
+    
+    try:
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, receiver_email, message.as_string())
+            print(f"Removal email successfully sent to {receiver_email}")
+    except Exception as e:
+        print(f"Error sending email: {e}")

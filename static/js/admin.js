@@ -79,3 +79,7 @@ $(document).ready(function () {
         }
     });
 });
+
+document.getElementById('registeredUserButton').addEventListener('click', () => {
+    window.location.href = '/registeredUser';
+});

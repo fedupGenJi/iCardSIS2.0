@@ -184,5 +184,40 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template("error.html", error_message="Internal server error"), 500
 
+@adminApp.route('/registeredUser')
+def registered_user():
+    return render_template('registeredUser.html')
+
+@adminApp.route('/api/employees', methods=['GET'])
+def get_employees():
+    connection = None
+    try:
+        connection = connect_to_database()
+        employees = get_employees_db(connection)
+        for employee in employees:
+            if 'photo' in employee:
+                if employee['photo']:
+                    employee['photo'] = base64.b64encode(employee['photo']).decode('utf-8')
+                else:
+                    del employee['photo']  #if photo field is empty send nothing
+        return jsonify(employees)
+    finally:
+        if connection:
+            connection.close()
+
+@adminApp.route('/api/employees/<admin_id>', methods=['DELETE'])
+def delete_employee(admin_id):
+    connection = None
+    try:
+        connection = connect_to_database()
+        success = delete_employee_db(connection, admin_id)
+        if success:
+            return jsonify({"message": "Employee deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Employee not found"}), 404
+    finally:
+        if connection:
+            connection.close()
+
 if __name__ == '__main__':
     adminApp.run(host=ip_address, port=6900, debug=False)
