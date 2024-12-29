@@ -137,3 +137,7 @@ body {
     color: #333;
     font-weight: 600;
 }
+
+.input-box.invalid input {
+    border-color: red;
+}
