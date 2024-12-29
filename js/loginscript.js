@@ -27,3 +27,22 @@ gmailInput.addEventListener("input", function () {
         loginBtn.disabled = true;
     }
 });
+
+const forgotPasswordLink = document.getElementById("forgot-password");
+const popup = document.getElementById("popup");
+const closePopup = document.getElementById("close-popup");
+
+forgotPasswordLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    popup.style.display = "flex";
+});
+
+closePopup.addEventListener("click", function () {
+    popup.style.display = "none";
+});
+
+window.addEventListener("click", function (event) {
+    if (event.target === popup) {
+        popup.style.display = "none";
+    }
+});
