@@ -11,22 +11,26 @@ adminOperations = Flask(__name__)
 def home():
     return render_template('html/loginpage.html')
 
-@adminOperations.route('/login',methods=['POST'])
+@adminOperations.route('/login', methods=['POST'])
 def login():
     gmail = request.form.get('gmail')
     password = request.form.get('password')
 
     message = login_check(gmail, password)
-    response = {"message": ""}
+    response = {"status": "", "message": ""}
 
     if message == "success":
+        response["status"] = "success"
         response["message"] = "Login success!"
     elif message == "wrong pw":
+        response["status"] = "error"
         response["message"] = "Incorrect password!"
     elif message == "no email":
-        response["message"] = "Email couldn't be found!!"
+        response["status"] = "error"
+        response["message"] = "Email couldn't be found!"
     else:
-        response["message"] = "ERROR!"
+        response["status"] = "error"
+        response["message"] = "An unexpected error occurred!"
 
     return jsonify(response)
 

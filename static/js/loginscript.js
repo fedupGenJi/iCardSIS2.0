@@ -50,6 +50,7 @@ window.addEventListener("click", function (event) {
     }
 });
 
+const form = document.querySelector("form"); 
 const loginpopup = document.querySelector(".login-popup");
 const popupContent = loginpopup.querySelector(".popup-content");
 const popupMessage = popupContent.querySelector("#popup-message");
@@ -59,27 +60,39 @@ const closeButton = popupContent.querySelector(".close-btn");
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const formData = new FormData(form);
-    const response = await fetch("/login", {
-        method: "POST",
-        body: formData,
-    });
+    const formData = new FormData(form); 
 
-    const data = await response.json();
+    try {
+        const response = await fetch("/login", {
+            method: "POST",
+            body: formData,
+        });
 
-    if (data.status === "success") {
-        popupHeading.innerHTML = '<span class="success-icon">✔️</span> Login Successful';
-        popupHeading.style.color = "#28a745";
-        popupMessage.textContent = data.message;
-        closeButton.style.backgroundColor = "#28a745";
-        closeButton.style.color = "#fff";
-    } else {
-        popupHeading.innerHTML = '<span class="error-icon">❌</span> Login Failed';
+        const data = await response.json();
+
+        if (data.status === "success") {
+            popupHeading.innerHTML = '<span class="success-icon">✔️</span> Login Successful';
+            popupHeading.style.color = "#28a745";
+            popupMessage.textContent = data.message;
+            closeButton.style.backgroundColor = "#28a745";
+            closeButton.style.color = "#fff";
+        } else {
+            popupHeading.innerHTML = '<span class="error-icon">❌</span> Login Failed';
+            popupHeading.style.color = "#dc3545";
+            popupMessage.textContent = data.message;
+            closeButton.style.backgroundColor = "#dc3545";
+            closeButton.style.color = "#fff";
+        }
+
+        loginpopup.style.display = "flex";
+
+    } catch (error) {
+        console.error("An error occurred:", error);
+        popupHeading.innerHTML = '<span class="error-icon">❌</span> Network Error';
         popupHeading.style.color = "#dc3545";
-        popupMessage.textContent = data.message;
+        popupMessage.textContent = "Unable to reach the server. Please try again.";
         closeButton.style.backgroundColor = "#dc3545";
         closeButton.style.color = "#fff";
+        loginpopup.style.display = "flex";
     }
-
-    loginpopup.style.display = "flex";
 });
