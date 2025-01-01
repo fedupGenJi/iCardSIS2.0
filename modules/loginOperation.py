@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import config
 
+""""
 #password-hashing
 def hash_password(plain_password):
     try:
@@ -17,7 +18,7 @@ def hash_password(plain_password):
     except Exception as e:
         print(f"Error hashing password: {e}")
         return None
-    
+"""
 #mysql-database connection
 def connect_to_database():
     try:
@@ -53,11 +54,11 @@ def login_check(gmail,password):
         if isinstance(stored_password, str):
             stored_password = stored_password.encode('utf-8')
 
-        hashedpw = hash_password(password)
-        if not hashedpw:
-            return "Failed to hash the password."
+#       hashedpw = hash_password(password)
+#           if not hashedpw:
+#           return "Failed to hash the password."
 
-        if bcrypt.checkpw(hashedpw,stored_password):
+        if bcrypt.checkpw(password.encode('utf-8'),stored_password):
             return "success"
         else:
             return "wrong pw"
