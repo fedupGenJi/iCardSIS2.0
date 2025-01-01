@@ -96,3 +96,13 @@ form.addEventListener("submit", async (event) => {
         loginpopup.style.display = "flex";
     }
 });
+
+closeButton.addEventListener("click", () => {
+    loginpopup.style.display = "none";
+});
+
+window.addEventListener("click", (event) => {
+    if (event.target === loginpopup) {
+        loginpopup.style.display = "none";
+    }
+});
