@@ -71,6 +71,12 @@ form.addEventListener("submit", async (event) => {
         const data = await response.json();
 
         if (data.status === "success") {
+
+            if (data.new_url) {
+                window.location.href = data.new_url;
+                return; 
+            }
+
             popupHeading.innerHTML = '<span class="success-icon">✔️</span> Login Successful';
             popupHeading.style.color = "#28a745";
             popupMessage.textContent = data.message;

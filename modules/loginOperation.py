@@ -38,7 +38,7 @@ def login_check(gmail,password):
     connection = connect_to_database()
 
     if connection is None:
-        return "Database connection failed."
+        return "Database connection failed.", None
 
     try:
         cursor = connection.cursor()
@@ -48,7 +48,7 @@ def login_check(gmail,password):
         result = cursor.fetchone()
 
         if not result:
-            return "no email"
+            return "no email", None
 
         stored_password = result[0] 
         if isinstance(stored_password, str):
@@ -59,9 +59,13 @@ def login_check(gmail,password):
 #           return "Failed to hash the password."
 
         if bcrypt.checkpw(password.encode('utf-8'),stored_password):
-            return "success"
+            query = "SELECT status FROM adminLogin WHERE Gmail = %s"
+            cursor.execute(query, (gmail,))
+            status_result = cursor.fetchone()
+            user_status = status_result[0] if status_result else None
+            return "success", user_status
         else:
-            return "wrong pw"
+            return "wrong pw", None
 
     except mysql.connector.Error as err:
         return f"An error occurred while accessing the database: {err}"
