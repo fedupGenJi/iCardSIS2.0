@@ -147,21 +147,21 @@ class _MyAppState extends State<MyApp> {
                       SizedBox(
                         height: 40,
                       ),
-                      Container(
-                        height: 50,
-                        width: 350,
-                        //  padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.orange[900],
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(300, 50),
+                          backgroundColor: Colors.orange[900],
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                        child: Center(
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
+                        onPressed: () {},
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
                           ),
                         ),
                       ),
