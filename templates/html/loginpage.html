@@ -6,14 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewpoint" content="width=device-width,initial-scale=1.0">
     <title>iCardSIS Login</title>
-    <link rel="stylesheet" href="..\css\loginStyle.css">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/loginStyle.css')}}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
     <div class="container">
         <div class="mainLogo">
-            <img src="../assests/images/ICARDSIS.png" id="appLogo">
+            <img src="{{url_for('static',filename='assests/images/ICARDSIS.png')}}" id="appLogo">
             <h1>KATHMANDU UNIVERSITY</h1>
         </div>
         <div class="wrapper">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="input-box">
                     <input type="password" placeholder="Password" id="password" required>
-                    <img src="../assests/icons/lock-solid-24.png" id="icon">
+                    <img src="{{url_for('static',filename='assests/icons/lock-solid-24.png')}}" id="icon">
                 </div>
     
                 <div class="forgot">
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <script src="../js/loginscript.js"></script>
+    <script src="{{url_for('static',filename='js/loginscript.js')}}"></script>
 </body>
 
 </html>

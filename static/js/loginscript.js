@@ -3,14 +3,17 @@ const pass = document.getElementById("password");
 const gmailInput = document.getElementById("gmail");
 const loginBtn = document.getElementById("login-btn");
 
+const eyeOpenPath = icon.src.replace('lock-solid-24.png', 'lock-open-solid-24.png');
+const eyeClosedPath = icon.src.replace('lock-open-solid-24.png', 'lock-solid-24.png');
+
 icon.onclick = function() {
     if(pass.type === "password") {
         pass.type = "text";
-        icon.src = "../assests/icons/lock-open-solid-24.png";
+        icon.src = eyeOpenPath;
     }
     else {
         pass.type = "password";
-        icon.src = "../assests/icons/lock-solid-24.png";
+        icon.src = eyeClosedPath;
     }
 }
 
