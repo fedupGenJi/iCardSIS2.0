@@ -2,11 +2,18 @@ import sys
 import os
 import mysql.connector
 import bcrypt
+import string 
+import random
 
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import config
+
+def secure_key():
+    length = 12
+    characters = string.ascii_letters + string.digits + string.punctuation
+    return ''.join(random.choice(characters) for _ in range(length))
 
 """"
 #password-hashing

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import socket
 from modules.loginOperation import *
 
@@ -6,6 +6,7 @@ hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
 
 adminOperations = Flask(__name__)
+adminOperations.secret_key = secure_key()
 
 @adminOperations.route('/')
 def home():
@@ -20,6 +21,10 @@ def login():
     response = {"status": "", "message": "", "new_url": None}
 
     if message == "success":
+
+        session['logged_in'] = True
+        session['user_role'] = status
+
         if status == "KU-Admin":
             response = {
                 "status" : "success",
@@ -49,7 +54,14 @@ def login():
 
 @adminOperations.route('/admin/homepage')
 def admin_homepage():
+    if not session.get('logged_in'):  
+        return redirect(url_for('home')) 
     return render_template('admin/homepage.html')
+
+@adminOperations.route('/logout')
+def logout():
+    session.clear() 
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     adminOperations.run(host= ip_address, port=4000, debug=True)
