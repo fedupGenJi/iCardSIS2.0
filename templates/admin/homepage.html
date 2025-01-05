@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KU-iCardSIS</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='css/admin/homepage.css')}}">
-    <link rel="stylesheet" href="{{url_for('static',filename='css/admin/navbar.css')}}?v=1.0">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='css/admin/homepage.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='css/admin/navbar.css')}}?v=1.0"
+    />
+  </head>
+  <body>
     <div id="center-group">
-        <img src="{{url_for('static',filename='assests/images/ICARDSIS.png')}}" alt="University Logo" id="logo">
-        <h1>KU-iCardSIS</h1>
-        <h2>ADMIN</h2>
+      <img
+        src="{{url_for('static',filename='assests/images/ICARDSIS.png')}}"
+        alt="University Logo"
+        id="logo"
+      />
+      <h1>KU-iCardSIS</h1>
+      <h2>ADMIN</h2>
     </div>
 
-    <div id="navbar-container">
-        {% include 'admin/navbar.html' %}
-    </div>
+    <div id="navbar-container">{% include 'admin/navbar.html' %}</div>
 
     <script src="{{url_for('static',filename='js/admin/homepage.js')}}"></script>
-</body>
+  </body>
 </html>
