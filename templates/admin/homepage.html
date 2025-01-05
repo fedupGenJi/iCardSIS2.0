@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>KU-iCardSIS</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin/homepage.css')}}">
 </head>
 <body>
-    home page!
+    <div id="center-group">
+        <img src="{{url_for('static',filename='assests/images/ICARDSIS.png')}}" alt="University Logo" id="logo">
+        <h1>KU-iCardSIS</h1>
+        <h2>ADMIN</h2>
+    </div>
+    <script src="{{url_for('static',filename='js/admin/homepage.js')}}"></script>
 </body>
 </html>

@@ -21,7 +21,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('ku-main.jpg');
+    background-image: url('../../assests/images/ku-main.jpg');
     background-size: cover;
     background-position: center;
     filter: blur(2px);
