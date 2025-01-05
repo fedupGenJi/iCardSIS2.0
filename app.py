@@ -3,7 +3,7 @@ import mysql.connector
 import config
 import base64
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 import base64
 import mysql.connector
@@ -69,6 +69,12 @@ def about():
     id = "signifiespeace@gmail.com"
     admin_details = get_admin_details(id)
     return render_template('about.html',**admin_details)
+
+@app.route('/homepage')
+def homepage():
+    id = "thakur.aakash5896@gmail.com"
+    admin_details = get_admin_details(id)
+    return render_template('homepage.html',**admin_details)
 
 if __name__ == '__main__':
     app.run(debug=True)
