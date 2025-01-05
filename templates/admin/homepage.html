@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KU-iCardSIS</title>
     <link rel="stylesheet" href="{{url_for('static',filename='css/admin/homepage.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin/navbar.css')}}?v=1.0">
 </head>
 <body>
     <div id="center-group">
@@ -12,6 +13,11 @@
         <h1>KU-iCardSIS</h1>
         <h2>ADMIN</h2>
     </div>
+
+    <div id="navbar-container">
+        {% include 'admin/navbar.html' %}
+    </div>
+
     <script src="{{url_for('static',filename='js/admin/homepage.js')}}"></script>
 </body>
 </html>
