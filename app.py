@@ -5,41 +5,51 @@ import base64
 
 app = Flask(__name__)
 
+import base64
+import mysql.connector
+import config
+
 def get_admin_details(gmail):
     connection = mysql.connector.connect(
-            host = "localhost",
-            user = config.user,
-            passwd = config.passwd,
-            database="iCardSISDB"
-        )
+        host="localhost",
+        user=config.user,
+        passwd=config.passwd,
+        database="iCardSISDB"
+    )
     
     try:
-        cursor = connection.cursor(dictionary=True)  
-        query = "SELECT adminId, Gmail, userName, status, photo FROM adminLogin;" 
+        cursor = connection.cursor(dictionary=True)
+        # Fixed the query by adding WHERE clause
+        query = "SELECT adminId, Gmail, userName, status, photo FROM adminLogin WHERE Gmail=%s;"
+        cursor.execute(query, (gmail,))
+        result = cursor.fetchone()  # Fetch a single record
+        
+        if result:
+            admin_id = result['adminId']
+            user_name = result['userName']
+            status = result['status']
+            photo = result['photo']
+            gmail = result['Gmail']
 
-        cursor.execute(query)
+            if status == "KU-Admin":
+                post = "Administrator"
+            else:
+                post = "Librarian"
 
-        results = cursor.fetchall()
-
-        for row in results:
-            admin_id = row['adminId']
-            gmail = row['Gmail']
-            user_name = row['userName']
-            status = row['status']
-            photo = row['photo']
-
-        if status == "KU-Admin":
-            post = "Administrator"
-        else:
-            post = "Librarian"
-
-        if photo:
+            if photo:
+                # Encode binary photo data as base64
                 photo = base64.b64encode(photo).decode('utf-8')
+            else:
+                photo = None
+        else:
+            # Handle case where no result is found
+            raise ValueError("No admin found for the provided Gmail")
+
     finally:
         cursor.close()
         connection.close()
 
-    
+    # Return admin details with the photo embedded as base64 or default image
     admin_details = {
         "admin_name": user_name,
         "admin_position": post,
@@ -48,7 +58,9 @@ def get_admin_details(gmail):
         "admin_email": gmail,
         "admin_status": status
     }
+    
     return admin_details
+
 
 @app.route('/')
 def home():
@@ -58,7 +70,7 @@ def home():
 
 @app.route('/about')
 def about():
-    id = "thakur.aakash569@gmail.com"
+    id = "signifiespeace@gmail.com"
     admin_details = get_admin_details(id)
     return render_template('about.html',**admin_details)
 
