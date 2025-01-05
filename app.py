@@ -19,10 +19,9 @@ def get_admin_details(gmail):
     
     try:
         cursor = connection.cursor(dictionary=True)
-        # Fixed the query by adding WHERE clause
         query = "SELECT adminId, Gmail, userName, status, photo FROM adminLogin WHERE Gmail=%s;"
         cursor.execute(query, (gmail,))
-        result = cursor.fetchone()  # Fetch a single record
+        result = cursor.fetchone() 
         
         if result:
             admin_id = result['adminId']
@@ -37,19 +36,16 @@ def get_admin_details(gmail):
                 post = "Librarian"
 
             if photo:
-                # Encode binary photo data as base64
                 photo = base64.b64encode(photo).decode('utf-8')
             else:
                 photo = None
         else:
-            # Handle case where no result is found
             raise ValueError("No admin found for the provided Gmail")
 
     finally:
         cursor.close()
         connection.close()
 
-    # Return admin details with the photo embedded as base64 or default image
     admin_details = {
         "admin_name": user_name,
         "admin_position": post,
