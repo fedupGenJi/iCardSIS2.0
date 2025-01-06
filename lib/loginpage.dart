@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:icardsis/homepage.dart';
 import 'register.dart';
 
-void main() {
-  runApp(const Loginpage());
-}
-
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
 
@@ -20,6 +16,7 @@ class _LoginpageState extends State<Loginpage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Stack(
