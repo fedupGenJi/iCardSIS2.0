@@ -25,7 +25,18 @@ class _LoginpageState extends State<Loginpage> {
               decoration: BoxDecoration(color: Color(0xFFFADCD5)),
             ),
             Align(
-              alignment: Alignment.center,
+              alignment: Alignment(0, -0.15),
+              child: Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF2D222F),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment(0, 0.1),
               child: Container(
                 height: 46,
                 width: 365,
@@ -60,7 +71,7 @@ class _LoginpageState extends State<Loginpage> {
               ),
             ),
             Align(
-              alignment: Alignment(0, 0.17),
+              alignment: Alignment(0, 0.3),
               child: Container(
                 height: 46,
                 width: 365,
@@ -103,14 +114,14 @@ class _LoginpageState extends State<Loginpage> {
               ),
             ),
             Align(
-              alignment: Alignment(0.8, 0.25),
+              alignment: Alignment(0.8, 0.4),
               child: TextButton(
                 onPressed: () {},
                 child: Text("Forgot password?"),
               ),
             ),
             Align(
-              alignment: Alignment(0, 0.4),
+              alignment: Alignment(0, 0.5),
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -134,7 +145,7 @@ class _LoginpageState extends State<Loginpage> {
               ),
             ),
             Align(
-              alignment: Alignment(0, 0.49),
+              alignment: Alignment(0, 0.6),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
