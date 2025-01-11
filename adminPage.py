@@ -24,6 +24,7 @@ def login():
 
         session['logged_in'] = True
         session['user_role'] = status
+        session['email'] = gmail
 
         if status == "KU-Admin":
             response = {
@@ -54,10 +55,11 @@ def login():
 
 @adminOperations.route('/admin/homepage')
 def admin_homepage():
-    id = "signifiespeace@gmail.com"
-    admin_details = get_admin_details(id)
     if not session.get('logged_in'):  
         return redirect(url_for('home')) 
+    
+    id = session.get('email')
+    admin_details = get_admin_details(id)
     return render_template('admin/homepage.html',**admin_details)
 
 @adminOperations.route('/logout')
