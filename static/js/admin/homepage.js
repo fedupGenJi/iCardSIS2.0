@@ -1,7 +1,10 @@
 const FADE_DURATION = 800;
 const RESET_DELAY = 5000;
+const MOUSE_INACTIVITY_DELAY = 2000;
 
 let fadeTimeout;
+let isMouseHovering = false;
+let mouseInactivityTimeout;
 
 function fadeScreen() {
     const introContainer = document.getElementById('intro-container');
@@ -17,6 +20,7 @@ function fadeScreen() {
 }
 
 function resetScreen() {
+    if (isMouseHovering) return;
     clearTimeout(fadeTimeout);
     const introContainer = document.getElementById('intro-container');
     const otherElements = document.querySelectorAll('.navbarpostt, .homepage-container');
@@ -30,12 +34,23 @@ function resetScreen() {
 function handleScreenFade() {
     fadeScreen();
     fadeTimeout = setTimeout(() => {
-        resetScreen();
+        if (!isMouseHovering) resetScreen();
     }, RESET_DELAY + FADE_DURATION);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function handleMouseActivity() {
+    isMouseHovering = true;
+    clearTimeout(mouseInactivityTimeout);
+
+    mouseInactivityTimeout = setTimeout(() => {
+        isMouseHovering = false;
+        resetScreen();
+    }, MOUSE_INACTIVITY_DELAY);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
     document.body.addEventListener('click', handleScreenFade);
+    document.body.addEventListener('mousemove', handleMouseActivity);
 });
 
 function toggleModal() {
