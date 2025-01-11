@@ -139,6 +139,33 @@
     animation: fadeIn 0.3s ease;
 }
 
+.logout-button {
+    background-color: #B58863;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 40px;
+    width: 60%;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logout-button:hover {
+    background-color: #94694B;
+    transform: scale(1.05);
+}
+
+.logout-button:active {
+    background-color: #7A5940;
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 @keyframes fadeIn {
     from {
         transform: scale(0.9);
