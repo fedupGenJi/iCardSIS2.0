@@ -54,9 +54,11 @@ def login():
 
 @adminOperations.route('/admin/homepage')
 def admin_homepage():
+    id = "signifiespeace@gmail.com"
+    admin_details = get_admin_details(id)
     if not session.get('logged_in'):  
         return redirect(url_for('home')) 
-    return render_template('admin/homepage.html')
+    return render_template('admin/homepage.html',**admin_details)
 
 @adminOperations.route('/logout')
 def logout():

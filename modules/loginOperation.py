@@ -4,6 +4,7 @@ import mysql.connector
 import bcrypt
 import string 
 import random
+import base64
 
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -82,3 +83,49 @@ def login_check(gmail,password):
         if connection.is_connected():
             cursor.close()
             connection.close()
+
+def get_admin_details(gmail):
+    connection = connect_to_database()
+
+    if connection is None:
+        return "Database connection failed.", None
+    
+    try:
+        cursor = connection.cursor(dictionary=True)
+        query = "SELECT adminId, Gmail, userName, status, photo FROM adminLogin WHERE Gmail=%s;"
+        cursor.execute(query, (gmail,))
+        result = cursor.fetchone() 
+        
+        if result:
+            admin_id = result['adminId']
+            user_name = result['userName']
+            status = result['status']
+            photo = result['photo']
+            gmail = result['Gmail']
+
+            if status == "KU-Admin":
+                post = "Administrator"
+            else:
+                post = "Librarian"
+
+            if photo:
+                photo = base64.b64encode(photo).decode('utf-8')
+            else:
+                photo = None
+        else:
+            raise ValueError("No admin found for the provided Gmail")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+    admin_details = {
+        "admin_name": user_name,
+        "admin_position": post,
+        "admin_id": admin_id,
+        "admin_photo_url": f"data:image/jpeg;base64,{photo}" if photo else "/static/assests/icons/admin.png",
+        "admin_email": gmail,
+        "admin_status": status
+    }
+    
+    return admin_details
