@@ -37,3 +37,8 @@ function handleScreenFade() {
 document.addEventListener('DOMContentLoaded', function() {
     document.body.addEventListener('click', handleScreenFade);
 });
+
+function toggleModal() {
+    const modal = document.getElementById("adminModal");
+    modal.classList.toggle("active");
+}
