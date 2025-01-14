@@ -1,0 +1,57 @@
+body{
+    margin: 0;
+    padding:0;
+    background-image: url('../images/backGround.jpg');
+    background-size:cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+}
+
+.container{
+    display: grid;
+    padding:20px;
+    grid-template-rows: auto auto auto;
+    font-weight: 500;
+    font-size: 20px;
+    height: 100vh;
+    transition: 1s;
+    align-content: center;
+    justify-items: center;
+
+}
+    
+.app_name{
+    position: sticky;
+    text-align: center;
+    font-size: 24px;
+    bottom: 45%;
+   
+
+}
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+
+#logo{
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    transform: translateY(0);
+}
+#header{
+    background-color: #212529;
+    color: white;
+
+}
+.card-body{
+    background-color: lightgray;
+}
+
+
+ 
