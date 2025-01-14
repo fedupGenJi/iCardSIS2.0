@@ -47,11 +47,9 @@ photoUploadInput.addEventListener('change', (event) => {
   }
 });
 
-const formContainer = document.querySelector('.form-container');
 function showError(element, message) {
   const errorElement = element.parentElement.querySelector('.error');
   if (errorElement) {
-    formContainer.style.maxHeight = '742px';
     errorElement.textContent = message;
     errorElement.classList.add('visible');
   }
