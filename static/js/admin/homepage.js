@@ -53,11 +53,3 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.addEventListener('mousemove', handleMouseActivity);
 });
 
-function toggleModal() {
-    const modal = document.getElementById("adminModal");
-    modal.classList.toggle("active");
-}
-
-function logout() {
-    window.location.href = '/logout';
-}
