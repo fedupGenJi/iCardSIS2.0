@@ -62,6 +62,15 @@ def admin_homepage():
     admin_details = get_admin_details(id)
     return render_template('admin/homepage.html',**admin_details)
 
+@adminOperations.route('/admin/regPage')
+def admin_regPage():
+    if not session.get('logged_in'):  
+        return redirect(url_for('home')) 
+    
+    id = session.get('email')
+    admin_details = get_admin_details(id)
+    return render_template('admin/regPageg.html',**admin_details)
+
 @adminOperations.route('/logout')
 def logout():
     session.clear() 
