@@ -53,3 +53,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.addEventListener('mousemove', handleMouseActivity);
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const newStudentBox = document.querySelector('.box:nth-child(1)'); 
+
+    if (newStudentBox) {
+        newStudentBox.addEventListener('click', () => {
+            window.location.href = '/admin/regPage';
+        });
+    }
+});
