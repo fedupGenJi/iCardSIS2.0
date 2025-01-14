@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import socket
 from modules.loginOperation import *
+from modules.adminRoute import admin
 
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
 
 adminOperations = Flask(__name__)
 adminOperations.secret_key = secure_key()
+
+adminOperations.register_blueprint(admin)
 
 @adminOperations.route('/')
 def home():
@@ -52,24 +55,6 @@ def login():
         response["message"] = "An unexpected error occurred!"
 
     return jsonify(response)
-
-@adminOperations.route('/admin/homepage')
-def admin_homepage():
-    if not session.get('logged_in'):  
-        return redirect(url_for('home')) 
-    
-    id = session.get('email')
-    admin_details = get_admin_details(id)
-    return render_template('admin/homepage.html',**admin_details)
-
-@adminOperations.route('/admin/regPage')
-def admin_regPage():
-    if not session.get('logged_in'):  
-        return redirect(url_for('home')) 
-    
-    id = session.get('email')
-    admin_details = get_admin_details(id)
-    return render_template('admin/regPageg.html',**admin_details)
 
 @adminOperations.route('/logout')
 def logout():
