@@ -34,3 +34,12 @@ def reg():
         return {"status": "success", "message": "Student registered successfully"}
     else:
         return {"status": "failure", "message": "Student registration failed"}
+    
+@admin.route('/admin/dataPage')
+def dataPage():
+    if not session.get('logged_in'):  
+        return redirect(url_for('home')) 
+    
+    id = session.get('email')
+    admin_details = get_admin_details(id)
+    return render_template('admin/showData.html', **admin_details)
