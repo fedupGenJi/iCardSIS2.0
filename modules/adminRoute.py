@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, session
+from flask import Blueprint, render_template, redirect, url_for, session, request
 from modules.loginOperation import get_admin_details  
+from modules.registration import *
+import json
 
 admin = Blueprint('admin', __name__)
 
@@ -20,3 +22,15 @@ def admin_regPage():
     id = session.get('email')
     admin_details = get_admin_details(id)
     return render_template('admin/regPageg.html', **admin_details)
+
+@admin.route('/admin/regPage', methods=['POST'])
+def reg():
+    data = request.form['data']
+    data = json.loads(data) 
+    photo = request.files.get('photo')
+    
+    success = registration(data, photo)
+    if success:
+        return {"status": "success", "message": "Student registered successfully"}
+    else:
+        return {"status": "failure", "message": "Student registration failed"}

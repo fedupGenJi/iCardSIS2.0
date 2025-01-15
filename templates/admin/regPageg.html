@@ -92,11 +92,19 @@
     </div>
 
    <div class="form-row">
-    <button type="submit" id="submit-btn" disabled>Submit</button>
-
+    <button type="submit" id="submit-btn" onclick="submitForm()" disabled>Submit</button>
     </div>
 
   </div>
+
+  <div class="login-popup">
+    <div class="popup-content">
+        <h2>Registration Status</h2>
+        <p id="popup-message"></p>
+        <button class="close-btn" id="close-popup">Close</button>
+    </div>
+</div>
+
 
   <script src="{{url_for('static',filename='js/admin/regPage.js')}}"></script>
     <script src="{{url_for('static',filename='js/admin/navbar.js')}}"></script>

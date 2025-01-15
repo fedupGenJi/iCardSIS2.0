@@ -185,3 +185,88 @@ document.addEventListener('DOMContentLoaded', function () {
   checkbox.addEventListener('change', toggleSubmitButton);
   toggleSubmitButton();
 });
+
+function submitForm() {
+  const submitButton = document.getElementById('submit-btn');
+  submitButton.disabled = true;
+
+  const fullName = document.querySelector('input[placeholder="Full Name"]').value;
+  const year = document.getElementById('year').value;
+  const month = document.getElementById('month').value;
+  const date = document.getElementById('date').value;
+  const bloodGroup = document.querySelector('input[placeholder="Blood Group"]').value;
+  const sex = document.querySelector('select').value;
+  const email = document.querySelector('input[placeholder="Email"]').value;
+  const course = document.querySelector('input[placeholder="Course"]').value;
+  const yearOfEnrollment = document.getElementById('yoe').value;
+  
+  const photo = document.querySelector('input[type="file"]').files[0];
+
+  const data = {
+    full_name: fullName,
+    date_of_birth: `${year}-${month}-${date}`,
+    blood_group: bloodGroup,
+    sex: sex,
+    email: email,
+    course: course,
+    year_of_enrollment: yearOfEnrollment
+  };
+
+  const formData = new FormData();
+  formData.append("data", JSON.stringify(data));
+
+  const reader = new FileReader();
+  reader.onloadend = function() {
+    const photoBlob = photo ? new Blob([reader.result], { type: photo.type }) : null;
+    formData.append("photo", photoBlob, photo ? photo.name : "no-photo");
+
+    fetch('/admin/regPage', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(result => {
+        const popup = document.querySelector('.login-popup');
+        const popupMessage = document.getElementById('popup-message');
+        const popupContent = popup.querySelector('.popup-content');
+        
+        if (result.status === "success") {
+          popupContent.classList.remove('error');
+          popupContent.classList.add('success');
+          popupMessage.textContent = result.message;
+        } else {
+          popupContent.classList.remove('success');
+          popupContent.classList.add('error');
+          popupMessage.textContent = result.message;
+        }
+        
+        popup.style.display = 'flex'; 
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        const popup = document.querySelector('.login-popup');
+        const popupMessage = document.getElementById('popup-message');
+        const popupContent = popup.querySelector('.popup-content');
+        
+        popupContent.classList.remove('success');
+        popupContent.classList.add('error');
+        popupMessage.textContent = 'An error occurred while submitting the form.';
+        
+        popup.style.display = 'flex'; 
+      })
+      .finally(() => {
+        submitButton.disabled = false;  
+      });
+  };
+
+  if (photo) {
+    reader.readAsArrayBuffer(photo);
+  } else {
+    reader.onloadend();
+  }
+}
+
+document.getElementById('close-popup').addEventListener('click', function() {
+  document.querySelector('.login-popup').style.display = 'none';
+  location.reload(); 
+});
