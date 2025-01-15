@@ -66,7 +66,7 @@ if "icardsisdb" in databases:
                 photo BLOB,
                 YOE INT,
                 Course VARCHAR(100),
-                Balance FLOAT
+                Balance FLOAT DEFAULT 0
             )
             """)
 
@@ -126,7 +126,7 @@ else:
         photo MEDIUMBLOB,
         YOE INT,
         Course VARCHAR(100),
-        Balance FLOAT
+        Balance FLOAT DEFAULT 0
     )
     """)
 
