@@ -136,6 +136,7 @@ else:
         Gmail VARCHAR(255) UNIQUE NOT NULL,
         phoneNo VARCHAR(20) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
+        pin INT,
         FOREIGN KEY (studentId) REFERENCES studentInfo(studentId) ON DELETE CASCADE ON UPDATE CASCADE
     )
     """)
