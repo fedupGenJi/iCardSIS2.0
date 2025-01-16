@@ -34,7 +34,7 @@ body {
 
 h1.page-title {
     position: sticky;
-    top: 70px; /* Adjust to match the navbar height */
+    top: 70px;
     margin-top: 120px;
     padding: 15px;
     color: white;
@@ -44,7 +44,7 @@ h1.page-title {
 }
 
 .content {
-    margin-top: 10px;
+    margin-top: 45px;
     flex: 1;
     overflow-y: scroll;
     -ms-overflow-style: none; 
@@ -61,8 +61,8 @@ h1.page-title {
 }
 
 .data-container {
-    width: 50%;
-    max-width: 1200px;
+    width: 60%;
+    max-width: 1000px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -91,7 +91,7 @@ h1.page-title {
 
 .id-photo img {
     width: 180px;
-    height: 220px;
+    height: 200px;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid #161616;
@@ -114,4 +114,54 @@ h1.page-title {
 .id-details p {
     font-size: 1rem;
     margin: 2px 0;
+}
+
+.searchbox-container {
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
+    margin: -30px 0;
+    position: relative; 
+}
+
+.searchbox {
+    margin-right: 150px;
+    width: 15%;
+    max-width: 600px;
+    padding: 10px 15px;
+    border: 2px solid #B58863;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.searchbox:focus {
+    border-color: #D3C3B9;
+    box-shadow: 0 0 8px rgba(181, 136, 99, 0.5);
+}
+
+.searchbox::placeholder {
+    color: #B58863;
+    font-style: italic;
+}
+
+.search-icon-btn {
+    background: transparent ;
+    position: absolute;
+    top: 50%;
+    left: calc(85% + 70px);
+    transform: translateY(-50%);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.search-icon {
+    height: 20px;
+    width: 20px;
+}
+
+.search-icon:hover {
+    transform: scale(1.1);
 }

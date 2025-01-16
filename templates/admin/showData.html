@@ -10,15 +10,19 @@
 <body>
   <div class="background"></div>
 
-  <!-- Navbar -->
   <div class="navbarpost">
     {% include 'admin/navbar.html' %}
   </div>
 
-  <!-- Page Title -->
   <h1 class="page-title">Registered Students</h1>
 
-  <!-- Content Section -->
+  <div class="searchbox-container">
+    <input type="text" class="searchbox" placeholder="Search using ID">
+    <button class="search-icon-btn">
+      <img src="{{url_for('static', filename='assests/icons/loupe.png')}}" alt="Search Icon" class="search-icon">
+    </button>
+  </div>
+
   <div class="content">
     <div class="data-container"></div>
   </div>
