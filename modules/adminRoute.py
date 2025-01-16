@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, session, request
+from flask import Blueprint, render_template, redirect, url_for, session, request, jsonify
 from modules.loginOperation import get_admin_details  
 from modules.registration import *
 import json
@@ -37,9 +37,21 @@ def reg():
     
 @admin.route('/admin/dataPage')
 def dataPage():
+    print('DUMB IS CALLING ME!')
     if not session.get('logged_in'):  
         return redirect(url_for('home')) 
     
     id = session.get('email')
     admin_details = get_admin_details(id)
     return render_template('admin/showData.html', **admin_details)
+
+@admin.route('/admin/dataPage', methods=['GET'])
+def studentData():
+    print("I was called")
+    try:
+        students_data = fetch_students_from_db()
+        print (students_data)
+        return jsonify(students_data)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

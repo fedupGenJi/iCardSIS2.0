@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 import os
 import sys
+import base64
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -25,17 +26,21 @@ def registration(data, photo):
         )
         library_cursor = library_conn.cursor()
 
-        # Parse full name
         full_name = data["full_name"]
         name_parts = full_name.split()
 
-        if len(name_parts) == 2:
+        if len(name_parts) == 1:
+            first_name = name_parts[0]
+            middle_name = ""
+            last_name = ""
+        elif len(name_parts) == 2:
             first_name, last_name = name_parts
             middle_name = ""
         else:
             first_name = name_parts[0]
             last_name = name_parts[-1]
             middle_name = " ".join(name_parts[1:-1])
+
 
         yoe = int(data["year_of_enrollment"])
         email = data["email"]
@@ -128,3 +133,29 @@ def create_audit_table(student_id):
         if audit_conn.is_connected():
             audit_cursor.close()
             audit_conn.close()
+
+def fetch_students_from_db():
+
+    print('I was called')
+    connection = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="iCardSISDB"
+        )
+    cursor = connection.cursor(dictionary=True)
+    
+    cursor.execute("SELECT * FROM studentInfo")
+    
+    students = cursor.fetchall()
+    
+    for student in students:
+        student['name'] = f"{student['firstName']} {student['middleName']} {student['lastName']}"
+        
+        if student['photo']:
+            student['photo'] = base64.b64encode(student['photo']).decode('utf-8')
+    
+    cursor.close()
+    connection.close()
+    
+    return students

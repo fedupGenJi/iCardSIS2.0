@@ -9,34 +9,20 @@
 </head>
 <body>
   <div class="background"></div>
+
+  <!-- Navbar -->
   <div class="navbarpost">
     {% include 'admin/navbar.html' %}
   </div>
 
+  <!-- Page Title -->
+  <h1 class="page-title">Registered Students</h1>
+
+  <!-- Content Section -->
   <div class="content">
-    
-    <h1 class="page-title">Registered Students</h1>
-    <div class="data-container">
-      <div class="small-container">Student 1</div>
-      <div class="small-container">Student 2</div>
-      <div class="small-container">Student 3</div>
-      <div class="small-container">Student 4</div>
-      <div class="small-container">Student 5</div>
-      <div class="small-container">Student 6</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div><div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-      <div class="small-container">Student 7</div>
-    </div>
+    <div class="data-container"></div>
   </div>
-  
+
   <script src="{{url_for('static',filename='js/admin/showData.js')}}"></script>
   <script src="{{url_for('static',filename='js/admin/navbar.js')}}"></script>
 </body>
