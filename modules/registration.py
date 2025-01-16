@@ -135,8 +135,6 @@ def create_audit_table(student_id):
             audit_conn.close()
 
 def fetch_students_from_db():
-
-    print('I was called')
     connection = mysql.connector.connect(
             host="localhost",
             user=config.user,

@@ -1,44 +1,9 @@
 function studentData() {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', '/admin/dataPage', true);
+    xhr.open('GET', '/api/students', true);
   
     xhr.onload = function () {
       if (xhr.status >= 200 && xhr.status < 300) {
-        // Log the response text (HTML in this case)
-        console.log('Received HTML:', xhr.responseText);
-  
-        // Check if the response is JSON
-        const contentType = xhr.getResponseHeader('Content-Type');
-        if (contentType && contentType.includes('application/json')) {
-          try {
-            const data = JSON.parse(xhr.responseText);
-            populateIDCards(data); 
-          } catch (error) {
-            console.error('Error parsing student data:', error);
-          }
-        } else {
-          console.error('Expected JSON but received:', contentType);
-        }
-      } else {
-        console.error('Error fetching student data:', xhr.statusText);
-      }
-    };
-  
-    xhr.onerror = function () {
-      console.error('Request failed');
-    };
-  
-    xhr.send();
-  }
-  
-
-  function studentData() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', '/admin/dataPage', true);
-  
-    xhr.onload = function () {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        // Check if the response is JSON
         const contentType = xhr.getResponseHeader('Content-Type');
         if (contentType && contentType.includes('application/json')) {
           try {

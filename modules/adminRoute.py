@@ -37,7 +37,6 @@ def reg():
     
 @admin.route('/admin/dataPage')
 def dataPage():
-    print('DUMB IS CALLING ME!')
     if not session.get('logged_in'):  
         return redirect(url_for('home')) 
     
@@ -45,12 +44,10 @@ def dataPage():
     admin_details = get_admin_details(id)
     return render_template('admin/showData.html', **admin_details)
 
-@admin.route('/admin/dataPage', methods=['GET'])
+@admin.route('/api/students', methods=['GET'])
 def studentData():
-    print("I was called")
     try:
         students_data = fetch_students_from_db()
-        print (students_data)
         return jsonify(students_data)
 
     except Exception as e:

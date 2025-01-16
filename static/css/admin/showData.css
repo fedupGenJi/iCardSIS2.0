@@ -44,11 +44,11 @@ h1.page-title {
 }
 
 .content {
-    margin-top: 10px; /* Match the navbar height + space for title */
+    margin-top: 10px;
     flex: 1;
     overflow-y: scroll;
-    -ms-overflow-style: none; /* For Internet Explorer */
-    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
@@ -91,7 +91,7 @@ h1.page-title {
 
 .id-photo img {
     width: 180px;
-    height: auto;
+    height: 220px;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid #161616;
