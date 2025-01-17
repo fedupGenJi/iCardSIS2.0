@@ -17,8 +17,8 @@
   <h1 class="page-title">Registered Students</h1>
 
   <div class="searchbox-container">
-    <input type="text" class="searchbox" placeholder="Search using ID">
-    <button class="search-icon-btn">
+    <input type="number" id="studentIdd" class="searchbox" placeholder="Search using ID">
+    <button class="search-icon-btn" id="searchBtn" disabled>
       <img src="{{url_for('static', filename='assests/icons/loupe.png')}}" alt="Search Icon" class="search-icon">
     </button>
   </div>

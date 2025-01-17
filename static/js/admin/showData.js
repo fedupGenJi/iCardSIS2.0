@@ -52,3 +52,20 @@ function studentData() {
   
   studentData();
   
+  const input = document.getElementById('studentIdd');
+  const searchBtn = document.getElementById('searchBtn');
+
+  input.addEventListener('input', () => {
+      let value = input.value;
+
+      if (value.length > 4) {
+          value = value.slice(0, 4);
+          input.value = value;
+      }
+
+      if (value.length === 4) {
+          searchBtn.disabled = false;
+      } else {
+          searchBtn.disabled = true;
+      }
+  });
