@@ -1,3 +1,4 @@
+let studentDatabase = [];
 function studentData() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', '/api/students', true);
@@ -34,6 +35,7 @@ function studentData() {
     container.innerHTML = "";
   
     data.forEach(student => {
+      studentDatabase.push({...student});
       const clone = template.content.cloneNode(true);
   
       clone.querySelector(".id-photo img").src = `data:image/jpeg;base64,${student.photo}`;
@@ -69,3 +71,42 @@ function studentData() {
           searchBtn.disabled = true;
       }
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const templatexx = document.getElementById("id-card-template");
+
+    if (!templatexx || !templatexx.content) {
+        console.error("Template with id 'id-card-template' is missing or invalid.");
+        return;
+    }
+
+    function searchStudentById(idd) {
+        const containerxx = document.querySelector(".data-container");
+        containerxx.innerHTML = '';
+
+        const student = studentDatabase.find(student => String(student.studentId) === String(idd));
+
+        if (student) {
+            const clonex = templatexx.content.cloneNode(true);
+
+            clonex.querySelector('.id-photo img').src = `data:image/jpeg;base64,${student.photo}`;
+            clonex.querySelector('h2').textContent = student.name;
+            clonex.querySelector('.student-id').textContent = student.studentId;
+            clonex.querySelector('.dob').textContent = student.DOB;
+            clonex.querySelector('.blood-group').textContent = student.bloodGroup;
+            clonex.querySelector('.course').textContent = student.Course;
+            clonex.querySelector('.yoe').textContent = student.YOE;
+            clonex.querySelector('.email').textContent = student.Gmail;
+
+            containerxx.appendChild(clonex);
+        } else {
+            console.error('Student not found.');
+        }
+    }
+
+    const searchBtn = document.getElementById('searchBtn');
+    searchBtn.addEventListener('click', () => {
+        const studentIdd = document.getElementById('studentIdd').value;
+        searchStudentById(studentIdd);
+    });
+});
