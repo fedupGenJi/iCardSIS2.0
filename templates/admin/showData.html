@@ -24,7 +24,37 @@
   </div>
 
   <div class="content">
-    <div class="data-container"></div>
+    <div class="data-container">
+      <template id="id-card-template">
+        <div class="small-container">
+          <div class="id-card">
+            <div class="id-photo">
+              <img src="" alt="Student Photo">
+            </div>
+            <div class="id-details">
+              <h2></h2>
+              <p><strong>Student ID:</strong> <span class="student-id"></span></p>
+              <p><strong>DOB:</strong> <span class="dob"></span></p>
+              <p><strong>Blood Group:</strong> <span class="blood-group"></span></p>
+              <p><strong>Course:</strong> <span class="course"></span></p>
+              <p><strong>Year of Enrollment:</strong> <span class="yoe"></span></p>
+              <p><strong>Email:</strong> <span class="email"></span></p>
+            </div>
+            <div class="action-buttons">
+              <button class="icon-btn update-btn">
+                <img src="{{url_for('static', filename='assests/icons/update.png')}}">
+                <span>Update</span>
+              </button>
+              <button class="icon-btn delete-btn">
+                <img src="{{url_for('static', filename='assests/icons/delete.png')}}">
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+    
   </div>
 
   <script src="{{url_for('static',filename='js/admin/showData.js')}}"></script>

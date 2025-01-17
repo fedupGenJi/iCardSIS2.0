@@ -29,33 +29,26 @@ function studentData() {
     
   function populateIDCards(data) {
     const container = document.querySelector(".data-container");
+    const template = document.getElementById("id-card-template");
   
     container.innerHTML = "";
   
     data.forEach(student => {
-      const smallContainer = document.createElement("div");
-      smallContainer.classList.add("small-container");
+      const clone = template.content.cloneNode(true);
   
-      smallContainer.innerHTML = `
-        <div class="id-card">
-          <div class="id-photo">
-            <img src="data:image/jpeg;base64,${student.photo}" alt="Student Photo">
-          </div>
-          <div class="id-details">
-            <h2>${student.name}</h2>
-            <p><strong>Student ID:</strong> ${student.studentId}</p>
-            <p><strong>DOB:</strong> ${student.DOB}</p>
-            <p><strong>Blood Group:</strong> ${student.bloodGroup}</p>
-            <p><strong>Course:</strong> ${student.Course}</p>
-            <p><strong>Year of Enrollment:</strong> ${student.YOE}</p>
-            <p><strong>Email:</strong> ${student.Gmail}</p>
-          </div>
-        </div>
-      `;
+      clone.querySelector(".id-photo img").src = `data:image/jpeg;base64,${student.photo}`;
+      clone.querySelector("h2").textContent = student.name;
+      clone.querySelector(".student-id").textContent = student.studentId;
+      clone.querySelector(".dob").textContent = student.DOB;
+      clone.querySelector(".blood-group").textContent = student.bloodGroup;
+      clone.querySelector(".course").textContent = student.Course;
+      clone.querySelector(".yoe").textContent = student.YOE;
+      clone.querySelector(".email").textContent = student.Gmail;
   
-      container.appendChild(smallContainer);
+      container.appendChild(clone);
     });
   }
+  
   
   studentData();
   
