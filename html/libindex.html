@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Homepage</title>
+    <link rel="stylesheet" href="../css/libindex.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-left">
+            <img src="../assests/images/ICARDSIS.png" alt="KU Logo" class="logo">
+            <div class="header-title">KU-iCardSIS</div>
+        </div>
+
+        <div class="header-center">
+            <div class="library-title">Library</div>
+        </div>
+
+        <div class="header-right">
+            <div class="admin-info">
+                <div class="admin-name">Admin Name</div>
+                <div class="designation">Librarian</div>
+            </div>
+            <img src="../assests/images/admin.jpg" alt="Admin Photo" class="profile-photo">
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main>
+        <div class="content-wrapper">
+            <div class="card" id="view-bookshelf">
+                <img src="../assests/icons/bookshelf.png" alt="View Bookshelf Icon">
+                <p>View Bookshelf</p>
+            </div>
+            <div class="card" id="lend-return-books">
+                <img src="../assests/icons/lend.png" alt="Lend/Return Books Icon">
+                <p>Lend/Return Books</p>
+            </div>
+            <div class="card" id="update-bookshelf">
+                <img src="../assests/icons/updateshelf.png" alt="Update Bookshelf Icon">
+                <p>Update Bookshelf</p>
+            </div>
+            <div class="card" id="error-report">
+                <img src="../assests/icons/warning.png" alt="Error Report Icon">
+                <p>Error Report</p>
+            </div>
+        </div>
+        
+    <!-- First Popup: Lend or Return Selection -->
+    <div id="lendReturnPopup" class="popup-overlay">
+        <div class="popup-box">
+            <h3>Choose an option</h3>
+            <div class="popup-buttons">
+                <button id="lendButton">Lend</button>
+                <button id="returnButton">Return</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second Popup for Lending: Enter Book ID & Student ID -->
+    <div id="lendBookPopup" class="popup-overlay">
+        <div class="popup-box">
+            <label for="lendBookId">Enter Book ID:</label>
+            <input type="text" id="lendBookId" placeholder="Book ID">
+
+            <label for="lendStudentId">Enter Student ID:</label>
+            <input type="text" id="lendStudentId" placeholder="Student ID">
+
+            <button id="lendSearchButton">Lend</button>
+        </div>
+    </div>
+
+    <!-- Second Popup for Returning: Enter Book ID & Student ID -->
+    <div id="returnBookPopup" class="popup-overlay">
+        <div class="popup-box">        
+            <label for="returnBookId">Enter Book ID:</label>
+            <input type="text" id="returnBookId" placeholder="Enter Book ID">
+
+            <label for="returnStudentId">Enter Student ID:</label>
+            <input type="text" id="returnStudentId" placeholder="Enter Student ID">
+
+            <button id="returnSearchButton">Return</button>
+        </div>
+    </div>
+    <!-- Update Bookshelf Popup -->
+<div id="updateBookshelfPopup" class="popup-overlay">
+    <div class="popup-box">
+        <h3>Update Bookshelf</h3>
+        <div class="popup-buttons">
+            <button id="firstOptionButton">Add New Book</button>
+            <button id="secondOptionButton">Expire Old Book</button>
+        </div>
+    </div>
+</div>
+
+<!-- Last Image Popup -->
+<div id="lastImagePopup" class="popup-overlay">
+    <div class="popup-box">
+        <h3>Enter New Book Details</h3>
+
+        <label for="newBookId">Enter New Book ID:</label>
+        <input type="text" id="newBookId" placeholder="Enter Book ID">
+
+        <label for="numberOfCopies">Enter Number of Copies:</label>
+        <input type="text" id="numberOfCopies" placeholder="Enter Number of Copies">
+
+        <button id="submitNewBook">Submit</button>
+        <button id="closeImagePopup">Close</button>
+    </div>
+</div>
+<!-- Expire Old Book Popup -->
+<div id="expireBookPopup" class="popup-overlay">
+    <div class="popup-box">
+        <h3>Expire Old Book</h3>
+        <label for="expireBookId">Enter Book ID:</label>
+        <input type="text" id="expireBookId" placeholder="Enter Book ID">
+
+        <label for="expireReason">Reason for Expiry:</label>
+        <input type="text" id="expireReason" placeholder="Enter Reason for Expiry">
+
+        <button id="expireSubmitButton">Submit</button>
+    </div>
+</div>
+<!-- Error Report Popup (First) -->
+<div id="errorReportPopup" class="popup-overlay">
+    <div class="popup-box">
+        <h3>Enter Student ID</h3>
+        <label for="studentIdNumber">Student ID Number:</label>
+        <input type="text" id="studentIdNumber" placeholder="Enter Student ID">
+
+        <button id="errorSearchButton">Search</button>
+    </div>
+</div>
+
+<!-- Error Report Result Popup (Second) -->
+<div id="errorReportResultPopup" class="popup-overlay">
+    <div class="popup-box">
+        <h3>Search Results</h3>
+        <p>Student ID Found: <span id="errorStudentId"></span></p> <!-- Shows the found Student ID -->
+
+        <button id="removeBookButton">Remove Book</button>
+        <button id="removeFineButton">Remove Fine</button>
+        <button id="closeErrorPopup">Close</button>
+    </div>
+</div>
+
+    </main>
+<script src="../script/libindex.js"></script>
+</body>
+</html>
+

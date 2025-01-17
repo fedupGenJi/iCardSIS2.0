@@ -1,0 +1,33 @@
+/* Background image settings */
+body {
+    background-image: url('../assests/images/bg1.jpeg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    margin: 0;
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack elements vertically */
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    padding: 0;
+}
+
+/* Logo styles */
+img {
+    max-width: 50%;
+    height: auto;
+}
+
+/* Text styles */
+.text {
+    margin-top: 10px; /* Reduced margin for closer positioning */
+    font-size: 50px;
+    color: #f9f9f9;
+    line-height: 1.5;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    text-align: center;
+}

@@ -1,0 +1,228 @@
+
+/* General Styling */
+body {
+    background-image: url('../assests/images/bg1.jpeg'); /* Use same working path */
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+/* General Styling */
+body {
+    background-image: url('../assests/images/bg1.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    width: 100%;
+    height: 60px;
+    background-color: #343f59;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-info {
+    text-align: right;
+    font-size: 12px;
+}
+
+.admin-name {
+    font-weight: bold;
+}
+
+.designation {
+    opacity: 0.8;
+}
+
+.profile-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+/* Main Content */
+.bookshelf-container {
+    margin-top: 80px;
+    padding: 20px;
+    text-align: center;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: bold;
+    color:#343f59;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+/* Search Bar */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+   
+}
+
+.search-box:focus {
+    border-color: #6a5acd;
+    box-shadow: 0 0 5px rgba(106, 90, 205, 0.5);
+}
+
+.search-btn {
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: #343f59;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.search-btn:hover {
+    background-color: #343f59df;
+}
+
+/* Table Styling */
+.bookshelf-table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.bookshelf-table th,
+.bookshelf-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.bookshelf-table thead th {
+    background-color:#343f59;
+    color: white;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.bookshelf-table tbody tr:nth-child(odd) {
+    background-color:#343f59aa;
+    color: white;
+}
+
+.bookshelf-table tbody tr:nth-child(even) {
+    background-color: #343f59aa;
+}
+
+.bookshelf-table tbody tr:hover {
+    background-color: #343f5987;
+    cursor: pointer;
+}
+
+.bookshelf-table td {
+    font-size: 14px;
+    color:floralwhite;
+}
+
+/* Modal for Add Book */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.popup-box {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+}
+
+.popup-box button {
+    padding: 10px;
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.popup-box button:hover {
+    background-color: #483d8b;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    .bookshelf-table {
+        width: 95%;
+    }
+
+    .search-box {
+        width: 200px;
+    }
+}
