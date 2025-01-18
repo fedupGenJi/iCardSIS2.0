@@ -137,3 +137,103 @@ function studentData() {
   }
   
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("click", function (event) {
+    const deleteButton = event.target.closest("#deletexx-button");
+    if (deleteButton) {
+      const idCardContainer = deleteButton.closest(".small-container");
+      if (idCardContainer) {
+        const studentIdElement = idCardContainer.querySelector(".student-id");
+        if (studentIdElement) {
+          const studentId = studentIdElement.textContent.trim();
+          console.log(`Delete button clicked for Student ID: ${studentId}`);
+
+          const confirmDialog = document.getElementById("custom-confirm-dialog");
+          document.getElementById('custom-confirm-dialog').style.display = 'flex';
+          confirmDialog.style.display = "block";
+
+          const confirmYes = document.getElementById("confirm-yes");
+          confirmYes.addEventListener("click", function () {
+            confirmDialog.style.display = "none"; 
+
+            const xhrx = new XMLHttpRequest();
+            xhrx.open("DELETE", "/api/students", true);
+            xhrx.setRequestHeader("Content-Type", "application/json");
+            xhrx.onload = function () {
+              const popup = document.querySelector(".login-popup");
+              const popupContent = document.querySelector(".popup-content");
+              const popupMessage = document.querySelector("#popup-message");
+              const popupTitle = document.querySelector(".popup-content h2");
+              const closeBtn = document.querySelector("#close-popup");
+
+              if (xhrx.status === 200) {
+                popupContent.classList.remove("errorx");
+                popupContent.classList.add("success");
+
+                popupTitle.innerHTML = '<span class="success-icon">&#10004;</span> Success!';
+                popupMessage.textContent = `Student ID ${studentId} has been successfully deleted.`;
+                popup.style.display = "flex";
+
+                closeBtn.addEventListener("click", function () {
+                  popup.style.display = "none";
+                  location.reload();
+                });
+              } else {
+                popupContent.classList.remove("success");
+                popupContent.classList.add("errorx");
+
+                popupTitle.innerHTML = '<span class="error-icon">&#10006;</span> Failure!';
+
+                let errorMessage = "An unexpected error occurred.";
+                try {
+                  const response = JSON.parse(xhrx.responseText);
+                  errorMessage = response.error || response.databaseError || errorMessage;
+                } catch (e) {
+                  console.error("Error parsing response:", e);
+                }
+
+                popupMessage.textContent = `Failed to delete Student ID ${studentId}. ${errorMessage}`;
+                popup.style.display = "flex";
+
+                closeBtn.addEventListener("click", function () {
+                  popup.style.display = "none";
+                });
+              }
+            };
+
+            xhrx.onerror = function () {
+              const popup = document.querySelector(".login-popup");
+              const popupContent = document.querySelector(".popup-content");
+              const popupMessage = document.querySelector("#popup-message");
+              const popupTitle = document.querySelector(".popup-content h2");
+              const closeBtn = document.querySelector("#close-popup");
+
+              popupContent.classList.remove("success");
+              popupContent.classList.add("errorx");
+
+              popupTitle.innerHTML = '<span class="error-icon">&#10006;</span> Error!';
+              popupMessage.textContent = "An error occurred while sending the request.";
+              popup.style.display = "flex";
+
+              closeBtn.addEventListener("click", function () {
+                popup.style.display = "none";
+              });
+            };
+
+            xhrx.send(JSON.stringify({ student_id: studentId }));
+          });
+
+          const confirmNo = document.getElementById("confirm-no");
+          confirmNo.addEventListener("click", function () {
+            confirmDialog.style.display = "none";
+          });
+        } else {
+          console.log("Student ID element not found.");
+        }
+      } else {
+        console.log("Parent container not found.");
+      }
+    }
+  });
+});

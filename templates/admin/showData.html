@@ -41,11 +41,11 @@
               <p><strong>Email:</strong> <span class="email"></span></p>
             </div>
             <div class="action-buttons">
-              <button id="deletexx-button" class="icon-btn update-btn">
+              <button id="updatexx-button" class="icon-btn update-btn">
                 <img src="{{url_for('static', filename='assests/icons/update.png')}}">
                 <span>Update</span>
               </button>
-              <button class="icon-btn delete-btn">
+              <button id="deletexx-button" class="icon-btn delete-btn">
                 <img src="{{url_for('static', filename='assests/icons/delete.png')}}">
                 <span>Delete</span>
               </button>
@@ -61,10 +61,20 @@
           <button class="close-btn" id="close-popup">Close</button>
       </div>
   </div>
-  </div>
-  
 
-  <script src="{{url_for('static',filename='js/admin/showData.js')}}"></script>
+  <div id="custom-confirm-dialog" class="popupModal" style="display:none;">
+    <div class="modal-content">
+        <p id="confirm-message">Are you sure?</p>
+        <div class="modal-buttons">
+            <button id="confirm-yes" class="btn confirm">Yes</button>
+            <button id="confirm-no" class="btn cancel">No</button>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+    <script src="{{url_for('static',filename='js/admin/showData.js')}}"></script>
   <script src="{{url_for('static',filename='js/admin/navbar.js')}}"></script>
 </body>
 </html>
