@@ -78,8 +78,9 @@ class _RegisterState extends State<Homepage> {
                       Align(
                         alignment: Alignment(-0.6, 0.5),
                         child: Text(
-                          "1000 ",
+                          _obscureText ? "****" : "1000",
                           style: TextStyle(color: Colors.white, fontSize: 35),
+                          // obscureText: _obscureText,
                         ),
                       ),
                       Align(
@@ -101,16 +102,27 @@ class _RegisterState extends State<Homepage> {
                       ),
                       Align(
                         alignment: Alignment(-0.95, -0.9),
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.asset(
+                                "assets/3135715.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                          child: Image(image: AssetImage("assets/3135715.png")),
                         ),
                       ),
+
                       Align(
                         alignment: Alignment(-0.4, -0.75),
                         child: Text(

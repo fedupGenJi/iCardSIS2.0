@@ -10,8 +10,17 @@ class Loginpage extends StatefulWidget {
 }
 
 class _LoginpageState extends State<Loginpage> {
-  bool _obscureText =
-      true; // Add a boolean variable to track password visibility
+  bool _obscureText = true;
+  final TextEditingController _phoneController = TextEditingController();
+
+  bool _isPhoneValid = true;
+
+  void _validatePhoneNumber() {
+    setState(() {
+      String phone = _phoneController.text;
+      _isPhoneValid = phone.length == 10 && phone.startsWith('9');
+    });
+  } // Add a boolean variable to track password visibility
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +52,17 @@ class _LoginpageState extends State<Loginpage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(25)),
+                  border: Border.all(
+                    color: _isPhoneValid ? Colors.transparent : Colors.red,
+                    width: 2,
+                  ),
                 ),
                 child: Stack(
                   children: [
                     TextField(
+                      controller: _phoneController,
                       decoration: InputDecoration(
-                        hintText: "Mobile Number",
+                        hintText: "9812345678",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25),
                           borderSide: BorderSide.none,
@@ -58,13 +72,11 @@ class _LoginpageState extends State<Loginpage> {
                         contentPadding: EdgeInsets.symmetric(horizontal: 20),
                       ),
                       keyboardType: TextInputType.phone,
+                      onChanged: (text) => _validatePhoneNumber(),
                     ),
                     Align(
                       alignment: Alignment(0.9, 0),
-                      child: IconButton(
-                        icon: Icon(Icons.phone),
-                        onPressed: () {},
-                      ),
+                      child: Icon(Icons.phone),
                     ),
                   ],
                 ),

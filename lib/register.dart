@@ -14,9 +14,11 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   bool _isPhoneValid = true;
   bool _isPasswordMatch = true;
+  bool _isemailValid = true;
 
   void _validatePhoneNumber() {
     setState(() {
@@ -29,6 +31,13 @@ class _RegisterState extends State<Register> {
     setState(() {
       _isPasswordMatch =
           _passwordController.text == _confirmPasswordController.text;
+    });
+  }
+
+  void _validateEmail() {
+    setState(() {
+      String emailAddress = _emailController.text;
+      _isemailValid = emailAddress.endsWith('@gmail.com');
     });
   }
 
@@ -80,10 +89,15 @@ class _RegisterState extends State<Register> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(25)),
+                border: Border.all(
+                  color: _isemailValid ? Colors.transparent : Colors.red,
+                  width: 2,
+                ),
               ),
               child: Stack(
                 children: [
                   TextField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       hintText: "ram123@gmail.com",
                       border: OutlineInputBorder(
@@ -94,6 +108,8 @@ class _RegisterState extends State<Register> {
                       fillColor: Colors.white,
                       contentPadding: EdgeInsets.symmetric(horizontal: 20),
                     ),
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (text) => _validateEmail(),
                   ),
                   Align(
                     alignment: Alignment(0.9, 0),
@@ -145,10 +161,7 @@ class _RegisterState extends State<Register> {
                   ),
                   Align(
                     alignment: Alignment(0.9, 0),
-                    child: IconButton(
-                      icon: Icon(Icons.phone),
-                      onPressed: () {},
-                    ),
+                    child: Icon(Icons.phone),
                   ),
                 ],
               ),
