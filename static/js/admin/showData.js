@@ -100,7 +100,7 @@ function studentData() {
 
             containerxx.appendChild(clonex);
         } else {
-            console.error('Student not found.');
+            showPopupx('Student not found.');
         }
     }
 
@@ -109,4 +109,31 @@ function studentData() {
         const studentIdd = document.getElementById('studentIdd').value;
         searchStudentById(studentIdd);
     });
+
+    function showPopupx(message) {
+      const popup = document.querySelector('.login-popup');
+      const popupMessage = document.getElementById('popup-message');
+  
+      const existingIcon = popup.querySelector('.error-icon');
+      if (existingIcon) existingIcon.remove();
+  
+      const errorIcon = document.createElement('span');
+      errorIcon.classList.add('error-icon');
+      errorIcon.innerHTML = '&#9888;'; 
+  
+      popupMessage.textContent = message;
+      popupMessage.prepend(errorIcon);
+  
+      popup.querySelector('h2').textContent = '404';
+      popup.querySelector('.popup-content').classList.add('error');
+  
+      popup.style.display = 'flex';
+  
+      const closePopup = document.getElementById('close-popup');
+      closePopup.addEventListener('click', () => {
+          popup.style.display = 'none';
+          location.reload();
+      });
+  }
+  
 });
