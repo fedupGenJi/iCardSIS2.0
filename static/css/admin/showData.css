@@ -269,12 +269,12 @@ h1.page-title {
     opacity: 0.9;
 }
 
-.login-popup .popup-content.error {
+.login-popup .popup-content.errorx {
     background: #fff4f4;
     border: 2px solid #dc3545;
 }
 
-.login-popup .popup-content.error .close-btn {
+.login-popup .popup-content.errorx .close-btn {
     background: #dc3545;
 }
 

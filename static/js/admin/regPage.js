@@ -216,48 +216,52 @@ function submitForm() {
   formData.append("data", JSON.stringify(data));
 
   const reader = new FileReader();
-  reader.onloadend = function() {
-    const photoBlob = photo ? new Blob([reader.result], { type: photo.type }) : null;
-    formData.append("photo", photoBlob, photo ? photo.name : "no-photo");
 
-    fetch('/admin/regPage', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => response.json())
-      .then(result => {
-        const popup = document.querySelector('.login-popup');
-        const popupMessage = document.getElementById('popup-message');
-        const popupContent = popup.querySelector('.popup-content');
-        
-        if (result.status === "success") {
-          popupContent.classList.remove('error');
-          popupContent.classList.add('success');
-          popupMessage.textContent = result.message;
-        } else {
+    reader.onloadend = function() {
+      const photoBlob = photo ? new Blob([reader.result], { type: photo.type }) : null;
+      formData.append("photo", photoBlob, photo ? photo.name : "no-photo");
+  
+      fetch('/admin/regPage', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(result => {
+          const popup = document.querySelector('.login-popup');
+          const popupMessage = document.getElementById('popup-message');
+          const popupContent = popup.querySelector('.popup-content');
+      
+          if (result.status === "success") {
+            popupContent.classList.remove('error');
+            popupContent.classList.add('success');
+            popupContent.offsetHeight;
+            popupMessage.textContent = result.message;
+          } else if (result.status === "failure") {
+            popupContent.classList.remove('success')
+            popupContent.classList.add('errorxx');
+            popupContent.offsetHeight;
+            popupMessage.textContent = result.message;
+          }
+      
+          popup.style.display = 'flex';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          const popup = document.querySelector('.login-popup');
+          const popupMessage = document.getElementById('popup-message');
+          const popupContent = popup.querySelector('.popup-content');
+      
           popupContent.classList.remove('success');
-          popupContent.classList.add('error');
-          popupMessage.textContent = result.message;
-        }
-        
-        popup.style.display = 'flex'; 
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        const popup = document.querySelector('.login-popup');
-        const popupMessage = document.getElementById('popup-message');
-        const popupContent = popup.querySelector('.popup-content');
-        
-        popupContent.classList.remove('success');
-        popupContent.classList.add('error');
-        popupMessage.textContent = 'An error occurred while submitting the form.';
-        
-        popup.style.display = 'flex'; 
-      })
-      .finally(() => {
-        submitButton.disabled = false;  
-      });
-  };
+          popupContent.classList.add('errorxx');
+          popupMessage.textContent = 'An error occurred while submitting the form.';
+      
+          popup.style.display = 'flex';
+        })
+        .finally(() => {
+          submitButton.disabled = false;
+        });
+    };
+
 
   if (photo) {
     reader.readAsArrayBuffer(photo);

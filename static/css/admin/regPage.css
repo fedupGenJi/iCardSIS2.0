@@ -225,13 +225,13 @@ body {
 }
 
 .login-popup .popup-content {
-    background: #f6fff9;
+    background: #f9f9f9;
     padding: 30px 40px;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     text-align: center;
     width: 350px;
-    border: 2px solid #28a745;
+    border: 2px solid transparent;
 }
 
 .login-popup .popup-content h2 {
@@ -251,7 +251,7 @@ body {
 }
 
 .login-popup .close-btn {
-    background: #28a745;
+    background: #c2b7b7;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -266,21 +266,20 @@ body {
     opacity: 0.9;
 }
 
-.login-popup .popup-content.error {
+.login-popup .popup-content.errorxx {
     background: #fff4f4;
     border: 2px solid #dc3545;
 }
 
-.login-popup .success-icon,
-.login-popup .error-icon {
-    font-size: 24px;
-    margin-right: 5px;
+.login-popup .popup-content.errorxx .close-btn {
+    background: #dc3545;
 }
 
-.login-popup .success-icon {
-    color: #28a745;
+.login-popup .popup-content.success {
+    background: #f6fff9;
+    border: 2px solid #28a745;
 }
 
-.login-popup .error-icon {
-    color: #dc3545;
+.login-popup .popup-content.success .close-btn {
+    background: #28a745;
 }

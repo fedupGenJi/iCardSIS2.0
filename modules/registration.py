@@ -48,6 +48,12 @@ def registration(data, photo):
         blood_group = data["blood_group"]
         course = data["course"]
 
+        icards_cursor.execute("SELECT COUNT(*) FROM studentInfo WHERE Gmail = %s", (email,))
+        email_exists = icards_cursor.fetchone()[0] > 0
+        if email_exists:
+            print(f"Error: Email {email} already exists.")
+            return False
+
         prefix = f"{yoe % 100}"  
         icards_cursor.execute(
             "SELECT MAX(studentId) FROM studentInfo WHERE studentId LIKE %s",

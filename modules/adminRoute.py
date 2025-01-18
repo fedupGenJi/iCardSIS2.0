@@ -30,7 +30,7 @@ def reg():
     photo = request.files.get('photo')
     
     success = registration(data, photo)
-    if success:
+    if (success==True):
         return {"status": "success", "message": "Student registered successfully"}
     else:
         return {"status": "failure", "message": "Student registration failed"}

@@ -125,7 +125,7 @@ function studentData() {
       popupMessage.prepend(errorIcon);
   
       popup.querySelector('h2').textContent = '404';
-      popup.querySelector('.popup-content').classList.add('error');
+      popup.querySelector('.popup-content').classList.add('errorx');
   
       popup.style.display = 'flex';
   
