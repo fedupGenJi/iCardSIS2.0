@@ -54,3 +54,18 @@ def studentData():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@admin.route('/api/students', methods=['DELETE'])
+def delStudent():
+    data = request.get_json()
+    student_id = data.get('student_id')
+    if student_id:
+        print(f"Received request to delete student ID: {student_id}")
+    else:
+        print("Student Id wasn't received!!!!")
+        return jsonify({"error": "Student ID not provided."}), 400
+    outcome = delStdDB(student_id)
+    if (outcome == True ):
+        return jsonify({"success":"Student removed with id:{student_id}"}),200
+    else:
+        return jsonify({"databaseError":"Database couldn't complete request"}),400

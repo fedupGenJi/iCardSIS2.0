@@ -163,3 +163,34 @@ def fetch_students_from_db():
     connection.close()
     
     return students
+
+import mysql.connector
+from mysql.connector import Error
+
+def delStdDB(stdId):
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="iCardSISDB"
+        )
+        if connection.is_connected():
+            cursor = connection.cursor()
+            
+            delete_query = "DELETE FROM studentInfo WHERE studentId = %s"
+            cursor.execute(delete_query, (stdId,))
+            
+            if cursor.rowcount > 0:
+                connection.commit()
+                print("DELETED")
+                return True
+            else:
+                return False
+    except Error as e:
+        print("Error:", e)
+        return False
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
