@@ -52,7 +52,7 @@ def registration(data, photo):
         email_exists = icards_cursor.fetchone()[0] > 0
         if email_exists:
             print(f"Error: Email {email} already exists.")
-            return False
+            return ("Email exists!")
 
         prefix = f"{yoe % 100}"  
         icards_cursor.execute(

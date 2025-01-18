@@ -236,7 +236,13 @@ function submitForm() {
             popupContent.classList.add('success');
             popupContent.offsetHeight;
             popupMessage.textContent = result.message;
-          } else if (result.status === "failure") {
+          } else if (result.status === "gmailFailure") {
+            popupContent.classList.remove('success')
+            popupContent.classList.add('errorxx');
+            popupContent.offsetHeight;
+            popupMessage.textContent = result.message;
+          }
+          else if (result.status === "failure") {
             popupContent.classList.remove('success')
             popupContent.classList.add('errorxx');
             popupContent.offsetHeight;

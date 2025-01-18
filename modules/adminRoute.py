@@ -32,6 +32,8 @@ def reg():
     success = registration(data, photo)
     if (success==True):
         return {"status": "success", "message": "Student registered successfully"}
+    elif (success == "Email exists!"):
+        return {"status": "gmailFailure", "message": "Duplication of Email"}
     else:
         return {"status": "failure", "message": "Student registration failed"}
     
