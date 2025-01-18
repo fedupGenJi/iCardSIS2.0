@@ -178,35 +178,51 @@ h1.page-title {
     flex-direction: row;
     align-items: center;
     gap: 10px;
-  }
-  
-  .icon-btn {
+}
+
+.icon-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     background: transparent;
     border: none;
     cursor: pointer;
     padding: 8px;
-    transition: transform 0.3s ease;
-  }
-  
-  .icon-btn img {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.05); 
+    border-radius: 5px;
+}
+
+.icon-btn:active {
+    transform: scale(0.95);
+    background-color: rgba(0, 0, 0, 0.1); 
+}
+
+.icon-btn img {
     width: 36px;
     height: 36px;
-    fill: #161616;
-    opacity: 1;
-  }
-  
-  .icon-btn span {
+    transition: opacity 0.3s ease;
+}
+
+.icon-btn:hover img {
+    opacity: 0.8; 
+}
+
+.icon-btn span {
     margin-top: 5px;
     font-size: 1.1rem;
     color: #161616;
-  }
-  
-  .icon-btn:hover {
-    transform: scale(1.1);
-  } 
+    transition: color 0.3s ease;
+}
+
+.icon-btn:hover span {
+    color: #000;
+}
 
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
