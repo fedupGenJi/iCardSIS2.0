@@ -107,41 +107,6 @@ def registration(data, photo):
             library_cursor.close()
             library_conn.close()
 
-def create_audit_table(student_id):
-    try:
-        audit_conn = mysql.connector.connect(
-            host="localhost",
-            user=config.user,
-            password=config.passwd
-        )
-        audit_cursor = audit_conn.cursor()
-
-        audit_cursor.execute("CREATE DATABASE IF NOT EXISTS auditDB")
-        audit_cursor.execute("USE auditDB")
-
-        table_name = f"Student-{student_id}"
-
-        audit_cursor.execute(f"""
-        CREATE TABLE IF NOT EXISTS `{table_name}` (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            action VARCHAR(255) NOT NULL,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-        """)
-
-        audit_conn.commit()
-        print(f"Audit table '{table_name}' created successfully.")
-        return True
-
-    except Error as e:
-        print("Error:", e)
-        return False
-
-    finally:
-        if audit_conn.is_connected():
-            audit_cursor.close()
-            audit_conn.close()
-
 def fetch_students_from_db():
     connection = mysql.connector.connect(
             host="localhost",
