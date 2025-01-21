@@ -1,3 +1,4 @@
+from modules.operationA import *
 import mysql.connector
 from mysql.connector import Error
 import os
@@ -89,6 +90,7 @@ def registration(data, photo):
 
         # Create audit table
         if create_audit_table(student_id):
+            audit_input(student_id,"Student Registered at KU-Database!")
             return True
         else:
             return False
@@ -210,6 +212,7 @@ def delStdDB(stdId):
             connection.commit()
             library_conn.commit()
             audit_conn.commit()
+            print("Deleted")
             return True
 
     except Error as e:
