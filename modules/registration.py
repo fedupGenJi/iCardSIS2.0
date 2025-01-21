@@ -164,9 +164,6 @@ def fetch_students_from_db():
     
     return students
 
-import mysql.connector
-from mysql.connector import Error
-
 def delStdDB(stdId):
     try:
         connection = mysql.connector.connect(
@@ -175,22 +172,73 @@ def delStdDB(stdId):
             password=config.passwd,
             database="iCardSISDB"
         )
-        if connection.is_connected():
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="LibraryDB"
+        )
+        audit_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="auditDB"
+        )
+
+        if connection.is_connected() and library_conn.is_connected() and audit_conn.is_connected():
+            connection.start_transaction()
+            library_conn.start_transaction()
+            audit_conn.start_transaction()
+
             cursor = connection.cursor()
-            
             delete_query = "DELETE FROM studentInfo WHERE studentId = %s"
             cursor.execute(delete_query, (stdId,))
-            
-            if cursor.rowcount > 0:
-                connection.commit()
-                print("DELETED")
-                return True
-            else:
-                return False
+            if cursor.rowcount == 0:
+                raise Exception("Student ID not found in studentInfo")
+
+            library_cursor = library_conn.cursor()
+            delete_library_query = "DELETE FROM fineTable WHERE studentId = %s"
+            library_cursor.execute(delete_library_query, (stdId,))
+            if library_cursor.rowcount == 0:
+                raise Exception("Student ID not found in fineTable")
+
+            audit_cursor = audit_conn.cursor()
+            table_name = f"Student-{stdId}"
+            drop_table_query = f"DROP TABLE IF EXISTS `{table_name}`"
+            audit_cursor.execute(drop_table_query)
+
+            connection.commit()
+            library_conn.commit()
+            audit_conn.commit()
+            return True
+
     except Error as e:
         print("Error:", e)
+        if connection.is_connected():
+            connection.rollback()
+        if library_conn.is_connected():
+            library_conn.rollback()
+        if audit_conn.is_connected():
+            audit_conn.rollback()
         return False
+
+    except Exception as ex:
+        print("Exception:", ex)
+        if connection.is_connected():
+            connection.rollback()
+        if library_conn.is_connected():
+            library_conn.rollback()
+        if audit_conn.is_connected():
+            audit_conn.rollback()
+        return False
+
     finally:
         if connection.is_connected():
             cursor.close()
             connection.close()
+        if library_conn.is_connected():
+            library_cursor.close()
+            library_conn.close()
+        if audit_conn.is_connected():
+            audit_cursor.close()
+            audit_conn.close()
