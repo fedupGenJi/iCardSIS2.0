@@ -1,0 +1,107 @@
+{
+   "checksum": "21cf4e9f250deb907d646212e2e9df70",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13377970131425399",
+            "date_last_used": "0",
+            "guid": "e43a1c6e-e31f-4425-b881-899d25aadc90",
+            "id": "6",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "Twitch",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://www.twitch.tv/",
+            "visit_count": 1
+         }, {
+            "date_added": "13378278512662741",
+            "date_last_used": "0",
+            "guid": "ff163370-0058-4ef3-9609-314d2a2d8952",
+            "id": "7",
+            "name": "Student Peeps: Free Student Discounts | Student Deals & Offers",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://studentpeeps.club/",
+            "visit_count": 0
+         }, {
+            "date_added": "13378985196650417",
+            "date_last_used": "0",
+            "guid": "c3f796a8-6985-46ec-9710-6e5f8a4a4924",
+            "id": "8",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "Mitch Koko",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://mitchkoko.gumroad.com/",
+            "visit_count": 1
+         }, {
+            "date_added": "13379480044951343",
+            "date_last_used": "0",
+            "guid": "9f6da07b-ff33-4a50-ac3c-9f0ebf4ede6c",
+            "id": "9",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "(277) SIDEMEN AMONG US CHAMELEON ROLE: BLEND IN TO WIN - YouTube",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://www.youtube.com/watch?v=7hTgjEzl4Bk",
+            "visit_count": 1
+         }, {
+            "date_added": "13380213824449169",
+            "date_last_used": "0",
+            "guid": "6a39a8e4-7a72-4e5c-a2a9-740598545ca6",
+            "id": "10",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "(288) How to convert Figma Design into Flutter Code | DhiWise.com - YouTube",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://www.youtube.com/watch?v=t7lUSiddFd4",
+            "visit_count": 1
+         } ],
+         "date_added": "13381988910471026",
+         "date_last_used": "0",
+         "date_modified": "13380213824449169",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Favorites bar",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13381988910471027",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Other favorites",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13381988910471028",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile favorites",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "sync_metadata": "CjEKDgiIgQISCEf4LSKUAQAAEgAqGGFDOVIyOW1VWUxyZWlLSWE1TzFvQVE9PUgDoAYHEq0BCAkSqAEKHEc5YVRYSmdZbWRnMVc3NnRMVkQrUE1JdG9XQT0SJDlmNmRhMDdiLWZmMzMtNGE1MC1hYzNjLTlmMGViZjRlZGU2YxgAIAAoADDfnLC0vzI4+p6wtL8yQPqesLS/MkocdHpvL1FaSXlHUS9iK1pjbEt5czBLMVJhQUtVPVofIh3ddWF3VUtQRzk1Y3h6WXdaNU1zVHJoVGtBUUxVPWX9nIxKwj4CYAUSrAEIBxKnAQocRzg2WGl6WmlNclIrRkdSWTB0aHl5MU5hMm84PRIkZmYxNjMzNzAtMDA1OC00ZWYzLTk2MDktMzE0ZDJhMmQ4OTUyGAAgACgAMM/dzva6Mjj/3s72ujJA/97O9royShxqZlEwNDZIdk9FWXhXOGlQb1dXQXB5My9YUGM9Wh4iHHZSWjVUMmJadWlaUmN6azUrdFl1NzZnUjI2RT1l1ZKoBMI+AmAFEq0BCAoSqAEKHFFEQnIwQTYxNjJTekJ3UEhmKytIdXZEZzhFST0SJDZhMzlhOGU0LTdhNzItNGU1Yy1hMmE5LTc0MDU5ODU0NWNhNhgAIAAoADDG8LeRwjI4t/K3kcIyQLfyt5HCMkocSTZxOVRnWmtPVE10dWdFTFN2M3dpYncydFU0PVofIh3uQ2dnNTRZaWIxa1czanV1VEZPbTJlMVdCQXdFPWX9nIxKwj4CYAUSrQEICBKoAQocbXY5dGFzMml4alNMVzFZVGg3N1kxaG1PRm00PRIkYzNmNzk2YTgtNjk4NS00NmVjLTk3MTAtNmU1ZjhhNGE0OTI0GAAgACgAMJ26yse9MjjmvMrHvTJA5rzKx70yShxRMTJJcnRITEd4WDBhcTBIRUM4SGRPMEpaQVE9Wh8iHbtSeWw0eDE0ejlveE51aU5JcU5xMll6bXFjR2c9ZRRk6QnCPgJgBRKsAQgGEqcBChw2TDRXTTJoUnVKaEZiOGEwRDIrQjl4cnNnOUk9EiRlNDNhMWM2ZS1lMzFmLTQ0MjUtYjg4MS04OTlkMjVhYWRjOTAYACAAKAAw9rrI47kyOKy8yOO5MkCsvMjjuTJKHGhUbFZEU3pNNS82NnBwc1orcDBRTDhKZTBiQT1aHiIcUnRESlhNb3NNK2o4bjVKMVM1WmxSam5acWdVPWXjgMpqwj4CYAUSjgEIARKJAQoceXhKLzZmdmtlY3I3a3A1RVF6QjR0V0xwZGJFPRIkZDYxYjdjZWEtNDk2OS01NDA4LTkxMDEtMjMxZjNjMjZiNDczGAAgACgAMMffqbmmMjjL46m5pjJAy+OpuaYyShxhUkNXTGdoRjliNUlucUtJRHZ1Si9qdlFrRmM9WgBlAAAAAMI+AmAAEo4BCAISiQEKHFljU1RvbnZFU1B3cUNzNEwyY3JWaHY2OEw5OD0SJDBlYzg0MDk3LTI5YTktNWIxYS04ZjgwLTRlNjJkZGUwMDVkYhgAIAAoADDI36m5pjI44eOpuaYyQOHjqbmmMkocb1BWa2h3QlJiVjY1S0NXUjIrSU9OSFdvT3U4PVoAZQAAAADCPgJgABKOAQgDEokBChxuamdEdTg4ZUNydlhwODZwRDdmSEdjcUZwODg9EiQzMGRlZWE0ZS04NTYzLTUwMGQtYTk0Yy1mNTE1MmJjNjI3ZjEYACAAKAAwzd+puaYyOJDkqbmmMkCQ5Km5pjJKHHl6TkIwMWNuNTRBN2NSVTB1VCsvUGdtVHRVbz1aAGUAAAAAwj4CYAAwADgA",
+   "version": 1
+}
