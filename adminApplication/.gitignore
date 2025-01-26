@@ -1,0 +1,5 @@
+.git
+env/
+config.py
+__pycache__/
+__init__.py
