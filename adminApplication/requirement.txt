@@ -1,0 +1,15 @@
+virtualenv env
+.\env\Scripts\activate.ps1
+
+pip install flask 
+pip install mysql-connector-python
+pip install bcrypt
+pip install cryptography
+pip install fernet
+
+
+config.py
+user = 
+passwd = 
+gmailUser = 
+gmailPasswd = 
