@@ -136,6 +136,20 @@ class _LoginpageState extends State<Loginpage> {
               alignment: Alignment(0, 0.5),
               child: ElevatedButton(
                 onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("close"),
+                        ),
+                      ],
+                      content: Text("Phone number or password is incorrect"),
+                    ),
+                  );
                   // Navigator.push(
                   //   context,
                   //   MaterialPageRoute(
