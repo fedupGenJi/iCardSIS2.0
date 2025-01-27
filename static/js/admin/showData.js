@@ -237,3 +237,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded",function(){
+  document.addEventListener("click",function(event){
+    const updateButton = event.target.closest('#updatexx-button');
+    if(updateButton){
+      const idCardContainer = updateButton.closest(".small-container");
+      if(idCardContainer){
+        const studentIdElement = idCardContainer.querySelector(".student-id");
+        if(studentIdElement){
+          const studentId = studentIdElement.textContent.trim();
+          console.log(`Updatexx button clicked for Student ID: ${studentId}`);
+          const studentxx = studentDatabase.find(student => String(student.studentId) === String(studentId));
+          if (studentxx) {
+            console.log('Student Data Found');
+          } else {
+             console.log('Student not found in the database.');
+          }
+        }else {
+          console.log("Student ID element not found.");
+        }
+      }else {
+        console.log("Parent container not found.");
+      }
+    }
+  });
+});
