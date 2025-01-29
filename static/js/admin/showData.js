@@ -239,6 +239,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded",function(){
+  const popup = document.getElementById("data-container-popup");
+  const popupContent = popup.querySelector(".popup-contentx");
   document.addEventListener("click",function(event){
     const updateButton = event.target.closest('#updatexx-button');
     if(updateButton){
@@ -251,6 +253,29 @@ document.addEventListener("DOMContentLoaded",function(){
           const studentxx = studentDatabase.find(student => String(student.studentId) === String(studentId));
           if (studentxx) {
             console.log('Student Data Found');
+            const photosrc = `data:image/jpeg;base64,${studentxx.photo}`
+            popupContent.innerHTML = `
+              <div class="small-container">
+                <div class="id-card">
+                  <div class = "id-photo">
+                    <img src=${photosrc} alt="Student Avatar">
+                  </div>
+                  <div class ="id-details">
+                    <h3>${studentxx.name}</h3>
+                    <p><strong>Student ID:</strong> ${studentxx.studentId}</p>
+                    <p><strong>DOB:</strong> ${studentxx.DOB}</p>
+                    <p><strong>Blood Group:</strong> ${studentxx.bloodGroup}</p>
+                    <p><strong>Course:</strong> ${studentxx.Course}</p>
+                    <p><strong>Year of Enrollment:</strong> ${studentxx.YOE}</p>
+                    <p><strong>Email:</strong> ${studentxx.Gmail}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+            
+            popup.classList.remove("hidden");
+
+            
           } else {
              console.log('Student not found in the database.');
           }
@@ -261,5 +286,13 @@ document.addEventListener("DOMContentLoaded",function(){
         console.log("Parent container not found.");
       }
     }
+  });
+
+  document.addEventListener("click", function (event) {
+    window.addEventListener("click", (event) => {
+      if (event.target === popup) {
+          popup.classList.add("hidden");
+      }
+  });
   });
 });

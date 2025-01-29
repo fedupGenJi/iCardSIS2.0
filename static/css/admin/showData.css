@@ -171,7 +171,6 @@ h1.page-title {
     transform: scale(1.1);
 }
 
-
 .action-buttons {
     margin-left: auto;
     display: flex;
@@ -382,3 +381,33 @@ h1.page-title {
 #custom-confirm-dialog .btn.cancel:hover {
     background-color: #c82333;
 }
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-contentx {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 40%;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .hidden {
+    display: none;
+  }
