@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded",function(){
           const studentxx = studentDatabase.find(student => String(student.studentId) === String(studentId));
           if (studentxx) {
             console.log('Student Data Found');
-            const photosrc = `data:image/jpeg;base64,${studentxx.photo}`
+            const photosrc = `data:image/jpeg;base64,${studentxx.photo}`;
             popupContent.innerHTML = `
               <div class="small-container">
                 <div class="id-card">
@@ -261,18 +261,31 @@ document.addEventListener("DOMContentLoaded",function(){
                     <img src=${photosrc} alt="Student Avatar">
                   </div>
                   <div class ="id-details">
-                    <h3>${studentxx.name}</h3>
-                    <p><strong>Student ID:</strong> ${studentxx.studentId}</p>
-                    <p><strong>DOB:</strong> ${studentxx.DOB}</p>
-                    <p><strong>Blood Group:</strong> ${studentxx.bloodGroup}</p>
-                    <p><strong>Course:</strong> ${studentxx.Course}</p>
-                    <p><strong>Year of Enrollment:</strong> ${studentxx.YOE}</p>
-                    <p><strong>Email:</strong> ${studentxx.Gmail}</p>
+                    <p><strong>Name:&nbsp;&nbsp;</strong> <span class="editable" data-key="name">${studentxx.name}</span> <button class="edit-btn"></button></p>
+                    <p><strong>Student Id:&nbsp;&nbsp;</strong> ${studentxx.studentId}</p>
+                    <p><strong>DOB:&nbsp;&nbsp;</strong> <span class="editable" data-key="dob">${studentxx.DOB}</span> <button class="edit-btn"></button></p>
+                    <p><strong>Blood Group:&nbsp;&nbsp;</strong> <span class="editable" data-key="bloodGroup">${studentxx.bloodGroup}</span> <button class="edit-btn"></button></p>
+                    <p><strong>Course:&nbsp;&nbsp;</strong> <span class="editable" data-key="course">${studentxx.Course}</span> <button class="edit-btn"></button></p>
+                    <p><strong>Year of Enrollment:&nbsp;&nbsp;</strong> ${studentxx.YOE}</p>
+                    <p><strong>Email:&nbsp;&nbsp;</strong> ${studentxx.Gmail}</p>
                   </div>
+                </div>
+                <div class="save-changes-btn">
+                  <button class="save-changes">
+                    <span class="save-text">Save Changes </span>
+                  </button>
                 </div>
               </div>
             `;
-            
+            const saveChangesButton = document.querySelector(".save-changes");
+
+            if (saveChangesButton) {
+                const img = document.createElement("img");
+                img.classList.add("save-changes-img"); 
+                img.src = "../../../static/assests/icons/user.png";
+                
+                saveChangesButton.prepend(img);
+            }
             popup.classList.remove("hidden");
 
             

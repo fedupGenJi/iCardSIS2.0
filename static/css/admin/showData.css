@@ -411,3 +411,58 @@ h1.page-title {
   .hidden {
     display: none;
   }
+
+  .edit-btn {
+    background: url('../../assests/icons/edit.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+    width: 20px;  
+    height: 20px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 15px;
+    outline: none;
+    box-shadow: none; 
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .edit-btn:hover{
+    scale: 1.1;
+  }
+
+  .save-changes-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    margin-top: 20px;
+    margin-left: 15px;
+}
+
+.save-changes {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.save-changes-img {
+    width: 32px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.save-text {
+    font-size: small;
+    color: black; 
+}
+
+.save-changes:hover{
+    scale: 1.01;
+    opacity: 0.9;
+    background-color: #e7d8cf;
+}
