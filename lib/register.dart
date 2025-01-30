@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:icardsis/loginpage.dart';
+import 'package:icardsis/loginpage.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -330,12 +330,25 @@ class _RegisterState extends State<Register> {
             alignment: Alignment(0, 0.6),
             child: ElevatedButton(
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => Loginpage(),
-                //   ),
-                // );
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Loginpage(),
+                            ),
+                          );
+                        },
+                        child: Text("close"),
+                      ),
+                    ],
+                    content: Text("Registration Successful"),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF1B0C1A),
