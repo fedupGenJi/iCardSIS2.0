@@ -308,4 +308,78 @@ document.addEventListener("DOMContentLoaded",function(){
       }
   });
   });
+
+  document.addEventListener("click", function (event) {
+    const editButton = event.target.closest(".edit-btn");
+    if (editButton) {
+      const editableSpan = editButton.previousElementSibling;
+      if (editableSpan && editableSpan.classList.contains("editable")) {
+        editableSpan.setAttribute("contenteditable", "true");
+        editableSpan.focus();
+        
+        editableSpan.style.border = "1px solid #000";
+        editableSpan.style.padding = "2px";
+        editableSpan.style.background = "white";
+        editButton.style.display = "none";
+  
+        const saveChanges = () => {
+          editableSpan.removeAttribute("contenteditable");
+          editableSpan.style.border = "none";
+          editableSpan.style.padding = "0";
+          editButton.style.display = "inline";
+          editableSpan.style.background = "transparent";
+          editableSpan.removeEventListener("blur", saveChanges);
+          editableSpan.removeEventListener("keydown", handleKeydown);
+        };
+  
+        const handleKeydown = (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            saveChanges();
+          }
+        };
+  
+        editableSpan.addEventListener("blur", saveChanges);
+        editableSpan.addEventListener("keydown", handleKeydown);
+      }
+    }
+  });
+  
+  document.addEventListener("click", function (event) {
+    const saveChangesButton = event.target.closest(".save-changes");
+    if (saveChangesButton) {
+      const popupContent = document.querySelector(".popup-contentx");
+      if (popupContent) {
+        const dobElement = popupContent.querySelector("[data-key='dob']");
+        const bloodGroupElement = popupContent.querySelector("[data-key='bloodGroup']");
+        
+        let isValid = true;
+  
+        const dobValue = dobElement ? dobElement.textContent.trim() : "";
+        const dobRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dobRegex.test(dobValue)) {
+          console.log("Invalid DOB format. Expected YYYY-MM-DD.");
+          isValid = false;
+        } else {
+          console.log("Valid DOB.");
+        }
+  
+        const bloodGroupValue = bloodGroupElement ? bloodGroupElement.textContent.trim().toUpperCase() : "";
+        const validBloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+        if (!validBloodGroups.includes(bloodGroupValue)) {
+          console.log("Invalid Blood Group. Expected one of: A+, A-, B+, B-, AB+, AB-, O+, O-");
+          isValid = false;
+        } else {
+          console.log("Valid Blood Group.");
+        }
+  
+        if (isValid) {
+          console.log("All inputs are valid. Proceeding with save.");
+        } else {
+          console.log("Fix the errors before saving.");
+        }
+      }
+    }
+  });
+  
 });
