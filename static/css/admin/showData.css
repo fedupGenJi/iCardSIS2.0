@@ -278,6 +278,7 @@ h1.page-title {
     font-size: 14px;
     font-weight: bold;
     width: 100%;
+    white-space: pre-line;
 }
 
 .login-popup .close-btn:hover {

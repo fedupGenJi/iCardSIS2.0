@@ -348,38 +348,64 @@ document.addEventListener("DOMContentLoaded",function(){
   document.addEventListener("click", function (event) {
     const saveChangesButton = event.target.closest(".save-changes");
     if (saveChangesButton) {
-      const popupContent = document.querySelector(".popup-contentx");
-      if (popupContent) {
-        const dobElement = popupContent.querySelector("[data-key='dob']");
-        const bloodGroupElement = popupContent.querySelector("[data-key='bloodGroup']");
+        const popup = document.querySelector(".login-popup");
+        const popupMessage = document.getElementById("popup-message");
+        const popupContent = popup.querySelector(".popup-content");
         
+        const popupTitle = popup.querySelector("h2");
+        const dobElement = document.querySelector(".popup-contentx [data-key='dob']");
+        const bloodGroupElement = document.querySelector(".popup-contentx [data-key='bloodGroup']");
+
         let isValid = true;
-  
+        let errorMessages = [];
+
         const dobValue = dobElement ? dobElement.textContent.trim() : "";
         const dobRegex = /^\d{4}-\d{2}-\d{2}$/;
         if (!dobRegex.test(dobValue)) {
-          console.log("Invalid DOB format. Expected YYYY-MM-DD.");
-          isValid = false;
+            errorMessages.push("Invalid Date of Birth. Format must be YYYY-MM-DD.");
+            dobElement.style.border = "2px solid red";
+            dobElement.style.background = "#ffebeb";
+            isValid = false;
         } else {
-          console.log("Valid DOB.");
+            dobElement.style.border = "none";
+            dobElement.style.background = "transparent";
         }
-  
+
         const bloodGroupValue = bloodGroupElement ? bloodGroupElement.textContent.trim().toUpperCase() : "";
         const validBloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
         if (!validBloodGroups.includes(bloodGroupValue)) {
-          console.log("Invalid Blood Group. Expected one of: A+, A-, B+, B-, AB+, AB-, O+, O-");
-          isValid = false;
+            errorMessages.push("Invalid Blood Group.");
+            bloodGroupElement.style.border = "2px solid red";
+            bloodGroupElement.style.background = "#ffebeb";
+            isValid = false;
         } else {
-          console.log("Valid Blood Group.");
+            bloodGroupElement.style.border = "none";
+            bloodGroupElement.style.background = "transparent";
         }
-  
-        if (isValid) {
-          console.log("All inputs are valid. Proceeding with save.");
-        } else {
-          console.log("Fix the errors before saving.");
+
+        if (popup) {
+            popup.style.display = "flex";
+            if (isValid) {
+                popupContent.classList.remove("errorx");
+                popupContent.classList.add("success");
+                popupTitle.textContent = "Success!";
+                popupMessage.textContent = "All inputs are valid. Your changes have been saved.";
+            } else {
+                popupContent.classList.remove("success");
+                popupContent.classList.add("errorx");
+                popupTitle.textContent = "Validation Error";
+                popupMessage.innerHTML = errorMessages.map(msg => `<p>${msg}</p>`).join("");
+            }
         }
-      }
     }
-  });
+});
+
+document.getElementById("close-popup").addEventListener("click", function () {
+    const popup = document.querySelector(".login-popup");
+    if (popup) {
+        popup.style.display = "none";
+    }
+});
+
   
 });
