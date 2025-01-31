@@ -1,0 +1,29 @@
+<nav class="navbar">
+    <div class="navbar-left">
+        <img src="{{ url_for('static', filename='assests/images/ICARDSIS.png') }}" alt="Logo" class="logo">
+        <span class="logo-text">KU-iCardSIS</span>
+    </div>
+    <div class="navbar-center">
+        <span class="center-text">Library</span>
+    </div>
+    <div class="navbar-right">
+        <div class="admin-container">
+            <div class="admin-details">
+                <span class="admin-name">{{ admin_details['admin_name'] }}</span>
+                <span class="admin-position">{{ admin_details['admin_position'] }}</span>
+            </div>
+            <img src="{{ admin_details['admin_photo_url'] }}" alt="Admin Photo" class="admin-photo" onclick="toggleModal()">
+        </div>
+    </div>
+</nav>
+
+<div class="custom-modal" id="adminModal" onclick="toggleModal()">
+    <div class="modal-content" onclick="event.stopPropagation();">
+        <img src="{{ admin_details['admin_photo_url'] }}" alt="Admin Photo" class="modal-photo">
+        <h2>{{ admin_details['admin_name'] }}</h2>
+        <h4>{{ admin_details['admin_id'] }}</h4>
+        <p><strong>Status:</strong> {{ admin_details['admin_status'] }}</p>
+        <p><strong>Email:</strong> {{ admin_details['admin_email'] }}</p>
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+</div>
