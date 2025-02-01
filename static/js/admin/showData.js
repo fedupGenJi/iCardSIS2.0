@@ -249,10 +249,10 @@ document.addEventListener("DOMContentLoaded",function(){
         const studentIdElement = idCardContainer.querySelector(".student-id");
         if(studentIdElement){
           const studentId = studentIdElement.textContent.trim();
-          console.log(`Updatexx button clicked for Student ID: ${studentId}`);
+          //console.log(`Updatexx button clicked for Student ID: ${studentId}`);
           const studentxx = studentDatabase.find(student => String(student.studentId) === String(studentId));
           if (studentxx) {
-            console.log('Student Data Found');
+            //console.log('Student Data Found');
             const photosrc = `data:image/jpeg;base64,${studentxx.photo}`;
             popupContent.innerHTML = `
               <div class="small-container">
@@ -262,7 +262,7 @@ document.addEventListener("DOMContentLoaded",function(){
                   </div>
                   <div class ="id-details">
                     <p><strong>Name:&nbsp;&nbsp;</strong> <span class="editable" data-key="name">${studentxx.name}</span> <button class="edit-btn"></button></p>
-                    <p><strong>Student Id:&nbsp;&nbsp;</strong> ${studentxx.studentId}</p>
+                    <p><strong>Student Id:&nbsp;&nbsp;</strong> <span data-key="studentId">${studentxx.studentId}</span></p>
                     <p><strong>DOB:&nbsp;&nbsp;</strong> <span class="editable" data-key="dob">${studentxx.DOB}</span> <button class="edit-btn"></button></p>
                     <p><strong>Blood Group:&nbsp;&nbsp;</strong> <span class="editable" data-key="bloodGroup">${studentxx.bloodGroup}</span> <button class="edit-btn"></button></p>
                     <p><strong>Course:&nbsp;&nbsp;</strong> <span class="editable" data-key="course">${studentxx.Course}</span> <button class="edit-btn"></button></p>
@@ -351,10 +351,13 @@ document.addEventListener("DOMContentLoaded",function(){
         const popup = document.querySelector(".login-popup");
         const popupMessage = document.getElementById("popup-message");
         const popupContent = popup.querySelector(".popup-content");
-        
         const popupTitle = popup.querySelector("h2");
+
         const dobElement = document.querySelector(".popup-contentx [data-key='dob']");
         const bloodGroupElement = document.querySelector(".popup-contentx [data-key='bloodGroup']");
+        const studentIdElement = document.querySelector(".popup-contentx [data-key='studentId']");
+        const nameElement = document.querySelector(".popup-contentx [data-key='name']");
+        const courseElement = document.querySelector(".popup-contentx [data-key='course']");
 
         let isValid = true;
         let errorMessages = [];
@@ -386,10 +389,43 @@ document.addEventListener("DOMContentLoaded",function(){
         if (popup) {
             popup.style.display = "flex";
             if (isValid) {
-                popupContent.classList.remove("errorx");
+                const updatedData = {
+                    studentId: studentIdElement ? studentIdElement.textContent.trim() : "",
+                    name: nameElement ? nameElement.textContent.trim() : "",
+                    dob: dobValue,
+                    bloodGroup: bloodGroupValue,
+                    course: courseElement ? courseElement.textContent.trim() : ""
+                };
+
+                //console.log("Updated Data:", updatedData);
+
+                /* popupContent.classList.remove("errorx");
                 popupContent.classList.add("success");
-                popupTitle.textContent = "Success!";
-                popupMessage.textContent = "All inputs are valid. Your changes have been saved.";
+                popupTitle.textContent = "Success";
+                popupMessage.innerHTML = "<p>Changes saved successfully!</p>"; */
+
+                const xhrx = new XMLHttpRequest();
+                xhrx.open("PUT", "/api/students", true);
+                xhrx.setRequestHeader("Content-Type", "application/json");
+
+                xhrx.onreadystatechange = function () {
+                    if (xhrx.readyState === 4) {
+                        if (xhrx.status === 200) {
+                            popupContent.classList.remove("errorx");
+                            popupContent.classList.add("success");
+                            popupTitle.textContent = "Success";
+                            popupMessage.innerHTML = "<p>Changes saved successfully!</p>";
+                        } else {
+                            popupContent.classList.remove("success");
+                            popupContent.classList.add("errorx");
+                            popupTitle.textContent = "Error";
+                            popupMessage.innerHTML = `<p>Failed to save changes. Server responded with status ${xhrx.status}.</p>`;
+                        }
+                    }
+                };
+
+                xhrx.send(JSON.stringify(updatedData));
+
             } else {
                 popupContent.classList.remove("success");
                 popupContent.classList.add("errorx");
@@ -401,11 +437,17 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 
 document.getElementById("close-popup").addEventListener("click", function () {
-    const popup = document.querySelector(".login-popup");
-    if (popup) {
-        popup.style.display = "none";
-    }
+  const popup = document.querySelector(".login-popup");
+  const popupContent = document.querySelector(".popup-content");
+  if (popup) {
+      popup.style.display = "none";
+  }
+
+  if (popupContent.classList.contains("success")) {
+      location.reload();
+  }
 });
+
 
   
 });

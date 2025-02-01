@@ -69,3 +69,18 @@ def delStudent():
         return jsonify({"success":"Student removed with id:{student_id}"}),200
     else:
         return jsonify({"databaseError":"Database couldn't complete request"}),400
+    
+@admin.route('/api/students', methods=['PUT'])
+def updateStudent():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No data received"}), 404
+        success = updateDatabase(data)
+        if success:
+            return jsonify({"message": "Student data updated successfully"}), 200
+        else:
+            return jsonify({"error": "Failed to update student data"}), 400
+
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), 500

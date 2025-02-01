@@ -74,3 +74,56 @@ def create_audit_table(student_id):
         if audit_conn.is_connected():
             audit_cursor.close()
             audit_conn.close()
+
+def updateDatabase(data):
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="iCardSISDB"
+        )
+
+        cursor = connection.cursor()
+
+        full_name = data["name"]
+        name_parts = full_name.split()
+
+        if len(name_parts) == 1:
+            first_name = name_parts[0]
+            middle_name = ""
+            last_name = ""
+        elif len(name_parts) == 2:
+            first_name, last_name = name_parts
+            middle_name = ""
+        else:
+            first_name = name_parts[0]
+            last_name = name_parts[-1]
+            middle_name = " ".join(name_parts[1:-1])
+
+        dob = data["dob"]
+        blood_group = data["bloodGroup"]
+        course = data["course"]
+        studentId = data["studentId"]
+
+        query = """
+        UPDATE studentInfo 
+        SET firstName = %s, middleName = %s, lastName = %s, DOB = %s, bloodGroup = %s, Course = %s 
+        WHERE studentId = %s
+        """
+        values = (first_name, middle_name, last_name, dob, blood_group, course, studentId)
+
+        cursor.execute(query, values)
+        connection.commit()
+
+        print("Database updated successfully")
+        return True
+    
+    except Error as e:
+        print("Error:", e)
+        return False
+
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
