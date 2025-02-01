@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 import socket
 from modules.loginOperation import *
 from modules.adminRoute import admin
+from modules.libRoute import library
 
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
@@ -10,6 +11,7 @@ adminOperations = Flask(__name__)
 adminOperations.secret_key = secure_key()
 
 adminOperations.register_blueprint(admin)
+adminOperations.register_blueprint(library)
 
 @adminOperations.route('/')
 def home():
@@ -36,8 +38,11 @@ def login():
                 "new_url" : "/admin/homepage",
             }
         elif status == "Librarian":
-            response["status"] = "success"
-            response["message"] = "Login Successful!!! But currently unavailable!"
+            response = {
+                "status" : "success",
+                "message" : "Login Successful",
+                "new_url" : "/library/homepage",
+            }
         else:
             response["status"] = "success"
             response["message"] = "Login successful, but user role is undefined!"
