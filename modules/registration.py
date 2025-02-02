@@ -48,6 +48,7 @@ def registration(data, photo):
         dob = data["date_of_birth"]
         blood_group = data["blood_group"]
         course = data["course"]
+        sex = data["sex"]
 
         icards_cursor.execute("SELECT COUNT(*) FROM studentInfo WHERE Gmail = %s", (email,))
         email_exists = icards_cursor.fetchone()[0] > 0
@@ -73,9 +74,9 @@ def registration(data, photo):
 
         # Insert into studentInfo table
         icards_cursor.execute("""
-        INSERT INTO studentInfo (studentId, Gmail, DOB, firstName, middleName, lastName, bloodGroup, YOE, Course, Balance, photo)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (student_id, email, dob, first_name, middle_name, last_name, blood_group, yoe, course, 0.0, photo_data))
+        INSERT INTO studentInfo (studentId, Gmail, DOB, firstName, middleName, lastName, bloodGroup, YOE, sex, Course, Balance, photo)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (student_id, email, dob, first_name, middle_name, last_name, blood_group, yoe, sex, course, 0.0, photo_data))
 
         # Insert into FineTable
         library_cursor.execute("""

@@ -43,6 +43,7 @@ function studentData() {
       clone.querySelector(".student-id").textContent = student.studentId;
       clone.querySelector(".dob").textContent = student.DOB;
       clone.querySelector(".blood-group").textContent = student.bloodGroup;
+      clone.querySelector(".sex").textContent = student.sex;
       clone.querySelector(".course").textContent = student.Course;
       clone.querySelector(".yoe").textContent = student.YOE;
       clone.querySelector(".email").textContent = student.Gmail;
@@ -94,6 +95,7 @@ function studentData() {
             clonex.querySelector('.student-id').textContent = student.studentId;
             clonex.querySelector('.dob').textContent = student.DOB;
             clonex.querySelector('.blood-group').textContent = student.bloodGroup;
+            clonex.querySelector(".sex").textContent = student.sex;
             clonex.querySelector('.course').textContent = student.Course;
             clonex.querySelector('.yoe').textContent = student.YOE;
             clonex.querySelector('.email').textContent = student.Gmail;
@@ -265,6 +267,7 @@ document.addEventListener("DOMContentLoaded",function(){
                     <p><strong>Student Id:&nbsp;&nbsp;</strong> <span data-key="studentId">${studentxx.studentId}</span></p>
                     <p><strong>DOB:&nbsp;&nbsp;</strong> <span class="editable" data-key="dob">${studentxx.DOB}</span> <button class="edit-btn"></button></p>
                     <p><strong>Blood Group:&nbsp;&nbsp;</strong> <span class="editable" data-key="bloodGroup">${studentxx.bloodGroup}</span> <button class="edit-btn"></button></p>
+                    <p><strong>Sex:&nbsp;&nbsp;</strong> ${studentxx.sex} </p>
                     <p><strong>Course:&nbsp;&nbsp;</strong> <span class="editable" data-key="course">${studentxx.Course}</span> <button class="edit-btn"></button></p>
                     <p><strong>Year of Enrollment:&nbsp;&nbsp;</strong> ${studentxx.YOE}</p>
                     <p><strong>Email:&nbsp;&nbsp;</strong> ${studentxx.Gmail}</p>
