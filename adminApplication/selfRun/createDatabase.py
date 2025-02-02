@@ -63,7 +63,7 @@ if "icardsisdb" in databases:
                 middleName VARCHAR(100),
                 lastName VARCHAR(100),
                 bloodGroup VARCHAR(10),
-                photo BLOB,
+                photo MEDIUMBLOB,
                 YOE INT,
                 sex VARCHAR(10),
                 Course VARCHAR(100),
