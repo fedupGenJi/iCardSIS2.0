@@ -65,6 +65,7 @@ if "icardsisdb" in databases:
                 bloodGroup VARCHAR(10),
                 photo BLOB,
                 YOE INT,
+                sex VARCHAR(10),
                 Course VARCHAR(100),
                 Balance FLOAT DEFAULT 0
             )
@@ -125,6 +126,7 @@ else:
         bloodGroup VARCHAR(10),
         photo MEDIUMBLOB,
         YOE INT,
+        sex VARCHAR(10),
         Course VARCHAR(100),
         Balance FLOAT DEFAULT 0
     )
