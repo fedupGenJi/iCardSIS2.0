@@ -154,13 +154,16 @@ class _LoginpageState extends State<Loginpage> {
                 child: TextField(
                   controller: _phoneController,
                   decoration: InputDecoration(
-                    hintText: "9812345678",
+                    hintText: "9800000000",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide.none),
+                      borderRadius: BorderRadius.circular(25),
+                      borderSide: BorderSide.none,
+                    ),
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                    suffixIcon: Icon(Icons.person,
+                        color: Colors.grey), // User icon added
                   ),
                   keyboardType: TextInputType.phone,
                   onChanged: (text) => _validateInputs(),
@@ -186,11 +189,23 @@ class _LoginpageState extends State<Loginpage> {
                   decoration: InputDecoration(
                     hintText: "Password",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide.none),
+                      borderRadius: BorderRadius.circular(25),
+                      borderSide: BorderSide.none,
+                    ),
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
                   obscureText: _obscureText,
                   onChanged: (text) => _validateInputs(),
