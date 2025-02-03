@@ -54,6 +54,7 @@ def registerData(phoneNo):
         """, (studentId, gmail, phoneNo, hashed_password, pin))
 
         conn.commit()
+        audit_input(studentId,"Student Registered for iCardSIS")
         clearTemp(phoneNo)
         return "success"
 
@@ -92,3 +93,34 @@ def clearTemp(phoneNo):
             cursor.close()
         if conn:
             conn.close()
+
+def audit_input(student_id, message):
+    try:
+        audit_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="auditDB"
+        )
+
+        audit_cursor = audit_conn.cursor()
+        table_name = f"Student-{student_id}"
+
+        audit_cursor.execute(f"""
+            INSERT INTO `{table_name}` (action)
+            VALUES (%s)
+        """, (message,))
+
+        audit_conn.commit()
+        print("INSERTED")
+        return True
+
+    except mysql.connector.Error as e:
+        print(f"Error: {e}")
+        return False
+
+    finally:
+        if audit_cursor:
+            audit_cursor.close()
+        if audit_conn:
+            audit_conn.close()
