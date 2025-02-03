@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'otpVerification.dart';
 
-
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -56,88 +55,81 @@ class _RegisterState extends State<Register> {
   }
 
   void _onRegisterPressed() async {
-  if (_isLoading) return; // Prevent multiple presses
+    if (_isLoading) return; // Prevent multiple presses
 
-  setState(() {
-    _isButtonPressed = true; // Ensure empty fields turn red
-    _validateFields();
-  });
-
-  if (_isFormValid) {
     setState(() {
-      _isLoading = true; // Show loading state
+      _isButtonPressed = true; // Ensure empty fields turn red
+      _validateFields();
     });
 
-    List<String> userData = [
-      _emailController.text,
-      _phoneController.text,
-      _passwordController.text,
-      _pinController.text
-    ];
-
-    try {
-      var response = await http.post(
-        Uri.parse('http://192.168.1.78:1000/register'), // Replace with server ip from the server
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "email": userData[0],
-          "phone": userData[1],
-          "password": userData[2],
-          "pin": userData[3]
-        }),
-      );
-
+    if (_isFormValid) {
       setState(() {
-        _isLoading = false; // Stop loading
+        _isLoading = true; // Show loading state
       });
 
-      var responseData = jsonDecode(response.body);
+      List<String> userData = [
+        _emailController.text,
+        _phoneController.text,
+        _passwordController.text,
+        _pinController.text
+      ];
 
-      if (response.statusCode == 200 && responseData["success"] == true) {
-        // Show success popup
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.success,
-          animType: AnimType.scale,
-          title: "Success",
-          desc: responseData["message"] ?? "Registration successful!",
-          btnOkOnPress: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => otpVerificationPage()),
-            );
-          },
-          btnOkColor: Colors.green,
-        ).show();
-      } else {
-        // Show error popup
+      try {
+        var response = await http.post(
+          Uri.parse(
+              'http://192.168.1.78:1000/register'), // Replace with server ip from the server
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({
+            "email": userData[0],
+            "phone": userData[1],
+            "password": userData[2],
+            "pin": userData[3]
+          }),
+        );
+
+        setState(() {
+          _isLoading = false; // Stop loading
+        });
+
+        var responseData = jsonDecode(response.body);
+
+        if (response.statusCode == 200 && responseData["success"] == true) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OtpVerificationPage(
+                  phoneNumber: userData[1]), // Pass phone number
+            ),
+          );
+        } else {
+          // Show error popup
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.scale,
+            title: "Error",
+            desc: responseData["message"] ?? "Unknown error occurred",
+            btnOkOnPress: () {},
+            btnOkColor: Colors.red,
+          ).show();
+        }
+      } catch (e) {
+        setState(() {
+          _isLoading = false; // Stop loading
+        });
+
         AwesomeDialog(
           context: context,
           dialogType: DialogType.error,
           animType: AnimType.scale,
-          title: "Error",
-          desc: responseData["message"] ?? "Unknown error occurred",
+          title: "Server Error",
+          desc: "Server unavailable. Please try again later.",
           btnOkOnPress: () {},
           btnOkColor: Colors.red,
         ).show();
       }
-    } catch (e) {
-      setState(() {
-        _isLoading = false; // Stop loading
-      });
-
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.error,
-        animType: AnimType.scale,
-        title: "Server Error",
-        desc: "Server unavailable. Please try again later.",
-        btnOkOnPress: () {},
-        btnOkColor: Colors.red,
-      ).show();
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
