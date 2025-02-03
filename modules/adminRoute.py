@@ -23,6 +23,15 @@ def admin_regPage():
     admin_details = get_admin_details(id)
     return render_template('admin/regPageg.html', **admin_details)
 
+@admin.route('/admin/loginInfo')
+def loginInfoPage():
+    if not session.get('logged_in'):  
+        return redirect(url_for('home')) 
+    
+    id = session.get('email')
+    admin_details = get_admin_details(id)
+    return render_template('admin/loginInfo.html', **admin_details)
+
 @admin.route('/admin/regPage', methods=['POST'])
 def reg():
     data = request.form['data']

@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (optionBox) {
         optionBox.addEventListener('click', () => {
-            window.location.href = '/library/lendreturn';
+            window.location.href = '/library/lendReturn';
         });
     }
 });

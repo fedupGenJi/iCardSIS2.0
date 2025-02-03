@@ -11,3 +11,39 @@ def lib_homepage():
     id = session.get('email')
     admin_details = get_admin_details(id)
     return render_template('library/homepagexx.html', **admin_details)
+
+@library.route('/library/bookshelf')
+def bookShelf():
+    if not session.get('logged_in'):  
+        return redirect(url_for('home')) 
+    
+    id = session.get('email')
+    admin_details = get_admin_details(id)
+    return render_template('library/bookShelf.html', **admin_details)
+
+@library.route('/library/lendReturn')
+def lendReturn():
+    if not session.get('logged_in'):  
+        return redirect(url_for('home')) 
+    
+    id = session.get('email')
+    admin_details = get_admin_details(id)
+    return render_template('library/lendReturn.html', **admin_details)
+
+@library.route('/library/updateBookshelf')
+def updateBS():
+    if not session.get('logged_in'):  
+        return redirect(url_for('home')) 
+    
+    id = session.get('email')
+    admin_details = get_admin_details(id)
+    return render_template('library/updateBookshelf.html', **admin_details)
+
+@library.route('/library/errorReport')
+def errorReport():
+    if not session.get('logged_in'):  
+        return redirect(url_for('home')) 
+    
+    id = session.get('email')
+    admin_details = get_admin_details(id)
+    return render_template('library/errorReport.html', **admin_details)
