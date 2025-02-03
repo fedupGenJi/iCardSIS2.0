@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'loginpage.dart';
 
 class OtpVerificationPage extends StatefulWidget {
   final String phoneNumber;
@@ -60,14 +61,15 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
     return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
-  void _showDialog(DialogType type, String title, String desc) {
+  void _showDialog(DialogType type, String title, String desc,
+      {VoidCallback? onOk}) {
     AwesomeDialog(
       context: context,
       dialogType: type,
       animType: AnimType.scale,
       title: title,
       desc: desc,
-      btnOkOnPress: () {},
+      btnOkOnPress: onOk ?? () {},
     ).show();
   }
 
@@ -97,7 +99,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.78:1000/registe/otpr'),
+        Uri.parse('http://192.168.1.78:1000/registe/otp'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'phoneNumber': phoneNumber, 'otp': otp}),
       );
@@ -107,8 +109,15 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
       });
 
       if (response.statusCode == 200) {
+        // OTP Verified successfully, now validate registration
         _showDialog(
-            DialogType.success, 'Success', 'OTP Verified Successfully!');
+          DialogType.success,
+          'Success',
+          'OTP Verified Successfully!',
+          onOk: () {
+            _validateRegistrationxxx(phoneNumber);
+          },
+        );
       } else {
         final responseBody = jsonDecode(response.body);
         String error = responseBody['error'];
@@ -131,6 +140,47 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
       setState(() {
         _isLoading = false;
       });
+      _showDialog(DialogType.error, 'Network Error',
+          'Could not connect to the server.');
+    }
+  }
+
+  Future<void> _validateRegistrationxxx(String phoneNumber) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.1.78:1000/registe/otp/valid'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'phoneNumber': phoneNumber}),
+      );
+
+      if (response.statusCode == 200) {
+        // Registration is successful
+        _showDialog(
+          DialogType.success,
+          'Success',
+          'Registration is Successful!',
+          onOk: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Loginpage()),
+            );
+          },
+        );
+      } else {
+        // Unexpected error
+        _showDialog(
+          DialogType.error,
+          'Error',
+          'Unexpected Error Occured!',
+          onOk: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Loginpage()),
+            );
+          },
+        );
+      }
+    } catch (e) {
       _showDialog(DialogType.error, 'Network Error',
           'Could not connect to the server.');
     }
