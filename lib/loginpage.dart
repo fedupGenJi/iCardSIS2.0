@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'config.dart';
 import 'register.dart';
 
 class Loginpage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _LoginpageState extends State<Loginpage> {
 
     try {
       var response = await http.post(
-        Uri.parse("http://192.168.1.78:1000/login"),
+        Uri.parse("${Config.baseUrl}/login"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"phone": phone, "password": password}),
       );

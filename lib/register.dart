@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'otpVerification.dart';
+import 'config.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -77,7 +78,7 @@ class _RegisterState extends State<Register> {
       try {
         var response = await http.post(
           Uri.parse(
-              'http://192.168.1.78:1000/register'), // Replace with server ip from the server
+              '${Config.baseUrl}/register'), // Replace with server ip from the server
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({
             "email": userData[0],
