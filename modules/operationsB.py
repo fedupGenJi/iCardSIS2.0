@@ -17,7 +17,7 @@ def registerData(phoneNo):
         )
         cursor = conn.cursor(dictionary=True)
         
-        cursor.execute("SELECT gmail, pin, password FROM tempData WHERE phoneNo = %s", (phoneNo,))
+        cursor.execute("SELECT gmail, pin, password FROM tempData WHERE phone_number = %s", (phoneNo,))
         result = cursor.fetchone()
         
         if not result:
@@ -77,10 +77,10 @@ def clearTemp(phoneNo):
         cursor = conn.cursor()
 
         # Delete data from tempData table
-        cursor.execute("DELETE FROM tempData WHERE phone = %s", (phoneNo,))
+        cursor.execute("DELETE FROM tempData WHERE phone_number = %s", (phoneNo,))
         
         # Delete data from otpVerification table
-        cursor.execute("DELETE FROM otpVerification WHERE phone = %s", (phoneNo,))
+        cursor.execute("DELETE FROM otpVerification WHERE phone_number = %s", (phoneNo,))
 
         conn.commit()
         print(f"Records deleted for phone number: {phoneNo}")

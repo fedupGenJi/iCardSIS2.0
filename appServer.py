@@ -42,7 +42,7 @@ def reg():
 @appServer.route('/register/otp', methods=['POST'])
 def otpVerify():
     otpData = request.get_json()
-    result = otpVerify(otpData)
+    result = otpVerification(otpData)
 
     if result['status'] == 'success':
         return jsonify({"message": result['message']}), 200
@@ -56,12 +56,13 @@ def otpVerify():
         elif 'not found' in error_message.lower():
             return jsonify({"error": "OTP_NOT_RECEIVED"}), 400
         else:
+            print(error_message)
             return jsonify({"error": "UNEXPECTED_ERROR", "message": error_message}), 500
         
 @appServer.route('/register/otp/valid', methods=['POST'])
 def insert():
     data = request.get_json()
-    phoneNo = data.get("phoneNo")
+    phoneNo = data.get("phoneNumber")
 
     if not phoneNo:
         return jsonify({"status": "failure", "message": "phoneNo is required"}), 400
@@ -71,6 +72,7 @@ def insert():
     if result == "success":
         return jsonify({"status": "success", "message": "Registration completed successfully"}), 200
     else:
+        print(result)
         return jsonify({"status": "failure", "message": result}), 400
 
 if __name__ == '__main__':

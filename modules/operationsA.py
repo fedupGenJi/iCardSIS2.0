@@ -96,8 +96,8 @@ def dataStore(data):
     password = data.get('password')
     gmail = data.get('email')
     pin = data.get('pin')
-    print(gmail)
-    print(f"Email length: {len(gmail)}")
+    #print(gmail)
+    #print(f"Email length: {len(gmail)}")
     try:
         conn = mysql.connector.connect(**configx)
         cursor = conn.cursor()
@@ -135,7 +135,7 @@ def dataStore(data):
             cursor.close()
             conn.close()
 
-def otpVerify(otpData):
+def otpVerification(otpData):
     phoneNo = otpData.get('phoneNumber')
     otp = otpData.get('otp')
 
@@ -148,13 +148,13 @@ def otpVerify(otpData):
         )
         cursor = conn.cursor(dictionary=True)
 
-        cursor.execute("SELECT * FROM otpVerification WHERE phoneNumber = %s", (phoneNo,))
+        cursor.execute("SELECT * FROM otpVerification WHERE phone_number = %s", (phoneNo,))
         record = cursor.fetchone()
 
         if not record:
             return {"status": "error", "message": "Phone number not found."}
 
-        if record['otp'] != otp:
+        if record['otp_code'] != otp:
             return {"status": "error", "message": "Invalid OTP."}
 
         otp_time = record['created_at']
