@@ -1,4 +1,5 @@
 import mysql.connector
+from datetime import datetime,timedelta
 import sys
 import os
 
@@ -41,4 +42,84 @@ def checkData(data):
         if cursor:
             cursor.close()
         if conn:
+            conn.close()
+
+def otpStore(otp,phoneNo):
+    configx = {
+        'host': 'localhost',
+        'user': config.user,         
+        'password': config.passwd
+    }
+
+    try:
+        conn = mysql.connector.connect(**configx)
+        cursor = conn.cursor()
+
+        cursor.execute("CREATE DATABASE IF NOT EXISTS tempDB")
+
+        cursor.execute("USE tempDB")
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS otpVerification (
+                phone_number VARCHAR(15) PRIMARY KEY,
+                otp_code VARCHAR(6) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            )
+        """)
+
+        cursor.execute("""
+            INSERT INTO otpVerification (phone_number, otp_code, created_at)
+            VALUES (%s, %s, NOW())
+            ON DUPLICATE KEY UPDATE
+                otp_code = VALUES(otp_code),
+                created_at = NOW()
+        """, (phoneNo, otp))
+
+        conn.commit()
+        print(f"OTP for {phoneNo} updated successfully.")
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+
+def otpVerify(otpData):
+    phoneNo = otpData.get('phoneNumber')
+    otp = otpData.get('otp')
+
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user= config.user,
+            password= config.passwd,
+            database="tempDB"
+        )
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM otpVerification WHERE phoneNumber = %s", (phoneNo,))
+        record = cursor.fetchone()
+
+        if not record:
+            return {"status": "error", "message": "Phone number not found."}
+
+        if record['otp'] != otp:
+            return {"status": "error", "message": "Invalid OTP."}
+
+        otp_time = record['created_at']
+        expiry_time = otp_time + timedelta(minutes=5)
+
+        if datetime.now() > expiry_time:
+            return {"status": "error", "message": "OTP has expired."}
+
+        return {"status": "success", "message": "OTP verified successfully."}
+
+    except mysql.connector.Error as err:
+        return {"status": "error", "message": f"Database error: {err}"}
+
+    finally:
+        if conn.is_connected():
+            cursor.close()
             conn.close()

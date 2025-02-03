@@ -25,7 +25,7 @@ def sendSMS(data):
 
         payload = json.dumps({
             "token": config.sparrowToken,
-            "from": "Code Crafters",
+            "from": "Demo",
             "to": phoneNo,
             "text": message
         })
