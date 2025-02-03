@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (optionBox) {
         optionBox.addEventListener('click', () => {
-            window.location.href = '/bookshelf';
+            window.location.href = '/library/bookshelf';
         });
     }
 });
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (optionBox) {
         optionBox.addEventListener('click', () => {
-            window.location.href = '/lendreturn';
+            window.location.href = '/library/lendreturn';
         });
     }
 });
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (optionBox) {
         optionBox.addEventListener('click', () => {
-            window.location.href = '/updateBookshelf';
+            window.location.href = '/library/updateBookshelf';
         });
     }
 });
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (optionBox) {
         optionBox.addEventListener('click', () => {
-            window.location.href = '/errorReport';
+            window.location.href = '/library/errorReport';
         });
     }
 });

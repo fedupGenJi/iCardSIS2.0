@@ -72,3 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const newStudentBox = document.querySelector('.box:nth-child(3)'); 
+
+    if (newStudentBox) {
+        newStudentBox.addEventListener('click', () => {
+            window.location.href = '/admin/loginInfo';
+        });
+    }
+});
