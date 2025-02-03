@@ -148,7 +148,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
   Future<void> _validateRegistrationxxx(String phoneNumber) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.78:1000/registe/otp/valid'),
+        Uri.parse('http://192.168.1.78:1000/register/otp/valid'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'phoneNumber': phoneNumber}),
       );
