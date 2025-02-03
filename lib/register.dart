@@ -291,7 +291,7 @@ class _RegisterState extends State<Register> {
             alignment: Alignment(0.9, 0),
             child: IconButton(
               icon: Icon(
-                  _obscureText ? Icons.remove_red_eye : Icons.visibility_off),
+                  _obscureText ? Icons.visibility_off : Icons.remove_red_eye),
               onPressed: () {
                 setState(() {
                   _obscureText = !_obscureText;
