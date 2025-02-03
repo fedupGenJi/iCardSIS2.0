@@ -99,7 +99,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.78:1000/registe/otp'),
+        Uri.parse('http://192.168.1.78:1000/register/otp'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'phoneNumber': phoneNumber, 'otp': otp}),
       );
