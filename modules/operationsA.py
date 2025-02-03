@@ -86,6 +86,55 @@ def otpStore(otp,phoneNo):
             cursor.close()
             conn.close()
 
+def dataStore(data):
+    configx = {
+        'host': 'localhost',
+        'user': config.user,         
+        'password': config.passwd
+    }
+    phoneNo = data.get('phone')
+    password = data.get('password')
+    gmail = data.get('email')
+    pin = data.get('pin')
+    print(gmail)
+    print(f"Email length: {len(gmail)}")
+    try:
+        conn = mysql.connector.connect(**configx)
+        cursor = conn.cursor()
+
+        cursor.execute("CREATE DATABASE IF NOT EXISTS tempDB")
+
+        cursor.execute("USE tempDB")
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS tempData (
+                phone_number VARCHAR(20) PRIMARY KEY,
+                pin VARCHAR(10) NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                gmail VARCHAR(255) NOT NULL
+            )
+        """)
+
+        cursor.execute("""
+            INSERT INTO tempData (phone_number, pin, password, gmail)
+            VALUES (%s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE
+                pin = VALUES(pin),
+                password = VALUES(password),
+                gmail = VALUES(gmail)
+        """, (phoneNo, pin, password, gmail))
+
+        conn.commit()
+        print(f"Data for {phoneNo} updated successfully.")
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+
 def otpVerify(otpData):
     phoneNo = otpData.get('phoneNumber')
     otp = otpData.get('otp')

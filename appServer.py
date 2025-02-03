@@ -2,6 +2,7 @@ from flask import Flask,request,jsonify
 import json
 import socket
 from modules.operationsA import *
+from modules.operationsB import *
 from modules.sparrowSMS import *
 
 hostname = socket.gethostname()
@@ -28,10 +29,11 @@ def reg():
         otp = sendSMS(data)
         if otp:
             otpStore(otp,phoneNo)
-            print(f"OTP sent successfully: {otp}")
+            dataStore(data)
+            #print(f"OTP sent successfully: {otp}")
             return jsonify({"success": True, "message": "OTP SENT"}), 200
         else:
-            print("Failed to send OTP")
+            #print("Failed to send OTP")
             return jsonify({"success": False, "message": "Could not send OTP"}), 400
     except Exception as e:
         print(f"Unexpected error occurred: {e}")
@@ -55,6 +57,21 @@ def otpVerify():
             return jsonify({"error": "OTP_NOT_RECEIVED"}), 400
         else:
             return jsonify({"error": "UNEXPECTED_ERROR", "message": error_message}), 500
+        
+@appServer.route('/register/otp/valid', methods=['POST'])
+def insert():
+    data = request.get_json()
+    phoneNo = data.get("phoneNo")
+
+    if not phoneNo:
+        return jsonify({"status": "failure", "message": "phoneNo is required"}), 400
+
+    result = registerData(phoneNo)
+
+    if result == "success":
+        return jsonify({"status": "success", "message": "Registration completed successfully"}), 200
+    else:
+        return jsonify({"status": "failure", "message": result}), 400
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
