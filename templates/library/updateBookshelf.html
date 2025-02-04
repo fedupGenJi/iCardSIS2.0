@@ -4,8 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Book Shelf</title>
+    <link rel="website icon" type="png" href="{{url_for('static',filename='assests/images/webIcon.png')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/updateBookshelf.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/navbar.css')}}"> 
 </head>
 <body>
-    Update Book Shelf
+    
+    <div class="background"></div>
+
+    <div class="navbarpost">
+        {% include 'library/navbar.html' %}
+    </div>
+
+    <h1 class="page-title">Update Bookshelf</h1>
+
+    <div class="homepage-container">
+        <div class="box" >
+            <img src="{{url_for('static',filename='assests/icons/bookshelf.png')}}" alt="Add New Book" class="icon-img">
+            <span>Add Books</span>
+        </div>
+        <div class="box" >
+            <img src="{{url_for('static',filename='assests/icons/lendborrow.png')}}" alt="Expire Book" class="icon-img">
+            <span>Remove Books</span>
+        </div>
+    </div>
+
+    <script src="{{url_for('static',filename='js/library/updateBookshelf.js')}}"></script>
+    <script src="{{url_for('static',filename='js/library/navbar.js')}}"></script>
 </body>
 </html>
