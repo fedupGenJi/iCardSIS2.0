@@ -250,6 +250,7 @@ def delLoginDB(stdId):
 
             connection.commit()
             print("Deleted")
+            audit_input(stdId,"Login removed from iCardSIS!")
             return True
 
     except Error as e:
