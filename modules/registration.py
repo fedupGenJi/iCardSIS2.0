@@ -132,6 +132,24 @@ def fetch_students_from_db():
     
     return students
 
+def fetch_login_from_db():
+    connection = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="iCardSISDB"
+        )
+    cursor = connection.cursor(dictionary=True)
+    
+    cursor.execute("SELECT * FROM loginInfo")
+    
+    students = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    return students
+
 def delStdDB(stdId):
     try:
         connection = mysql.connector.connect(
@@ -211,3 +229,42 @@ def delStdDB(stdId):
         if audit_conn.is_connected():
             audit_cursor.close()
             audit_conn.close()
+
+def delLoginDB(stdId):
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="iCardSISDB"
+        )
+
+        if connection.is_connected():
+            connection.start_transaction()
+
+            cursor = connection.cursor()
+            delete_query = "DELETE FROM loginInfo WHERE studentId = %s"
+            cursor.execute(delete_query, (stdId,))
+            if cursor.rowcount == 0:
+                raise Exception("Student ID not found in studentInfo")
+
+            connection.commit()
+            print("Deleted")
+            return True
+
+    except Error as e:
+        print("Error:", e)
+        if connection.is_connected():
+            connection.rollback()
+        return False
+
+    except Exception as ex:
+        print("Exception:", ex)
+        if connection.is_connected():
+            connection.rollback()
+        return False
+
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()

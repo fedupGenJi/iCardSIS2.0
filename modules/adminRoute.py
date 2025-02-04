@@ -93,3 +93,27 @@ def updateStudent():
 
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
+    
+@admin.route('/api/login', methods=['GET'])
+def loginData():
+    try:
+        students_data = fetch_login_from_db()
+        return jsonify(students_data)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@admin.route('/api/login', methods=['DELETE'])
+def delLogin():
+    data = request.get_json()
+    student_id = data.get('student_id')
+    if student_id:
+        print(f"Received request to delete student ID: {student_id}")
+    else:
+        print("Student Id wasn't received!!!!")
+        return jsonify({"error": "Student ID not provided."}), 400
+    outcome = delLoginDB(student_id)
+    if (outcome == True ):
+        return jsonify({"success":"Student removed with id:{student_id}"}),200
+    else:
+        return jsonify({"databaseError":"Database couldn't complete request"}),400
