@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(to bottom, rgba(181, 136, 99, 0.7), rgba(211, 195, 185, 0.7), rgba(167, 158, 156, 0.7), rgba(61, 77, 85, 0.7), rgba(22, 22, 22, 0.9)), 
+        url('../../assests/images/hihi1.jpg') no-repeat center;
+    background-size: cover;
+    backdrop-filter: blur(10px);
+    z-index: -1;
+}
+
+.navbarpost {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+}
+
+h1.page-title {
+    position: sticky;
+    top: 70px;
+    margin-top: 120px;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    font-size: 2.5rem;
+    z-index: 2;
+}
+
+.searchbox-container {
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
+    margin: -30px 0;
+    position: relative; 
+}
+
+.searchbox {
+    margin-right: 150px;
+    width: 15%;
+    max-width: 600px;
+    padding: 10px 15px;
+    border: 2px solid #B58863;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.searchbox:focus {
+    border-color: #D3C3B9;
+    box-shadow: 0 0 8px rgba(181, 136, 99, 0.5);
+}
+
+.searchbox::placeholder {
+    color: #B58863;
+    font-style: italic;
+}
+
+.search-icon-btn {
+    background: transparent;
+    position: absolute;
+    top: 50%;
+    left: calc(85% + 70px);
+    transform: translateY(-50%);
+    border: none;
+    padding: 0;
+    cursor: not-allowed;
+}
+
+.search-icon-btn:not(:disabled) {
+    cursor: pointer;
+}
+
+.search-icon {
+    height: 20px;
+    width: 20px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.search-icon-btn:not(:disabled) .search-icon:hover {
+    transform: scale(1.1);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

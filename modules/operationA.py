@@ -2,7 +2,6 @@ import mysql.connector
 from mysql.connector import Error
 import os
 import sys
-import base64
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 

@@ -4,8 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Info</title>
+    <link rel="website icon" type="png" href="{{url_for('static',filename='assests/images/webIcon.png')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin/loginInfo.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin/navbar.css')}}">
 </head>
 <body>
-    Login Info
+    <div class="background"></div>
+
+    <div class="navbarpost">
+        {% include 'admin/navbar.html' %}
+    </div>
+
+    <h1 class="page-title">Registered Users</h1>
+
+    <div class="searchbox-container">
+        <input type="number" id="studentIdd" class="searchbox" placeholder="Search using ID">
+        <button class="search-icon-btn" id="searchBtn" disabled>
+          <img src="{{url_for('static', filename='assests/icons/loupe.png')}}" alt="Search Icon" class="search-icon">
+        </button>
+    </div>
+
+    <script src="{{url_for('static',filename='js/admin/loginInfo.js')}}"></script>
+    <script src="{{url_for('static',filename='js/admin/navbar.js')}}"></script>
 </body>
 </html>
