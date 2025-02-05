@@ -136,11 +136,41 @@ function submitBookxx() {
     const bookId = bookIdInputxx.value.trim();
     const bookCount = bookCountInputxx.value.trim();
     if(bookId && bookCount){
-        messageText.innerHTML = "ABRAKADABRA";
-        messageButton.style.background = "green";
-        messageButton.style.color = "white";
-        messageButton.dataset.success = "true"; 
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/library/updateBookshelf/delete", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
 
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                messageBox.style.display = "block";
+        
+                try {
+                    const response = JSON.parse(xhr.responseText);
+        
+                    if (xhr.status === 200 && response.success) {
+                        messageText.innerHTML = ` ${response.message}`;
+                        messageButton.style.background = "green";
+                        messageButton.style.color = "white";
+                        messageButton.dataset.success = "true"; 
+                    } else {
+                        messageText.innerHTML = response.message || "Error adding book.";
+                        messageButton.style.background = "red";
+                        messageButton.style.color = "white";
+                        messageButton.dataset.success = "false"; 
+                    }
+                } catch (error) {
+                    messageText.innerHTML = "Unexpected server response.";
+                    messageButton.style.background = "red";
+                    messageButton.style.color = "white";
+                    messageButton.dataset.success = "false";
+                }
+        
+                addBookBtn.disabled = true;
+            }
+        };        
+
+        const data = JSON.stringify({ id: bookId, count: bookCount });
+        xhr.send(data);
     }else {
         messageText.innerHTML = "Please fill all fields.";
         messageButton.style.background = "red";

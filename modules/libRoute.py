@@ -58,3 +58,12 @@ def addingBooks():
         return jsonify({"success": success, "message": message}), (200 if success else 400)
     else:
         return jsonify({"error": "Invalid data"}), 400
+    
+@library.route('/library/updateBookshelf/delete', methods=['POST'])
+def reemovingBooks():
+    data = request.json
+
+    if data:
+        return jsonify({"success": "success", "message": "VALID"}),200
+    else:
+        return jsonify({"error": "Invalid data"}), 400
