@@ -48,3 +48,42 @@ def booksForDB(data):
             cursor.close()
         if 'library_conn' in locals() and library_conn.is_connected():
             library_conn.close()
+
+def removeBook(data):
+    bookId = data.get('id')
+    bookCount = int(data.get('count', 0))
+
+    try:
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="LibraryDB"
+        )
+        cursor = library_conn.cursor()
+
+        cursor.execute("SELECT noInStock FROM book WHERE bookID = %s", (bookId,))
+        result = cursor.fetchone()
+
+        if not result:
+            return False, "No book available."
+
+        available_count = result[0]
+
+        if available_count < bookCount:
+            return False, "Can't subtract that many books."
+
+        new_count = available_count - bookCount
+        cursor.execute("UPDATE book SET noInStock = %s WHERE bookID = %s", (new_count, bookId))
+        library_conn.commit()
+
+        return True, "Book(s) removed successfully."
+
+    except mysql.connector.Error as err:
+        return False, f"Database error: {err}"
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'library_conn' in locals():
+            library_conn.close()
