@@ -20,7 +20,8 @@ def bookShelf():
     
     id = session.get('email')
     admin_details = get_admin_details(id)
-    return render_template('library/bookShelf.html', **admin_details)
+    bookShelves = getBookShelves()
+    return render_template('library/bookShelf.html', **admin_details, bookshelves=bookShelves)
 
 @library.route('/library/lendReturn')
 def lendReturn():

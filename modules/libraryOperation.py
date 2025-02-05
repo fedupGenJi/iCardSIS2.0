@@ -87,3 +87,27 @@ def removeBook(data):
             cursor.close()
         if 'library_conn' in locals():
             library_conn.close()
+
+def getBookShelves():
+    try:
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="LibraryDB"
+        )
+        cursor = library_conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT bookID, bookName, noInStock FROM book")
+        books = cursor.fetchall()
+
+        book_list = [{'id': str(book['bookID']), 'name': book['bookName'], 'number': str(book['noInStock'])} for book in books]
+        
+        cursor.close()
+        library_conn.close()
+
+        return book_list
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return []

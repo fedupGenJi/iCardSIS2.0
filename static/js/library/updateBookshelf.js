@@ -111,12 +111,11 @@ function closeMessageBox() {
 }
 
 window.onclick = function (event) {
+    
     if (event.target === popupContainer && messageBox.style.display !== "block") {
         closePopup();
     }
-};
 
-window.onclick = function (event) {
     if (event.target === popupContainerx && messageBox.style.display !== "block") {
         closePopupxx();
     }
@@ -127,6 +126,36 @@ bookCountInput.addEventListener("input", function () {
 });
 
 bookCountInput.addEventListener("keypress", function (event) {
+    if (!/[0-9]/.test(event.key)) {
+        event.preventDefault(); 
+    }
+});
+
+bookIdInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, ''); 
+});
+
+bookIdInput.addEventListener("keypress", function (event) {
+    if (!/[0-9]/.test(event.key)) {
+        event.preventDefault(); 
+    }
+});
+
+bookCountInputxx.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, ''); 
+});
+
+bookCountInputxx.addEventListener("keypress", function (event) {
+    if (!/[0-9]/.test(event.key)) {
+        event.preventDefault(); 
+    }
+});
+
+bookIdInputxx.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, ''); 
+});
+
+bookIdInputxx.addEventListener("keypress", function (event) {
     if (!/[0-9]/.test(event.key)) {
         event.preventDefault(); 
     }

@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.navbarpostt {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  opacity: 100%;
+}
+
+.background {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: url("../../assests/images/hihi.jpg") no-repeat center;
+  background-size: cover;
+  z-index: -1;
+  filter: blur(10px);
+}
+
+.bookshelf-container {
+  width: 80%;
+  height: auto;
+  padding: 10px;
+  margin: 2px;
+  align-content: center;
+  justify-items: center;
+}
+
+.heading {
+  position: absolute;
+  top: 15%;
+  left: 46%;
+  color: white;
+  font-weight: 1400;
+}
+
+.book-modal {
+  top: 25%;
+  position: absolute;
+  justify-content: center;
+  width: 80%;
+  display: flex;
+  margin: 2%;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+table {
+  width: 70%;
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid white;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  position: sticky;
+  overflow: hidden;
+  padding: 20px;
+  background-color: #111d3e;
+  z-index: 1;
+}
+
+td {
+  padding: 10px;
+  background-color: rgba(24, 26, 47, 0.8);
+}
+
+.fields th {
+  overflow: hidden;
+}
+
+table th:first-child,
+table td:first-child {
+  width: 25%;
+}
+
+table th:nth-child(2),
+table td:nth-child(2) {
+  width: 50%;
+}
+
+table th:nth-child(3),
+table td:nth-child(3) {
+  width: 25%;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.book-modal {
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+
+.book-modal::-webkit-scrollbar {
+  display: none;
+}
