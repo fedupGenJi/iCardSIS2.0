@@ -76,6 +76,13 @@ tbody {
   max-height: 90vh;
 }
 
+.table-container {
+  max-height: 100vh; 
+  overflow-y: auto; 
+  width: 100%;
+  position: relative;
+}
+
 table {
   display: auto;
   overflow-y: auto;
@@ -129,6 +136,6 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.book-modal::-webkit-scrollbar {
+.table-container::-webkit-scrollbar {
   display: none;
 }
