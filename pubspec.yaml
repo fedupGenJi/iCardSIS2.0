@@ -80,6 +80,12 @@ flutter:
     - family: Righteous
       fonts:
         - asset: fonts/Righteous-Regular.ttf
+    - family: gapfont
+      fonts:
+        - asset: fonts/SpaceMono-Bold.ttf
+    - family: title
+      fonts:
+        - asset: fonts/Hahmlet-VariableFont_wght.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

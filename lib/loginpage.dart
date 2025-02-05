@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
+import 'package:icardsis/homepage.dart';
 import 'dart:convert';
 import 'config.dart';
 import 'register.dart';
@@ -72,7 +73,11 @@ class _LoginpageState extends State<Loginpage> {
       );
 
       if (response.statusCode == 200) {
-        _showSuccessDialog("Login successful!");
+        // _showSuccessDialog("Login successful!");
+        Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Homepage()),
+            );
       } else {
         Map<String, dynamic> responseData = jsonDecode(response.body);
         String message = responseData["message"];

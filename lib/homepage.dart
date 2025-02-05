@@ -9,6 +9,7 @@ class Homepage extends StatefulWidget {
 
 class _RegisterState extends State<Homepage> {
   bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,10 +101,29 @@ class _RegisterState extends State<Homepage> {
                           },
                         ),
                       ),
+
                       Align(
                         alignment: Alignment(-0.95, -0.9),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Image Clicked"),
+                                  content: Text("You clicked the image!"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text("Close"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                           child: Container(
                             height: 60,
                             width: 60,
@@ -157,6 +177,7 @@ class _RegisterState extends State<Homepage> {
                             onPressed: () {},
                             icon: Icon(
                               Icons.attach_money,
+                              color: Colors.white,
                               size: 50,
                             ),
                           ),
@@ -175,6 +196,7 @@ class _RegisterState extends State<Homepage> {
                             onPressed: () {},
                             icon: Icon(
                               Icons.send,
+                              color: Colors.white,
                               size: 40,
                             ),
                           ),
@@ -221,112 +243,316 @@ class _RegisterState extends State<Homepage> {
               ],
             ),
           ),
+
+          //statement button
           Align(
-            alignment: Alignment(-0.9, -0.3),
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                color: Color(0xFF1B0C1A),
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+            alignment: Alignment(-0.9, -0.2),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Image Clicked"),
+                      content: Text("You clicked the image!"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment(0, -0.5),
+                      child: Image.asset(
+                        "assets/file.png",
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, 0.5),
+                      child: Text(
+                        "Statement",
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // child: IconButton(
-              //   onPressed: () {},
-              //   icon: Icon(
-              //     Icons.send,
-              //     size: 40,
-              //   ),
-              // ),
             ),
           ),
+
+          // pay fine Button
           Align(
-            alignment: Alignment(-0.9, -0.1),
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                color: Color(0xFF1B0C1A),
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+            alignment: Alignment(-0.0, -0.2),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Image Clicked"),
+                      content: Text("You clicked the image!"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment(0, -0.5),
+                      child: Image.asset(
+                        "assets/fine.png",
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, 0.5),
+                      child: Text(
+                        "Pay Fine",
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // child: IconButton(
-              //   onPressed: () {},
-              //   icon: Icon(
-              //     Icons.send,
-              //     size: 40,
-              //   ),
-              // ),
             ),
           ),
+
+          // get new subscription button
           Align(
-            alignment: Alignment(-0.9, 0.1),
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                color: Color(0xFF1B0C1A),
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+            alignment: Alignment(0.9, -0.2),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Image Clicked"),
+                      content: Text("You clicked the image!"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment(0, -0.5),
+                      child: Image.asset(
+                        "assets/subscription.png",
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, 0.5),
+                      child: Text(
+                        "New Subscription",
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // child: IconButton(
-              //   onPressed: () {},
-              //   icon: Icon(
-              //     Icons.send,
-              //     size: 40,
-              //   ),
-              // ),
             ),
           ),
+
+          //library log button
           Align(
-            alignment: Alignment(-0.9, 0.3),
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                color: Color(0xFF1B0C1A),
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+            alignment: Alignment(-0.9, 0.2),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Image Clicked"),
+                      content: Text("You clicked the image!"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment(0, -0.5),
+                      child: Image.asset(
+                        "assets/book.png",
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, 0.5),
+                      child: Text(
+                        "Library Log",
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // child: IconButton(
-              //   onPressed: () {},
-              //   icon: Icon(
-              //     Icons.send,
-              //     size: 40,
-              //   ),
-              // ),
             ),
           ),
+
+          // transport card Button
           Align(
-            alignment: Alignment(-0.9, 0.5),
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                color: Color(0xFF1B0C1A),
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+            alignment: Alignment(0, 0.2),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Image Clicked"),
+                      content: Text("You clicked the image!"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment(0, -0.5),
+                      child: Image.asset(
+                        "assets/card.png",
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, 0.5),
+                      child: Text(
+                        "Transport Card",
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // child: IconButton(
-              //   onPressed: () {},
-              //   icon: Icon(
-              //     Icons.send,
-              //     size: 40,
-              //   ),
-              // ),
             ),
           ),
+
+          //Activity Button
           Align(
-            alignment: Alignment(-0.9, 0.7),
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                color: Color(0xFF1B0C1A),
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+            alignment: Alignment(0.9, 0.2),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Image Clicked"),
+                      content: Text("You clicked the image!"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment(0, -0.5),
+                      child: Image.asset(
+                        "assets/restore.png",
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment(0, 0.5),
+                      child: Text(
+                        "Activity",
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // child: IconButton(
-              //   onPressed: () {},
-              //   icon: Icon(
-              //     Icons.send,
-              //     size: 40,
-              //   ),
-              // ),
             ),
           ),
           // Add other widgets here if needed
