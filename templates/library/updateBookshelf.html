@@ -23,7 +23,7 @@
             <img src="{{url_for('static',filename='assests/icons/addBook.png')}}" alt="Add New Book" class="icon-img">
             <span>Add Books</span>
         </div>
-        <div class="box" >
+        <div class="box" id = "removeBookBtn" >
             <img src="{{url_for('static',filename='assests/icons/removeBook.png')}}" alt="Expire Book" class="icon-img">
             <span>Remove Books</span>
         </div>
@@ -38,6 +38,18 @@
             <div class="popup-buttons">
                 <button class="submit-btn" onclick="submitBook()">Submit</button>
                 <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class = "popup-container" id = "popupContainerxx">
+        <div class="popup">
+            <h2>Remove Books</h2>
+            <input type="text" id="bookIdx" placeholder="Book ID">
+            <input type="number" id="bookCountx" placeholder="Number of Books">
+            <div class="popup-buttons">
+                <button class="submit-btn" onclick="submitBookxx()">Submit</button>
+                <button class="close-btn" onclick="closePopupxx()">Close</button>
             </div>
         </div>
     </div>

@@ -6,10 +6,20 @@ const bookNameInput = document.getElementById("bookName");
 const bookCountInput = document.getElementById("bookCount");
 const messageText = document.getElementById("messageText");
 const messageButton = document.getElementById("messageButton");
+const popupContainerx = document.getElementById("popupContainerxx");
+const removeBookbtn = document.getElementById("removeBookBtn")
+const bookIdInputxx = document.getElementById("bookIdx");
+const bookCountInputxx = document.getElementById("bookCountx");
 
 addBookBtn.addEventListener("click", () => {
     if (messageBox.style.display !== "block") {
         popupContainer.style.display = "flex";
+    }
+});
+
+removeBookbtn.addEventListener("click", () => {
+    if (messageBox.style.display !== "block") {
+        popupContainerx.style.display = "flex";
     }
 });
 
@@ -20,10 +30,22 @@ function closePopup() {
     }
 }
 
+function closePopupxx() {
+    if (messageBox.style.display !== "block") {
+        popupContainerx.style.display = "none";
+        clearFormFieldx();
+    }
+}
+
 function clearFormFields() {
     bookIdInput.value = "";
     bookNameInput.value = "";
     bookCountInput.value = "";
+}
+
+function clearFormFieldx() {
+    bookIdInputxx.value = "";
+    bookCountInputxx.value = "";
 }
 
 function submitBook() {
@@ -84,12 +106,19 @@ function closeMessageBox() {
 
     if (messageButton.dataset.success === "true") {
         closePopup();
+        closePopupxx();
     }
 }
 
 window.onclick = function (event) {
     if (event.target === popupContainer && messageBox.style.display !== "block") {
         closePopup();
+    }
+};
+
+window.onclick = function (event) {
+    if (event.target === popupContainerx && messageBox.style.display !== "block") {
+        closePopupxx();
     }
 };
 
@@ -102,3 +131,23 @@ bookCountInput.addEventListener("keypress", function (event) {
         event.preventDefault(); 
     }
 });
+
+function submitBookxx() {
+    const bookId = bookIdInputxx.value.trim();
+    const bookCount = bookCountInputxx.value.trim();
+    if(bookId && bookCount){
+        messageText.innerHTML = "ABRAKADABRA";
+        messageButton.style.background = "green";
+        messageButton.style.color = "white";
+        messageButton.dataset.success = "true"; 
+
+    }else {
+        messageText.innerHTML = "Please fill all fields.";
+        messageButton.style.background = "red";
+        messageButton.style.color = "white";
+        messageButton.dataset.success = "false";
+    }
+
+    messageBox.style.display = "block";
+    removeBookbtn.disabled = true;
+}
