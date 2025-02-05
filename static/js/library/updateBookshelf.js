@@ -1,6 +1,11 @@
 const popupContainer = document.getElementById("popupContainer");
 const addBookBtn = document.getElementById("addBookBtn");
 const messageBox = document.getElementById("messageBox");
+const bookIdInput = document.getElementById("bookId");
+const bookNameInput = document.getElementById("bookName");
+const bookCountInput = document.getElementById("bookCount");
+const messageText = document.getElementById("messageText");
+const messageButton = document.getElementById("messageButton");
 
 addBookBtn.addEventListener("click", () => {
     if (messageBox.style.display !== "block") {
@@ -10,28 +15,63 @@ addBookBtn.addEventListener("click", () => {
 
 function closePopup() {
     if (messageBox.style.display !== "block") {
-        popupContainer.style.display = "none"; 
+        popupContainer.style.display = "none";
+        clearFormFields();
     }
 }
 
+function clearFormFields() {
+    bookIdInput.value = "";
+    bookNameInput.value = "";
+    bookCountInput.value = "";
+}
+
 function submitBook() {
-    const bookId = document.getElementById("bookId").value;
-    const bookName = document.getElementById("bookName").value;
-    const bookCount = document.getElementById("bookCount").value;
-    const messageText = document.getElementById("messageText");
-    const messageButton = document.getElementById("messageButton");
+    const bookId = bookIdInput.value.trim();
+    const bookName = bookNameInput.value.trim();
+    const bookCount = bookCountInput.value.trim();
 
     if (bookId && bookName && bookCount) {
-        messageText.innerHTML = `<strong>Book Added:</strong><br>ID: ${bookId}<br>Name: ${bookName}<br>Count: ${bookCount}`;
-        messageButton.style.background = "green";
-        messageButton.style.color = "white";
-        if (messageBox.style.display !== "block") {
-            closePopup();
-        }
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/library/updateBookshelf/add", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                messageBox.style.display = "block";
+        
+                try {
+                    const response = JSON.parse(xhr.responseText);
+        
+                    if (xhr.status === 200 && response.success) {
+                        messageText.innerHTML = ` ${response.message}`;
+                        messageButton.style.background = "green";
+                        messageButton.style.color = "white";
+                        messageButton.dataset.success = "true"; 
+                    } else {
+                        messageText.innerHTML = response.message || "Error adding book.";
+                        messageButton.style.background = "red";
+                        messageButton.style.color = "white";
+                        messageButton.dataset.success = "false"; 
+                    }
+                } catch (error) {
+                    messageText.innerHTML = "Unexpected server response.";
+                    messageButton.style.background = "red";
+                    messageButton.style.color = "white";
+                    messageButton.dataset.success = "false";
+                }
+        
+                addBookBtn.disabled = true;
+            }
+        };        
+
+        const data = JSON.stringify({ id: bookId, name: bookName, count: bookCount });
+        xhr.send(data);
     } else {
         messageText.innerHTML = "Please fill all fields.";
         messageButton.style.background = "red";
         messageButton.style.color = "white";
+        messageButton.dataset.success = "false";
     }
 
     messageBox.style.display = "block";
@@ -41,10 +81,24 @@ function submitBook() {
 function closeMessageBox() {
     messageBox.style.display = "none";
     addBookBtn.disabled = false;
+
+    if (messageButton.dataset.success === "true") {
+        closePopup();
+    }
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target === popupContainer && messageBox.style.display !== "block") {
         closePopup();
     }
 };
+
+bookCountInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, ''); 
+});
+
+bookCountInput.addEventListener("keypress", function (event) {
+    if (!/[0-9]/.test(event.key)) {
+        event.preventDefault(); 
+    }
+});

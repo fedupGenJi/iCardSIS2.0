@@ -1,0 +1,50 @@
+import sys
+import os
+import mysql.connector
+
+# Add the project root directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import config
+
+def booksForDB(data):
+    bookId = data.get('id')
+    bookName = data.get('name')
+    bookCount = int(data.get('count', 0))
+
+
+    try:
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="LibraryDB"
+        )
+        cursor = library_conn.cursor()
+
+        cursor.execute("SELECT bookName, noInStock FROM book WHERE bookID = %s", (bookId,))
+        result = cursor.fetchone()
+
+        if result:
+            existingBookName, existingStock = result
+            if existingBookName == bookName:
+                newStock = existingStock + bookCount
+                cursor.execute("UPDATE book SET noInStock = %s WHERE bookID = %s", (newStock, bookId))
+                library_conn.commit()
+                return True, f"{bookCount} added for pre-existing book."
+            else:
+                return False, "This ID exists previously but with a different name."
+        else:
+            cursor.execute("INSERT INTO book (bookID, bookName, noInStock) VALUES (%s, %s, %s)", 
+                           (bookId, bookName, bookCount))
+            library_conn.commit()
+            return True, "New book added."
+
+    except mysql.connector.Error as err:
+        return False, f"Error: {err}"
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'library_conn' in locals() and library_conn.is_connected():
+            library_conn.close()
