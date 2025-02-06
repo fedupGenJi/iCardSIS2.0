@@ -34,6 +34,7 @@
                             <th>Book Id</th>
                             <th>Book Name</th>
                             <th>Stock Available</th>
+                            <th>DELETE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,6 +43,11 @@
                             <td>{{ bookshelves.id }}</td>
                             <td>{{ bookshelves.name }}</td>
                             <td>{{ bookshelves.number }}</td>
+                            <td>
+                                <button id='${{ bookshelves.id }}' class="DeleteButton" onclick="DeleteButton('{{ bookshelves.id }}')">
+                                    <img src="{{url_for('static', filename='assests/icons/removeBook.png')}}">
+                                </button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -55,6 +61,16 @@
             <h2></h2>
             <p id="popup-message"></p>
             <button class="close-btn" id="close-popup">Close</button>
+        </div>
+    </div>
+
+    <div id="custom-confirm-dialog" class="popupModal" style="display:none;">
+        <div class="modal-content">
+            <p id="confirm-message">Are you sure?</p>
+            <div class="modal-buttons">
+                <button id="confirm-yes" class="btn confirm">Yes</button>
+                <button id="confirm-no" class="btn cancel">No</button>
+            </div>
         </div>
     </div>
 

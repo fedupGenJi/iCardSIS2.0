@@ -152,13 +152,14 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log(`Delete button clicked for Student ID: ${studentId}`);
 
           const confirmDialog = document.getElementById("custom-confirm-dialog");
-          confirmDialog.style.display = "flex";
+          confirmDialog.style.display = "block";
 
           const confirmYes = document.getElementById("confirm-yes");
           confirmYes.replaceWith(confirmYes.cloneNode(true));
           const newConfirmYes = document.getElementById("confirm-yes");
 
           newConfirmYes.addEventListener("click", function () {
+            console.log(`Deleted Student ID: ${studentId}`);
             confirmDialog.style.display = "none";
 
             const xhrx = new XMLHttpRequest();

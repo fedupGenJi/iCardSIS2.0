@@ -48,7 +48,7 @@ body {
   margin: 2px;
   align-content: center;
   justify-items: center;
-  margin-left: -70px;
+  margin-left: -80px;
 }
 
 .book-modal {
@@ -123,12 +123,17 @@ table td:first-child {
 
 table th:nth-child(2),
 table td:nth-child(2) {
-  width: 60%;
+  width: 50%;
+}
+
+table th:nth-child(3),
+table td:nth-child(3) {
+  width: 20%;
 }
 
 table th:last-child,
 table td:last-child {
-  width: 20%;
+  width: 10%;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -282,4 +287,87 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .login-popup .error-icon {
   color: #dc3545;
+}
+
+.DeleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.DeleteButton img {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.DeleteButton:hover img {
+  transform: scale(1.2);
+}
+
+#custom-confirm-dialog {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: none;
+  justify-content: center;
+  align-items: center; 
+  z-index: 1000; 
+}
+
+#custom-confirm-dialog .modal-content {
+  top: 50%;
+  left: 41%;
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  color: #333;
+  position: relative; 
+}
+
+#custom-confirm-dialog .modal-content p {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+#custom-confirm-dialog .modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#custom-confirm-dialog .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  flex-grow: 1;
+  transition: background-color 0.3s ease;
+}
+
+#custom-confirm-dialog .btn.confirm {
+  background-color: #28a745;
+  color: white;
+}
+
+#custom-confirm-dialog .btn.confirm:hover {
+  background-color: #218838;
+}
+
+#custom-confirm-dialog .btn.cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+#custom-confirm-dialog .btn.cancel:hover {
+  background-color: #c82333;
 }

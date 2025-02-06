@@ -1,6 +1,7 @@
 import sys
 import os
 import mysql.connector
+from mysql.connector import Error
 
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -111,3 +112,32 @@ def getBookShelves():
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return []
+
+def delBookId(book):
+    bookId = int(book)
+    try:
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="LibraryDB"
+        )
+        cursor = library_conn.cursor()
+
+        delete_query = "DELETE FROM book WHERE bookId = %s"
+        cursor.execute(delete_query, (bookId,))
+        library_conn.commit()
+
+        if cursor.rowcount > 0:
+            return True 
+        else:
+            return False
+
+    except Error as e:
+        print(f"Database error: {e}")
+        return None 
+
+    finally:
+        if library_conn.is_connected():
+            cursor.close()
+            library_conn.close()
