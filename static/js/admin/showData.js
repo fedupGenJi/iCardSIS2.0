@@ -152,12 +152,14 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log(`Delete button clicked for Student ID: ${studentId}`);
 
           const confirmDialog = document.getElementById("custom-confirm-dialog");
-          document.getElementById('custom-confirm-dialog').style.display = 'flex';
-          confirmDialog.style.display = "block";
+          confirmDialog.style.display = "flex";
 
           const confirmYes = document.getElementById("confirm-yes");
-          confirmYes.addEventListener("click", function () {
-            confirmDialog.style.display = "none"; 
+          confirmYes.replaceWith(confirmYes.cloneNode(true));
+          const newConfirmYes = document.getElementById("confirm-yes");
+
+          newConfirmYes.addEventListener("click", function () {
+            confirmDialog.style.display = "none";
 
             const xhrx = new XMLHttpRequest();
             xhrx.open("DELETE", "/api/students", true);
@@ -177,7 +179,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 popupMessage.textContent = `Student ID ${studentId} has been successfully deleted.`;
                 popup.style.display = "flex";
 
-                closeBtn.addEventListener("click", function () {
+                closeBtn.replaceWith(closeBtn.cloneNode(true));
+                const newCloseBtn = document.getElementById("close-popup");
+
+                newCloseBtn.addEventListener("click", function () {
                   popup.style.display = "none";
                   location.reload();
                 });
@@ -186,7 +191,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 popupContent.classList.add("errorx");
 
                 popupTitle.innerHTML = '<span class="error-icon">&#10006;</span> Failure!';
-
                 let errorMessage = "An unexpected error occurred.";
                 try {
                   const response = JSON.parse(xhrx.responseText);
@@ -198,7 +202,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 popupMessage.textContent = `Failed to delete Student ID ${studentId}. ${errorMessage}`;
                 popup.style.display = "flex";
 
-                closeBtn.addEventListener("click", function () {
+                closeBtn.replaceWith(closeBtn.cloneNode(true));
+                const newCloseBtn = document.getElementById("close-popup");
+
+                newCloseBtn.addEventListener("click", function () {
                   popup.style.display = "none";
                 });
               }
@@ -218,7 +225,10 @@ document.addEventListener("DOMContentLoaded", function () {
               popupMessage.textContent = "An error occurred while sending the request.";
               popup.style.display = "flex";
 
-              closeBtn.addEventListener("click", function () {
+              closeBtn.replaceWith(closeBtn.cloneNode(true));
+              const newCloseBtn = document.getElementById("close-popup");
+
+              newCloseBtn.addEventListener("click", function () {
                 popup.style.display = "none";
               });
             };
@@ -227,9 +237,13 @@ document.addEventListener("DOMContentLoaded", function () {
           });
 
           const confirmNo = document.getElementById("confirm-no");
-          confirmNo.addEventListener("click", function () {
+          confirmNo.replaceWith(confirmNo.cloneNode(true));
+          const newConfirmNo = document.getElementById("confirm-no");
+
+          newConfirmNo.addEventListener("click", function () {
             confirmDialog.style.display = "none";
           });
+
         } else {
           console.log("Student ID element not found.");
         }
