@@ -76,9 +76,10 @@ class _RegisterState extends State<Register> {
       ];
 
       try {
+        String baseUrl = await Config.baseUrl;
         var response = await http.post(
           Uri.parse(
-              '${Config.baseUrl}/register'), // Replace with server ip from the server
+              '$baseUrl/register'), // Replace with server ip from the server
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({
             "email": userData[0],

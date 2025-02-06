@@ -5,6 +5,7 @@ import 'package:icardsis/homepage.dart';
 import 'dart:convert';
 import 'config.dart';
 import 'register.dart';
+import 'reconfigurepage.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -66,14 +67,15 @@ class _LoginpageState extends State<Loginpage> {
     String password = _passwordController.text.trim();
 
     try {
+      String baseUrl = await Config.baseUrl;
       var response = await http.post(
-        Uri.parse("${Config.baseUrl}/login"),
+        Uri.parse("$baseUrl/login"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"phone": phone, "password": password}),
       );
 
       if (response.statusCode == 200) {
-        // _showSuccessDialog("Login successful!");
+        // _showSuccessDialog("Login successful!"); // success dialog for login
         Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => Homepage()),
@@ -132,6 +134,18 @@ class _LoginpageState extends State<Loginpage> {
         body: Stack(
           children: [
             Container(decoration: BoxDecoration(color: Color(0xFFFADCD5))),
+            Align(
+              alignment: Alignment(0.9, 0.97), // Adjust for positioning
+              child: IconButton(
+                icon: Icon(Icons.settings, color: Colors.black, size: 30),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ReconfigurePage()),
+                  );
+                },
+              ),
+            ),
             Align(
               alignment: Alignment(0, -0.15),
               child: Text(

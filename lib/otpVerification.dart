@@ -99,8 +99,9 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
     String phoneNumber = widget.phoneNumber;
 
     try {
+      String baseUrl = await Config.baseUrl;
       final response = await http.post(
-        Uri.parse('${Config.baseUrl}/register/otp'),
+        Uri.parse('$baseUrl/register/otp'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'phoneNumber': phoneNumber, 'otp': otp}),
       );
@@ -148,8 +149,9 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
   Future<void> _validateRegistrationxxx(String phoneNumber) async {
     try {
+      String baseUrl = await Config.baseUrl;
       final response = await http.post(
-        Uri.parse('${Config.baseUrl}/register/otp/valid'),
+        Uri.parse('$baseUrl/register/otp/valid'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'phoneNumber': phoneNumber}),
       );
