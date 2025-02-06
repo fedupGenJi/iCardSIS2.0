@@ -18,6 +18,13 @@
 
     <h1 class="heading">Bookshelf</h1>
 
+    <div class="searchbox-container">
+        <input type="number" id="studentIdd" class="searchbox" placeholder="Search using ID">
+        <button class="search-icon-btn" id="searchBtn" disabled>
+          <img src="{{url_for('static', filename='assests/icons/loupe.png')}}" alt="Search Icon" class="search-icon">
+        </button>
+    </div>
+
     <div class="bookshelf-container">
         <div class="book-modal" id="bookshelf-modal">
             <div class="table-container">
@@ -40,6 +47,14 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <div class="login-popup">
+        <div class="popup-content">
+            <h2></h2>
+            <p id="popup-message"></p>
+            <button class="close-btn" id="close-popup">Close</button>
         </div>
     </div>
 
