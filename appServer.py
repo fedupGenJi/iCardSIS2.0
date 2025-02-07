@@ -84,10 +84,24 @@ def login():
     
     result = loginUser(data)
     #print(result)
+    strId = str(result["id"])
     if result["success"]:
-        return jsonify({"status": "success", "message": result["message"], "stdId":result["id"]}), 200
+        return jsonify({"status": "success", "message": result["message"], "stdId":strId}), 200
     else:
         return jsonify({"status": "failure", "message": result["message"], "stdId":None}), 400
+
+@appServer.route('/homepage', methods=['POST'])
+def getData():
+    data = request.get_json()
+    user_id = int(data.get("id"))
+    if not user_id:
+        return jsonify({"error": "Missing user ID"}), 400
+    
+    student_data = getFromDB(user_id)
+    if "error" in student_data:
+        return jsonify(student_data), 400
+
+    return jsonify(student_data), 200
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
