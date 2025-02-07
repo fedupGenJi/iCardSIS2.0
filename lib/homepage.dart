@@ -5,560 +5,221 @@ class Homepage extends StatefulWidget {
   const Homepage({Key? key, required this.stdId}) : super(key: key);
 
   @override
-  State<Homepage> createState() => _RegisterState();
+  State<Homepage> createState() => _HomepageState();
 }
 
-class _RegisterState extends State<Homepage> {
+class _HomepageState extends State<Homepage> {
   bool _obscureText = true;
+  final Color primaryColor = Color(0xFF4B2138);
+  final Color secondaryColor = Color(0xFF6D3C52);
+  final Color backgroundColor = Color(0xFFFADCD5);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                _showDialog("Profile Picture Clicked!");
+              },
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/3135715.png"),
+                radius: 22,
+              ),
+            ),
+            SizedBox(width: 10),
+            Text(
+              "Aakash Thakur",
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            Spacer(),
+            Text(
+              "ID: ${widget.stdId}",
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildBalanceCard(),
+            SizedBox(height: 20),
+            _buildGridOptions(),
+            SizedBox(height: 20),
+            _buildAssociationSection(), // App Associated Section
+          ],
+        ),
+      ),
+      bottomNavigationBar: _buildBottomNav(),
+    );
+  }
+
+  Widget _buildBalanceCard() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      width: double.infinity,
+      color: primaryColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            decoration: BoxDecoration(color: Color(0xFFFADCD5)),
-          ),
-          Align(
-            alignment: Alignment(0, -0.872),
-            child: Stack(
-              children: [
-                Container(
-                  height: 236,
-                  width: double.infinity,
-                  color: Color(0xFF4B2138),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment(-1, 0.5),
-                        child: Container(
-                          height: 120,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF6D3C52),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(19),
-                              bottomRight: Radius.circular(19),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(-0.07, 0.1),
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: Color(0xFF6D3C52),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.replay_outlined,
-                              size: 25,
-                            ),
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(-0.8, 0),
-                        child: Text(
-                          "card Balance",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(-0.9, 0.5),
-                        child: Text(
-                          "Rs: ",
-                          style: TextStyle(color: Colors.white, fontSize: 35),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(-0.6, 0.5),
-                        child: Text(
-                          _obscureText ? "****" : "1000",
-                          style: TextStyle(color: Colors.white, fontSize: 35),
-                          // obscureText: _obscureText,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(-0.2, 0.5),
-                        child: IconButton(
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.remove_red_eye
-                                : Icons.visibility_off,
-                            size: 35,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureText = !_obscureText;
-                            });
-                          },
-                        ),
-                      ),
-
-                      Align(
-                        alignment: Alignment(-0.95, -0.9),
-                        child: GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Image Clicked"),
-                                  content: Text("You clicked the image!"),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text("Close"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Image.asset(
-                                "assets/3135715.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      Align(
-                        alignment: Alignment(-0.4, -0.75),
-                        child: Text(
-                          "Aakash thakur",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(0.55, -0.8),
-                        child: Text(
-                          "STD ID:",
-                          style: TextStyle(color: Colors.white, fontSize: 30),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(0.95, -0.8),
-                        child: Text(
-                          "${widget.stdId}",
-                          style: TextStyle(color: Colors.white, fontSize: 30),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(0.43, 0.6),
-                        child: Container(
-                          height: 70,
-                          width: 70,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF1B0C1A),
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                          ),
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.attach_money,
-                              color: Colors.white,
-                              size: 50,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(0.95, 0.6),
-                        child: Container(
-                          height: 70,
-                          width: 70,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF1B0C1A),
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                          ),
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.send,
-                              color: Colors.white,
-                              size: 40,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(0.4, 0.9),
-                        child: Text(
-                          "Add money",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment(0.95, 0.9),
-                        child: Text(
-                          "Send money",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      ),
-                      //Add other widgets here if needed
-                    ],
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Card Balance", style: TextStyle(color: Colors.white, fontSize: 20)),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Text("Rs:", style: TextStyle(color: Colors.white, fontSize: 35)),
+                  SizedBox(width: 10),
+                  Text(_obscureText ? "****" : "1000",
+                      style: TextStyle(color: Colors.white, fontSize: 35)),
+                  IconButton(
+                    icon: Icon(_obscureText ? Icons.remove_red_eye : Icons.visibility_off,
+                        color: Colors.white, size: 30),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
-                ),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment(0, 1),
-            child: Stack(
-              children: [
-                Container(
-                  height: 100,
-                  width: double.infinity,
-                  color: Color(0xFF4B2138),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.qr_code,
-                      size: 55,
-                    ),
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          //statement button
-          Align(
-            alignment: Alignment(-0.9, -0.2),
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Image Clicked"),
-                      content: Text("You clicked the image!"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text("Close"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black12),
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment(0, -0.5),
-                      child: Image.asset(
-                        "assets/file.png",
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0.5),
-                      child: Text(
-                        "Statement",
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
-            ),
+            ],
           ),
-
-          // pay fine Button
-          Align(
-            alignment: Alignment(-0.0, -0.2),
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Image Clicked"),
-                      content: Text("You clicked the image!"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text("Close"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black12),
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment(0, -0.5),
-                      child: Image.asset(
-                        "assets/fine.png",
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0.5),
-                      child: Text(
-                        "Pay Fine",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          Row(
+            children: [
+              _buildActionButton(Icons.attach_money, "Add Money"),
+              SizedBox(width: 10),
+              _buildActionButton(Icons.send, "Send Money"),
+            ],
           ),
-
-          // get new subscription button
-          Align(
-            alignment: Alignment(0.9, -0.2),
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Image Clicked"),
-                      content: Text("You clicked the image!"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text("Close"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black12),
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment(0, -0.5),
-                      child: Image.asset(
-                        "assets/subscription.png",
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0.5),
-                      child: Text(
-                        "New Subscription",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          //library log button
-          Align(
-            alignment: Alignment(-0.9, 0.2),
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Image Clicked"),
-                      content: Text("You clicked the image!"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text("Close"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black12),
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment(0, -0.5),
-                      child: Image.asset(
-                        "assets/book.png",
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0.5),
-                      child: Text(
-                        "Library Log",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          // transport card Button
-          Align(
-            alignment: Alignment(0, 0.2),
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Image Clicked"),
-                      content: Text("You clicked the image!"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text("Close"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black12),
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment(0, -0.5),
-                      child: Image.asset(
-                        "assets/card.png",
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0.5),
-                      child: Text(
-                        "Transport Card",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          //Activity Button
-          Align(
-            alignment: Alignment(0.9, 0.2),
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Image Clicked"),
-                      content: Text("You clicked the image!"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text("Close"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                height: 120,
-                width: 120,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black12),
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment(0, -0.5),
-                      child: Image.asset(
-                        "assets/restore.png",
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0.5),
-                      child: Text(
-                        "Activity",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          // Add other widgets here if needed
         ],
       ),
+    );
+  }
+
+  Widget _buildActionButton(IconData icon, String text) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            _showDialog(text);
+          },
+          child: Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: Colors.white, size: 35),
+          ),
+        ),
+        SizedBox(height: 5),
+        Text(text, style: TextStyle(color: Colors.white)),
+      ],
+    );
+  }
+
+  Widget _buildGridOptions() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GridView.count(
+        shrinkWrap: true,
+        crossAxisCount: 3,
+        mainAxisSpacing: 15,
+        crossAxisSpacing: 15,
+        children: [
+          _buildGridButton("assets/file.png", "Statement"),
+          _buildGridButton("assets/fine.png", "Pay Fine"),
+          _buildGridButton("assets/subscription.png", "New Subscription"),
+          _buildGridButton("assets/book.png", "Library Log"),
+          _buildGridButton("assets/card.png", "Transport Card"),
+          _buildGridButton("assets/restore.png", "Activity"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGridButton(String asset, String label) {
+    return GestureDetector(
+      onTap: () {
+        _showDialog(label);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black12),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(asset, height: 50, width: 50),
+            SizedBox(height: 8),
+            Text(label, style: TextStyle(fontSize: 14)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAssociationSection() {
+    return Column(
+      children: [
+        Text("App Associated With", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset("assets/icon.png", height: 100),
+          ],
+        ),
+        SizedBox(height: 15),
+        Text("In Help By", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset("assets/khalti.png", height: 40),
+            SizedBox(width: 20),
+            Image.asset("assets/sparrowSMS.png", height: 40),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomNav() {
+    return BottomAppBar(
+      color: primaryColor,
+      child: IconButton(
+        icon: Icon(Icons.qr_code, color: Colors.white, size: 50),
+        onPressed: () {},
+      ),
+    );
+  }
+
+  void _showDialog(String title) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text("You clicked $title!"),
+          actions: [
+            TextButton(
+              child: Text("Close"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
     );
   }
 }

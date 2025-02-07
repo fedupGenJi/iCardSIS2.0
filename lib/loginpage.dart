@@ -73,6 +73,7 @@ class _LoginpageState extends State<Loginpage> {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"phone": phone, "password": password}),
       );
+      //print("Response Body: ${response.body}");
 
       if (response.statusCode == 200) {
         // _showSuccessDialog("Login successful!"); // success dialog for login
@@ -233,6 +234,7 @@ class _LoginpageState extends State<Loginpage> {
                 ),
               ),
             ),
+            SizedBox(height: 15),
             Align(
               alignment: Alignment(0.8, 0.4),
               child: TextButton(
@@ -240,6 +242,7 @@ class _LoginpageState extends State<Loginpage> {
                 child: Text("Forgot password?"),
               ),
             ),
+            SizedBox(height: 15),
             Align(
               alignment: Alignment(0, 0.5),
               child: ElevatedButton(
@@ -265,6 +268,7 @@ class _LoginpageState extends State<Loginpage> {
                         style: TextStyle(color: Colors.white, fontSize: 20)),
               ),
             ),
+            SizedBox(height: 25),
             Align(
               alignment: Alignment(0, 0.6),
               child: Row(
