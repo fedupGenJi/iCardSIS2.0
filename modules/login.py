@@ -20,21 +20,22 @@ def loginUser(data):
         )
         cursor = conn.cursor()
 
-        cursor.execute("SELECT password FROM loginInfo WHERE phoneNo = %s", (phone,))
+        cursor.execute("SELECT password, studentId FROM loginInfo WHERE phoneNo = %s", (phone,))
         user_data = cursor.fetchone()
 
         if user_data is None:
-            return {"success": False, "message": "Phone number not registered"}
+            return {"success": False, "message": "Phone number not registered", "id":None}
 
         stored_password = user_data[0]
+        studentId = user_data[1]
         
         if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
-            return {"success": True, "message": "Login successful"}
+            return {"success": True, "message": "Login successful", "id":studentId}
         else:
-            return {"success": False, "message": "Incorrect password"}
+            return {"success": False, "message": "Incorrect password", "id":None}
 
     except mysql.connector.Error as err:
-        return {"success": False, "message": f"Database error: {err}"}
+        return {"success": False, "message": f"Database error: {err}", "id":None}
 
     finally:
         if cursor:

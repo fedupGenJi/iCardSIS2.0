@@ -80,14 +80,14 @@ def insert():
 def login():
     data = request.get_json()
     if not data:
-        return jsonify({"status": "failure", "message": "data not received"}), 400
+        return jsonify({"status": "failure", "message": "data not received", "stdId":None}), 400
     
     result = loginUser(data)
     #print(result)
     if result["success"]:
-        return jsonify({"status": "success", "message": result["message"]}), 200
+        return jsonify({"status": "success", "message": result["message"], "stdId":result["id"]}), 200
     else:
-        return jsonify({"status": "failure", "message": result["message"]}), 400
+        return jsonify({"status": "failure", "message": result["message"], "stdId":None}), 400
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
