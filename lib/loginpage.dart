@@ -76,10 +76,12 @@ class _LoginpageState extends State<Loginpage> {
 
       if (response.statusCode == 200) {
         // _showSuccessDialog("Login successful!"); // success dialog for login
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        String stdId = responseData["stdId"];
         Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Homepage()),
-            );
+          context,
+          MaterialPageRoute(builder: (context) => Homepage(stdId: stdId)),
+        );
       } else {
         Map<String, dynamic> responseData = jsonDecode(response.body);
         String message = responseData["message"];

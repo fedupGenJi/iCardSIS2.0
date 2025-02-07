@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+  final String stdId;
+  const Homepage({Key? key, required this.stdId}) : super(key: key);
 
   @override
   State<Homepage> createState() => _RegisterState();
@@ -160,7 +161,7 @@ class _RegisterState extends State<Homepage> {
                       Align(
                         alignment: Alignment(0.95, -0.8),
                         child: Text(
-                          "1234",
+                          "${widget.stdId}",
                           style: TextStyle(color: Colors.white, fontSize: 30),
                         ),
                       ),
