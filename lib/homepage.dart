@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:typed_data';
+import 'config.dart';
+import 'dart:convert';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class Homepage extends StatefulWidget {
   final String stdId;
@@ -9,13 +14,96 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  Map<String, dynamic> _data = {};
   bool _obscureText = true;
   final Color primaryColor = Color(0xFF4B2138);
   final Color secondaryColor = Color(0xFF6D3C52);
   final Color backgroundColor = Color(0xFFFADCD5);
 
   @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    try {
+      String baseUrl = await Config.baseUrl;
+      final response = await http.post(
+        Uri.parse("$baseUrl/homepage"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"id": "${widget.stdId}"}),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _data = json.decode(response.body);
+        });
+      } else {
+        _showErrorDialog("Error: Failed to load data");
+      }
+    } catch (e) {
+      _showErrorDialog("Error: ${e.toString()}");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_data.isEmpty) {
+      return Scaffold(
+        backgroundColor: backgroundColor,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedContainer(
+                duration: Duration(seconds: 1),
+                curve: Curves.easeInOut,
+                height: 200,
+                width: 200,
+                child: Image.asset("assets/loading-wtf.gif"),
+              ),
+              SizedBox(height: 20),
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Database is SLOW:(',
+                    textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                    speed: Duration(milliseconds: 100),
+                  ),
+                  TypewriterAnimatedText(
+                    'BE THERE IN A MOMENT!',
+                    textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                    speed: Duration(milliseconds: 100),
+                  ),
+                  TypewriterAnimatedText(
+                    'Here we go again:(',
+                    textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                    speed: Duration(milliseconds: 100),
+                  ),
+                ],
+                repeatForever: true,
+              ),
+              SizedBox(height: 30),
+              CircularProgressIndicator(color: primaryColor),
+            ],
+          ),
+        ),
+      );
+    }
+    Uint8List imageBytes = base64Decode("${_data["photo"]}");
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -27,13 +115,13 @@ class _HomepageState extends State<Homepage> {
                 _showDialog("Profile Picture Clicked!");
               },
               child: CircleAvatar(
-                backgroundImage: AssetImage("assets/3135715.png"),
+                backgroundImage: MemoryImage(imageBytes),
                 radius: 22,
               ),
             ),
             SizedBox(width: 10),
             Text(
-              "Aakash Thakur",
+              "${_data["name"]}",
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             Spacer(),
@@ -70,17 +158,23 @@ class _HomepageState extends State<Homepage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Card Balance", style: TextStyle(color: Colors.white, fontSize: 20)),
+              Text("Card Balance",
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
               SizedBox(height: 10),
               Row(
                 children: [
-                  Text("Rs:", style: TextStyle(color: Colors.white, fontSize: 35)),
+                  Text("Rs:",
+                      style: TextStyle(color: Colors.white, fontSize: 35)),
                   SizedBox(width: 10),
-                  Text(_obscureText ? "****" : "1000",
+                  Text(_obscureText ? "****" : "${_data["balance"]}",
                       style: TextStyle(color: Colors.white, fontSize: 35)),
                   IconButton(
-                    icon: Icon(_obscureText ? Icons.remove_red_eye : Icons.visibility_off,
-                        color: Colors.white, size: 30),
+                    icon: Icon(
+                        _obscureText
+                            ? Icons.remove_red_eye
+                            : Icons.visibility_off,
+                        color: Colors.white,
+                        size: 30),
                     onPressed: () {
                       setState(() {
                         _obscureText = !_obscureText;
@@ -172,7 +266,8 @@ class _HomepageState extends State<Homepage> {
   Widget _buildAssociationSection() {
     return Column(
       children: [
-        Text("App Associated With", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text("App Associated With",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -181,7 +276,8 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
         SizedBox(height: 15),
-        Text("In Help By", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text("In Help By",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -215,6 +311,24 @@ class _HomepageState extends State<Homepage> {
           actions: [
             TextButton(
               child: Text("Close"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error", style: TextStyle(color: Colors.red)),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text("OK"),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
