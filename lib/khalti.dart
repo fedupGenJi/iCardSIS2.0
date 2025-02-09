@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
+import 'package:khalti/khalti.dart';
 
 class ICardSISKhaltiPage extends StatelessWidget {
   final String phoneNumber;
 
-  const ICardSISKhaltiPage({Key? key, required this.phoneNumber}) : super(key: key);
+  const ICardSISKhaltiPage({Key? key, required this.phoneNumber})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,18 @@ class ICardSISKhaltiPage extends StatelessWidget {
             const SizedBox(height: 100),
             Text(
               "User Phone No: $phoneNumber",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: secondaryColor),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: secondaryColor),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "Use pin 1111 for tests!",
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: secondaryColor),
             ),
             const SizedBox(height: 40),
             TextField(
@@ -66,32 +80,88 @@ class ICardSISKhaltiPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    backgroundColor: primaryColor,
-                    title: Text("Button Clicked", style: TextStyle(color: secondaryColor)),
-                    content: Text("Proceed button was clicked.", style: TextStyle(color: secondaryColor)),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text("OK", style: TextStyle(color: secondaryColor)),
-                      ),
-                    ],
-                  ),
-                );
+                // showDialog(
+                //   context: context,
+                //   builder: (context) => AlertDialog(
+                //     backgroundColor: primaryColor,
+                //     title: Text("Button Clicked", style: TextStyle(color: secondaryColor)),
+                //     content: Text("Proceed button was clicked.", style: TextStyle(color: secondaryColor)),
+                //     actions: [
+                //       TextButton(
+                //         onPressed: () => Navigator.pop(context),
+                //         child: Text("OK", style: TextStyle(color: secondaryColor)),
+                //       ),
+                //     ],
+                //   ),
+                // );
+                double? amount = double.tryParse(amountController.text);
+                if (amount == null || amount <= 0) {
+                  // Handle invalid input case
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Please enter a valid amount")),
+                  );
+                  return;
+                }
+                payWithKhaltiInApp(context,amount);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: secondaryColor,
                 foregroundColor: primaryColor,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
               ),
-              child: const Text("Proceed", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              child: const Text("Proceed",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void payWithKhaltiInApp(BuildContext context, double amountx) {
+  KhaltiScope.of(context).pay(
+    config: PaymentConfig(
+      amount: amountx.toInt(), 
+      productIdentity: "Card Balance",
+      productName: "iCardSIS-balance",
+      mobile: "9800000004",
+    ),
+    preferences: [
+      PaymentPreference.khalti,
+    ],
+    onSuccess: (success) => onSuccess(context, success), 
+    onFailure: onFailure,
+    onCancel: onCancel,
+  );
+}
+
+  void onSuccess(BuildContext context, PaymentSuccessModel success) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Payment Successful"),
+        actions: [
+          SimpleDialogOption(
+            child: const Text("OK"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      );
+    },
+  );
+}
+
+  void onFailure(PaymentFailureModel failure) {
+    debugPrint(failure.toString());
+  }
+
+  void onCancel() {
+    debugPrint("Cancelled");
   }
 }
