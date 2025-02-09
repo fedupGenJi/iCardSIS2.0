@@ -276,7 +276,7 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
         SizedBox(height: 15),
-        Text("In Help By",
+        Text("Powered By",
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         SizedBox(height: 10),
         Row(
@@ -319,166 +319,137 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  void _showPopup() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            child: Container(
-              height: 550,
-              width: 390,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                color: Colors.white,
-              ),
-              child: Stack(
+void _showPopup() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      Uint8List imageBytes = base64Decode("${_data["photo"]}");
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Container(
+          height: 550,
+          width: 390,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  Align(
-                    alignment: Alignment(-0.95, -0.93),
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.amber),
-                      child: Image.asset("assets/icon.png"),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment(0.0, -0.93),
-                    child: Text(
-                      "KATHMANDU",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'title',
-                        fontSize: 30,
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "KATHMANDU",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'title',
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment(0.0, -0.83),
-                    child: Text(
-                      "UNIVERSITY",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'title',
-                        fontSize: 30,
+                      Text(
+                        "UNIVERSITY",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'title',
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment(0.0, -0.72),
-                    child: Text(
-                      "Dhulikhel,Kavre,Nepal",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                      SizedBox(height: 4),
+                      Text(
+                        "Dhulikhel, Kavre",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment(0, -0.65),
-                    child: Text(
-                      "STUDENT",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 40,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment(0, -0.2),
-                    child: SizedBox(
-                      height: 250,
-                      width: 200,
-                      child: Image.asset("assets/pp.png"),
-                    ),
-                  ),
-                  // name of student
-                  Align(
-                    alignment: Alignment(0, 0.35),
-                    child: Text(
-                      "${_data["name"]}",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
+                    ],
                   ),
 
-                  // coarse of student
                   Align(
-                    alignment: Alignment(0, 0.45),
-                    child: Text(
-                      "${_data["coarse"]}",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    alignment: Alignment.centerLeft, 
+                    child: Image.asset("assets/icon.png", height: 50, width: 50),
                   ),
-
-                  // department of student
-                  Align(
-                    alignment: Alignment(0, 0.55),
-                    child: Text(
-                      "${_data["department"]}",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-
-                  //blood group
-                  Align(
-                    alignment: Alignment(0, 0.65),
-                    child: Text(
-                      "${_data["blood"]}",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-
-                  // year of enrollment
-                  Align(
-                    alignment: Alignment(0, 0.75),
-                    child: Text(
-                      "${_data["yoe"]}",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-
-                  // phone number
-                  Align(
-                    alignment: Alignment(0, 0.85),
-                    child: Text(
-                      "${_data["phone number"]}",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  //enter
                 ],
               ),
-            ),
-          );
-        });
-  }
+
+              SizedBox(height: 10),
+
+              // Student
+              Text(
+                "STUDENT",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 32,
+                  color: Colors.red,
+                ),
+              ),
+
+              SizedBox(height: 10),
+
+              //photo
+              Container(
+                height: 150,
+                width: 160,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.memory(imageBytes, fit: BoxFit.cover),
+                ),
+              ),
+
+              SizedBox(height: 10),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildInfoRow("Name:", "${_data["name"]}"),
+                  _buildInfoRow("Course:", "${_data["course"]}"),
+                  _buildInfoRow("Blood Group:", "${_data["bg"]}"),
+                  _buildInfoRow("Year of Enrollment:", "${_data["YOE"]}"),
+                  _buildInfoRow("Phone No:", "${_data["phoneNo"]}"),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildInfoRow(String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Row(
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 18),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
   void _showErrorDialog(String message) {
     showDialog(
