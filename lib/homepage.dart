@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 import 'config.dart';
+import 'khalti.dart';
 import 'dart:convert';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -187,9 +188,19 @@ class _HomepageState extends State<Homepage> {
           ),
           Row(
             children: [
-              _buildActionButton(Icons.attach_money, "Add Money"),
+              _buildActionButton(Icons.attach_money, "Add Money", () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ICardSISKhaltiPage(phoneNumber: _data["phoneNo"]),
+                  ),
+                );
+              }),
               SizedBox(width: 10),
-              _buildActionButton(Icons.send, "Send Money"),
+              _buildActionButton(Icons.send, "Send Money", () {
+                _showDialog("Send Money");
+              }),
             ],
           ),
         ],
@@ -197,13 +208,11 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Widget _buildActionButton(IconData icon, String text) {
+  Widget _buildActionButton(IconData icon, String text, VoidCallback onTap) {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
-            _showDialog(text);
-          },
+          onTap: onTap,
           child: Container(
             height: 60,
             width: 60,
@@ -319,137 +328,137 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-void _showPopup() {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      Uint8List imageBytes = base64Decode("${_data["photo"]}");
-      return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Container(
-          height: 550,
-          width: 390,
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
+  void _showPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Uint8List imageBytes = base64Decode("${_data["photo"]}");
+        return Dialog(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.white,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "KATHMANDU",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'title',
-                          fontSize: 18,
+          child: Container(
+            height: 550,
+            width: 390,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "KATHMANDU",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'title',
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        "UNIVERSITY",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'title',
-                          fontSize: 18,
+                        Text(
+                          "UNIVERSITY",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'title',
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        "Dhulikhel, Kavre",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
+                        SizedBox(height: 4),
+                        Text(
+                          "Dhulikhel, Kavre",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-
-                  Align(
-                    alignment: Alignment.centerLeft, 
-                    child: Image.asset("assets/icon.png", height: 50, width: 50),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 10),
-
-              // Student
-              Text(
-                "STUDENT",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 32,
-                  color: Colors.red,
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child:
+                          Image.asset("assets/icon.png", height: 50, width: 50),
+                    ),
+                  ],
                 ),
-              ),
 
-              SizedBox(height: 10),
+                SizedBox(height: 10),
 
-              //photo
-              Container(
-                height: 150,
-                width: 160,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.memory(imageBytes, fit: BoxFit.cover),
+                // Student
+                Text(
+                  "STUDENT",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 32,
+                    color: Colors.red,
+                  ),
                 ),
-              ),
 
-              SizedBox(height: 10),
+                SizedBox(height: 10),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildInfoRow("Name:", "${_data["name"]}"),
-                  _buildInfoRow("Course:", "${_data["course"]}"),
-                  _buildInfoRow("Blood Group:", "${_data["bg"]}"),
-                  _buildInfoRow("Year of Enrollment:", "${_data["YOE"]}"),
-                  _buildInfoRow("Phone No:", "${_data["phoneNo"]}"),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
+                //photo
+                Container(
+                  height: 150,
+                  width: 160,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.memory(imageBytes, fit: BoxFit.cover),
+                  ),
+                ),
 
-Widget _buildInfoRow(String label, String value) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Row(
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+                SizedBox(height: 10),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow("Name:", "${_data["name"]}"),
+                    _buildInfoRow("Course:", "${_data["course"]}"),
+                    _buildInfoRow("Blood Group:", "${_data["bg"]}"),
+                    _buildInfoRow("Year of Enrollment:", "${_data["YOE"]}"),
+                    _buildInfoRow("Phone No:", "${_data["phoneNo"]}"),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            value,
-            style: TextStyle(fontSize: 18),
-            overflow: TextOverflow.ellipsis,
+        );
+      },
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+          SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(fontSize: 18),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   void _showErrorDialog(String message) {
     showDialog(
