@@ -112,7 +112,7 @@ class _HomepageState extends State<Homepage> {
           children: [
             GestureDetector(
               onTap: () {
-                _showDialog("Profile Picture Clicked!");
+                _showPopup();
               },
               child: CircleAvatar(
                 backgroundImage: MemoryImage(imageBytes),
@@ -317,6 +317,167 @@ class _HomepageState extends State<Homepage> {
         );
       },
     );
+  }
+
+  void _showPopup() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              height: 550,
+              width: 390,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Colors.white,
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment(-0.95, -0.93),
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          color: Colors.amber),
+                      child: Image.asset("assets/icon.png"),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0.0, -0.93),
+                    child: Text(
+                      "KATHMANDU",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'title',
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0.0, -0.83),
+                    child: Text(
+                      "UNIVERSITY",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'title',
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0.0, -0.72),
+                    child: Text(
+                      "Dhulikhel,Kavre,Nepal",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0, -0.65),
+                    child: Text(
+                      "STUDENT",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 40,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(0, -0.2),
+                    child: SizedBox(
+                      height: 250,
+                      width: 200,
+                      child: Image.asset("assets/pp.png"),
+                    ),
+                  ),
+                  // name of student
+                  Align(
+                    alignment: Alignment(0, 0.35),
+                    child: Text(
+                      "${_data["name"]}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+
+                  // coarse of student
+                  Align(
+                    alignment: Alignment(0, 0.45),
+                    child: Text(
+                      "${_data["coarse"]}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+
+                  // department of student
+                  Align(
+                    alignment: Alignment(0, 0.55),
+                    child: Text(
+                      "${_data["department"]}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+
+                  //blood group
+                  Align(
+                    alignment: Alignment(0, 0.65),
+                    child: Text(
+                      "${_data["blood"]}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+
+                  // year of enrollment
+                  Align(
+                    alignment: Alignment(0, 0.75),
+                    child: Text(
+                      "${_data["yoe"]}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+
+                  // phone number
+                  Align(
+                    alignment: Alignment(0, 0.85),
+                    child: Text(
+                      "${_data["phone number"]}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  //enter
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   void _showErrorDialog(String message) {
