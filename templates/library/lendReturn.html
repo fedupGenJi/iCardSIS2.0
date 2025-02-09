@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lend/Return</title>
+    <title>iCardSIS-Lend/Return</title>
+    <link rel="website icon" type="png" href="{{url_for('static',filename='assests/images/webIcon.png')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/lendReturn.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/navbar.css')}}">
 </head>
 <body>
-    Lend-Return Page
+
+    <div class="background"></div>
+
+    <div class="navbarpost">
+        {% include 'library/navbar.html' %}
+    </div>
+
+    <h1 class="page-title">Lend/Return Books</h1>
+
+    <script src="{{url_for('static',filename='js/library/lendReturn.js')}}"></script>
+    <script src="{{url_for('static',filename='js/library/navbar.js')}}"></script>
 </body>
 </html>

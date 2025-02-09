@@ -18,7 +18,7 @@ body {
     height: 100%;
     background: 
         linear-gradient(to bottom, rgba(181, 136, 99, 0.7), rgba(211, 195, 185, 0.7), rgba(167, 158, 156, 0.7), rgba(61, 77, 85, 0.7), rgba(22, 22, 22, 0.9)), 
-        url('../../assests/images/hihi1.jpg') no-repeat center;
+        url('../../assests/images/hihi.jpg') no-repeat center;
     background-size: cover;
     backdrop-filter: blur(10px);
     z-index: -1;
