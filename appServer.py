@@ -1,4 +1,5 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,redirect
+import requests
 import json
 import socket
 from modules.operationsA import *
@@ -11,6 +12,8 @@ ip_address = socket.gethostbyname(hostname)
 print(ip_address)
 
 appServer = Flask(__name__)
+
+KHALTI_URL = "https://dev.khalti.com/api/v2/epayment/initiate/"
 
 @appServer.route('/register', methods=['POST'])
 def reg():
@@ -30,6 +33,7 @@ def reg():
         otp = sendSMS(data)
         if otp:
             otpStore(otp,phoneNo)
+            # print(otp)
             dataStore(data)
             #print(f"OTP sent successfully: {otp}")
             return jsonify({"success": True, "message": "OTP SENT"}), 200
@@ -102,6 +106,71 @@ def getData():
         return jsonify(student_data), 400
 
     return jsonify(student_data), 200
+
+@appServer.route('/khalti', methods=['POST'])
+def process_payment():
+    try:
+        data = request.get_json()
+        amount = data.get("amount")
+        phone_number = data.get("phoneNumber")
+
+        return_url = " https://7dea-27-34-73-168.ngrok-free.app/khalti/paymentSuccess"
+        website_url = "https://GenJi.ngrok.io"
+
+        payload = json.dumps({
+            "return_url": return_url,
+            "website_url": website_url,
+            "amount": str(amount),
+            "purchase_order_id": f"Order_{int(amount)}",
+            "purchase_order_name": "Balance",
+            "customer_info": {
+                "name": "iCardSIS-User",
+                "phone": phone_number
+            }
+        })
+
+        headers = {
+            'Authorization': config.khaltiKey,
+            'Content-Type': 'application/json',
+        }
+
+        response = requests.post(KHALTI_URL, headers=headers, data=payload)
+        print(response.text)
+
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({"error": "Failed to initiate payment", "details": response.text}), 400
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({"error": "Internal Server Error", "message": str(e)}), 500
+
+@appServer.route('/khalti/paymentSuccess', methods=['GET'])
+def printMsg():
+    try:
+        pidx = request.args.get('pidx')
+        transaction_id = request.args.get('transaction_id')
+        amount = request.args.get('amount')
+        total_amount = request.args.get('total_amount')
+        mobile = request.args.get('mobile')
+        status = request.args.get('status')
+        purchase_order_id = request.args.get('purchase_order_id')
+        purchase_order_name = request.args.get('purchase_order_name')
+
+        print("Received Payment Data:")
+        print(f"pidx: {pidx}")
+        print(f"transaction_id: {transaction_id}")
+        print(f"amount: {amount}")
+        print(f"total_amount: {total_amount}")
+        print(f"mobile: {mobile}")
+        print(f"status: {status}")
+        print(f"purchase_order_id: {purchase_order_id}")
+        print(f"purchase_order_name: {purchase_order_name}")
+
+        return "Payment data received and printed.", 200
+    except Exception as e:
+        return jsonify({"error": "Error processing request", "message": str(e)}), 500
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
