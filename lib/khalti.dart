@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:khalti_flutter/khalti_flutter.dart';
-import 'package:khalti/khalti.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:khalti_checkout_flutter/khalti_checkout_flutter.dart';
+import 'config.dart';
 
 class ICardSISKhaltiPage extends StatelessWidget {
   final String phoneNumber;
-
   const ICardSISKhaltiPage({Key? key, required this.phoneNumber})
       : super(key: key);
 
@@ -43,7 +44,7 @@ class ICardSISKhaltiPage extends StatelessWidget {
                 height: 100,
               ),
             ),
-            const SizedBox(height: 100),
+            const SizedBox(height: 50),
             Text(
               "User Phone No: $phoneNumber",
               style: TextStyle(
@@ -53,9 +54,23 @@ class ICardSISKhaltiPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
+              "Use number 9800000001 for tests!",
+              style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: secondaryColor),
+            ),
+            Text(
               "Use pin 1111 for tests!",
               style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: secondaryColor),
+            ),
+            Text(
+              "Use otp 987654 for tests!",
+              style: TextStyle(
+                  fontSize: 10,
                   fontWeight: FontWeight.bold,
                   color: secondaryColor),
             ),
@@ -79,30 +94,73 @@ class ICardSISKhaltiPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // showDialog(
-                //   context: context,
-                //   builder: (context) => AlertDialog(
-                //     backgroundColor: primaryColor,
-                //     title: Text("Button Clicked", style: TextStyle(color: secondaryColor)),
-                //     content: Text("Proceed button was clicked.", style: TextStyle(color: secondaryColor)),
-                //     actions: [
-                //       TextButton(
-                //         onPressed: () => Navigator.pop(context),
-                //         child: Text("OK", style: TextStyle(color: secondaryColor)),
-                //       ),
-                //     ],
-                //   ),
-                // );
+              onPressed: () async {
+                late final Khalti khalti;
                 double? amount = double.tryParse(amountController.text);
                 if (amount == null || amount <= 0) {
-                  // Handle invalid input case
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Please enter a valid amount")),
                   );
                   return;
                 }
-                payWithKhaltiInApp(context,amount);
+
+                String? pidx =
+                    await fetchPidxFromServer(amount * 100, phoneNumber);
+                if (pidx == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content:
+                            Text("Failed to generate transaction ID (pidx)")),
+                  );
+                  return;
+                }
+                debugPrint(pidx);
+
+                KhaltiPayConfig payConfig = KhaltiPayConfig(
+                  publicKey: 'Key c69ca28a547c4d678860a36d5449e5b6',
+                  pidx: pidx,
+                  environment: Environment.test,
+                );
+
+                    khalti = await Khalti.init(
+                    enableDebugging: true,
+                    payConfig: payConfig,
+                    onPaymentResult: (paymentResult, khalti) {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Payment Successful: ${paymentResult.payload?.transactionId}",
+                          ),
+                        ),
+                      );
+                      khalti.close(context);
+                    },
+                    onMessage: (khalti,
+                        {description,
+                        statusCode,
+                        event,
+                        needsPaymentConfirmation}) async {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Status: $statusCode, Event: $event"),
+                        ),
+                      );
+                    },
+                    onReturn: () {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text("Successfully redirected to return_url."),
+                        ),
+                      );
+                    },
+                  );
+
+                  khalti.open(context);
+
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: secondaryColor,
@@ -121,47 +179,30 @@ class ICardSISKhaltiPage extends StatelessWidget {
     );
   }
 
-  void payWithKhaltiInApp(BuildContext context, double amountx) {
-  KhaltiScope.of(context).pay(
-    config: PaymentConfig(
-      amount: amountx.toInt(), 
-      productIdentity: "Card Balance",
-      productName: "iCardSIS-balance",
-      mobile: "9800000004",
-    ),
-    preferences: [
-      PaymentPreference.khalti,
-    ],
-    onSuccess: (success) => onSuccess(context, success), 
-    onFailure: onFailure,
-    onCancel: onCancel,
-  );
-}
-
-  void onSuccess(BuildContext context, PaymentSuccessModel success) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text("Payment Successful"),
-        actions: [
-          SimpleDialogOption(
-            child: const Text("OK"),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          )
-        ],
+  Future<String?> fetchPidxFromServer(double amount, String phoneNumber) async {
+    try {
+      String baseUrl = await Config.baseUrl;
+      final response = await http.post(
+        Uri.parse("$baseUrl/khalti"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          "amount": amount,
+          "phoneNumber": phoneNumber,
+        }),
       );
-    },
-  );
-}
 
-  void onFailure(PaymentFailureModel failure) {
-    debugPrint(failure.toString());
-  }
-
-  void onCancel() {
-    debugPrint("Cancelled");
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data["pidx"];
+      } else {
+        debugPrint("Error fetching pidx from server: ${response.body}");
+        return null;
+      }
+    } catch (e) {
+      debugPrint("Exception in fetchPidxFromServer: $e");
+      return null;
+    }
   }
 }

@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        google() // Add Google repository for AGP
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.2.0" // Use latest AGP version
+    }
+}
+
 allprojects {
     repositories {
         google()
