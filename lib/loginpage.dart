@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'config.dart';
 import 'register.dart';
 import 'reconfigurepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -50,59 +51,59 @@ class _LoginpageState extends State<Loginpage> {
   }
 
   Future<void> _login() async {
-    setState(() {
-      _hasTriedLogin = true;
-      _validateInputs();
-    });
+  setState(() {
+    _hasTriedLogin = true;
+    _validateInputs();
+  });
 
-    if (!_isPhoneValid || !_isPasswordValid) {
-      return; // Stop execution if inputs are invalid
-    }
+  if (!_isPhoneValid || !_isPasswordValid) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+  setState(() {
+    _isLoading = true;
+  });
 
-    String phone = _phoneController.text.trim();
-    String password = _passwordController.text.trim();
+  String phone = _phoneController.text.trim();
+  String password = _passwordController.text.trim();
 
-    try {
-      String baseUrl = await Config.baseUrl;
-      var response = await http.post(
-        Uri.parse("$baseUrl/login"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"phone": phone, "password": password}),
+  try {
+    String baseUrl = await Config.baseUrl;
+    var response = await http.post(
+      Uri.parse("$baseUrl/login"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"phone": phone, "password": password}),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = jsonDecode(response.body);
+      String stdId = responseData["stdId"];
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("stdId", stdId);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Homepage(stdId: stdId)),
       );
-      //print("Response Body: ${response.body}");
+    } else {
+      Map<String, dynamic> responseData = jsonDecode(response.body);
+      String message = responseData["message"];
 
-      if (response.statusCode == 200) {
-        // _showSuccessDialog("Login successful!"); // success dialog for login
-        Map<String, dynamic> responseData = jsonDecode(response.body);
-        String stdId = responseData["stdId"];
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Homepage(stdId: stdId)),
-        );
+      if (message == "Phone number not registered") {
+        _showErrorDialog("Phone number not registered");
+      } else if (message == "Incorrect password") {
+        _showErrorDialog("Incorrect password");
       } else {
-        Map<String, dynamic> responseData = jsonDecode(response.body);
-        String message = responseData["message"];
-
-        if (message == "Phone number not registered") {
-          _showErrorDialog("Phone number not registered");
-        } else if (message == "Incorrect password") {
-          _showErrorDialog("Incorrect password");
-        } else {
-          _showErrorDialog("Unexpected error occurred");
-        }
+        _showErrorDialog("Unexpected error occurred");
       }
-    } catch (e) {
-      _showErrorDialog("Server unavailable. Please try again later.");
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
+  } catch (e) {
+    _showErrorDialog("Server unavailable. Please try again later.");
+  } finally {
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
 
   void _showErrorDialog(String message) {
     AwesomeDialog(

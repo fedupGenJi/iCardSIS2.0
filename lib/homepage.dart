@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 import 'config.dart';
+import 'loginpage.dart';
 import 'khalti.dart';
 import 'dart:convert';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homepage extends StatefulWidget {
   final String stdId;
@@ -17,6 +19,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   Map<String, dynamic> _data = {};
   bool _obscureText = true;
+  bool showLogoutButton = false;
   final Color primaryColor = Color(0xFF4B2138);
   final Color secondaryColor = Color(0xFF6D3C52);
   final Color backgroundColor = Color(0xFFFADCD5);
@@ -27,26 +30,41 @@ class _HomepageState extends State<Homepage> {
     _fetchData();
   }
 
-  Future<void> _fetchData() async {
-    try {
-      String baseUrl = await Config.baseUrl;
-      final response = await http.post(
-        Uri.parse("$baseUrl/homepage"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"id": "${widget.stdId}"}),
-      );
+Future<void> _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('stdId'); 
 
-      if (response.statusCode == 200) {
-        setState(() {
-          _data = json.decode(response.body);
-        });
-      } else {
-        _showErrorDialog("Error: Failed to load data");
-      }
-    } catch (e) {
-      _showErrorDialog("Error: ${e.toString()}");
-    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Loginpage()), 
+    );
   }
+
+  Future<void> _fetchData() async {
+  try {
+    String baseUrl = await Config.baseUrl;
+    final response = await http.post(
+      Uri.parse("$baseUrl/homepage"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"id": widget.stdId}),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _data = json.decode(response.body);
+      });
+    } else {
+      _handleFetchFailure();
+    }
+  } catch (e) {
+    _handleFetchFailure();
+  }
+}
+
+void _handleFetchFailure() {
+  _showErrorDialog("Unable to fetch data. Logging out...");
+  _logout();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +144,16 @@ class _HomepageState extends State<Homepage> {
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             Spacer(),
-            Text(
-              "ID: ${widget.stdId}",
-              style: TextStyle(color: Colors.white, fontSize: 18),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  showLogoutButton = !showLogoutButton;
+                });
+              },
+              child: Text(
+                "ID: ${widget.stdId}",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
           ],
         ),
@@ -141,6 +166,17 @@ class _HomepageState extends State<Homepage> {
             _buildGridOptions(),
             SizedBox(height: 20),
             _buildAssociationSection(), // App Associated Section
+            if (showLogoutButton)
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                  onPressed: _logout,
+                  child: Text("Logout"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
