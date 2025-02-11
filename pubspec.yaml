@@ -52,6 +52,8 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.13.1
   khalti_checkout_flutter: ^1.0.0-dev.8
+  app_links: ^6.3.3
+  url_launcher: ^6.0.9
 
 
 # For information on the generic Dart part of this file, see the
