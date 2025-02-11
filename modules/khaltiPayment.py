@@ -5,7 +5,7 @@ import os
 
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+from modules.operationsB import audit_input
 import config
 
 configx = {
@@ -72,7 +72,7 @@ def paymentVerified(pidx):
         )
         cursor_main = conn_main.cursor()
 
-        cursor_main.execute("SELECT studentId FROM loginInfo WHERE phone_number = %s", (phone_number,))
+        cursor_main.execute("SELECT studentId FROM loginInfo WHERE phoneNo = %s", (phone_number,))
         student_result = cursor_main.fetchone()
 
         if not student_result:
@@ -86,7 +86,7 @@ def paymentVerified(pidx):
 
         cursor_main.execute("UPDATE studentInfo SET balance = balance + %s WHERE studentId = %s", (amount, studentId))
         conn_main.commit()
-
+        audit_input(studentId, f"Balance added of {amount}")
         print(f"Balance updated successfully for Student ID: {studentId}")
 
         cursor_main.close()
@@ -107,7 +107,7 @@ def removeFailedPayment(pidx):
 
         if result:
             phone_number = result[0]
-            print(f"Removing failed payment entry for phone number: {phone_number}")
+            print(f"Removing data entry for phone number: {phone_number}")
 
             cursor.execute("DELETE FROM paymentRecords WHERE pidx = %s", (pidx,))
             conn.commit()

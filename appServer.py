@@ -1,4 +1,4 @@
-from flask import Flask,request,jsonify,redirect
+from flask import Flask,request,jsonify,redirect,render_template_string
 import requests
 import json
 import socket
@@ -15,6 +15,7 @@ print(ip_address)
 appServer = Flask(__name__)
 
 KHALTI_URL = "https://dev.khalti.com/api/v2/epayment/initiate/"
+NGROK_URL = "https://ef0c-27-34-73-168.ngrok-free.app"
 
 @appServer.route('/register', methods=['POST'])
 def reg():
@@ -115,7 +116,7 @@ def process_payment():
         amount = data.get("amount")
         phone_number = data.get("phoneNumber")
 
-        return_url = " https://7dea-27-34-73-168.ngrok-free.app/khalti/paymentSuccess"
+        return_url = f"{NGROK_URL}/khalti/paymentSuccess"
         website_url = "https://GenJi.ngrok.io"
 
         payload = json.dumps({
@@ -141,7 +142,7 @@ def process_payment():
         if response.status_code == 200:
             response_data = response.json()
             pidx = response_data.get("pidx")
-            paymentRecord(phone_number,pidx,amount)
+            paymentRecord(phone_number,pidx,(amount/100))
             return jsonify(response.json())
         else:
             return jsonify({"error": "Failed to initiate payment", "details": response.text}), 400
@@ -162,22 +163,69 @@ def printMsg():
         purchase_order_id = request.args.get('purchase_order_id')
         purchase_order_name = request.args.get('purchase_order_name')
 
-        print("Received Payment Data:")
-        print(f"pidx: {pidx}")
-        print(f"transaction_id: {transaction_id}")
-        print(f"amount: {amount}")
-        print(f"total_amount: {total_amount}")
-        print(f"mobile: {mobile}")
-        print(f"status: {status}")
-        print(f"purchase_order_id: {purchase_order_id}")
-        print(f"purchase_order_name: {purchase_order_name}")
-
         if status.lower() == "completed":
             paymentVerified(pidx)
+            status = "success"
         else:
             removeFailedPayment(pidx)
+            status = "failed"
 
-        return "Payment status processed.", 200
+        app_link = f"icardsis://payment?status={status}&transaction_id={transaction_id or ''}"
+
+        html_content = f"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Order Details</title>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        margin: 50px;
+                    }}
+                    .container {{
+                        max-width: 500px;
+                        margin: auto;
+                        padding: 20px;
+                        border: 1px solid #ddd;
+                        border-radius: 10px;
+                        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+                    }}
+                    .bold {{
+                        font-weight: bold;
+                        font-size: 18px;
+                        margin-top: 20px;
+                    }}
+                    .miracle-link {{
+                        display: block;
+                        margin-top: 10px;
+                        font-size: 16px;
+                        color: #007bff;
+                        text-decoration: none;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h2>Order Details</h2>
+                    <p><strong>Transaction ID:</strong> {transaction_id}</p>
+                    <p><strong>Purchase Order ID:</strong> {purchase_order_id}</p>
+                    <p><strong>Purchase Order Name:</strong> {purchase_order_name}</p>
+                    <p><strong>Amount:</strong> NPR {amount}</p>
+                    <p><strong>Total Amount:</strong> NPR {total_amount}</p>
+                    <p><strong>Status:</strong> {status}</p>
+
+                    <p class="bold">Restart App! Redirection ain't working :P</p>
+                    <a class="miracle-link" href="{app_link}">I believe in miracles</a>
+                </div>
+            </body>
+            </html>
+            """
+
+        return render_template_string(html_content)
+
     except Exception as e:
         return jsonify({"error": "Error processing request", "message": str(e)}), 500
 
