@@ -6,6 +6,7 @@ from modules.operationsA import *
 from modules.operationsB import *
 from modules.sparrowSMS import *
 from modules.login import *
+from modules.khaltiPayment import *
 
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
@@ -135,15 +136,18 @@ def process_payment():
         }
 
         response = requests.post(KHALTI_URL, headers=headers, data=payload)
-        print(response.text)
+        #print(response.text)
 
         if response.status_code == 200:
+            response_data = response.json()
+            pidx = response_data.get("pidx")
+            paymentRecord(phone_number,pidx,amount)
             return jsonify(response.json())
         else:
             return jsonify({"error": "Failed to initiate payment", "details": response.text}), 400
 
     except Exception as e:
-        print(str(e))
+        #print(str(e))
         return jsonify({"error": "Internal Server Error", "message": str(e)}), 500
 
 @appServer.route('/khalti/paymentSuccess', methods=['GET'])
@@ -168,7 +172,12 @@ def printMsg():
         print(f"purchase_order_id: {purchase_order_id}")
         print(f"purchase_order_name: {purchase_order_name}")
 
-        return "Payment data received and printed.", 200
+        if status.lower() == "completed":
+            paymentVerified(pidx)
+        else:
+            removeFailedPayment(pidx)
+
+        return "Payment status processed.", 200
     except Exception as e:
         return jsonify({"error": "Error processing request", "message": str(e)}), 500
 
