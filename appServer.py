@@ -15,7 +15,7 @@ print(ip_address)
 appServer = Flask(__name__)
 
 KHALTI_URL = "https://dev.khalti.com/api/v2/epayment/initiate/"
-NGROK_URL = "https://ef0c-27-34-73-168.ngrok-free.app"
+NGROK_URL = config.ngrokurl
 
 @appServer.route('/register', methods=['POST'])
 def reg():
@@ -158,6 +158,8 @@ def printMsg():
         transaction_id = request.args.get('transaction_id')
         amount = request.args.get('amount')
         total_amount = request.args.get('total_amount')
+        amount = float(amount) / 100
+        total_amount = float(total_amount) / 100
         mobile = request.args.get('mobile')
         status = request.args.get('status')
         purchase_order_id = request.args.get('purchase_order_id')
@@ -170,7 +172,7 @@ def printMsg():
             removeFailedPayment(pidx)
             status = "failed"
 
-        app_link = f"icardsis://payment?status={status}&transaction_id={transaction_id or ''}"
+        #app_link = f"icardsis://payment?status={status}&transaction_id={transaction_id or ''}"
 
         html_content = f"""
             <!DOCTYPE html>
@@ -178,7 +180,7 @@ def printMsg():
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Order Details</title>
+                <title>Processing Payment</title>
                 <style>
                     body {{
                         font-family: Arial, sans-serif;
@@ -198,18 +200,11 @@ def printMsg():
                         font-size: 18px;
                         margin-top: 20px;
                     }}
-                    .miracle-link {{
-                        display: block;
-                        margin-top: 10px;
-                        font-size: 16px;
-                        color: #007bff;
-                        text-decoration: none;
-                    }}
                 </style>
             </head>
             <body>
                 <div class="container">
-                    <h2>Order Details</h2>
+                    <h2>Processing Payment</h2>
                     <p><strong>Transaction ID:</strong> {transaction_id}</p>
                     <p><strong>Purchase Order ID:</strong> {purchase_order_id}</p>
                     <p><strong>Purchase Order Name:</strong> {purchase_order_name}</p>
@@ -217,8 +212,8 @@ def printMsg():
                     <p><strong>Total Amount:</strong> NPR {total_amount}</p>
                     <p><strong>Status:</strong> {status}</p>
 
-                    <p class="bold">Restart App! Redirection ain't working :P</p>
-                    <a class="miracle-link" href="{app_link}">I believe in miracles</a>
+                    <p class="bold">Please wait, closing Khalti...</p>
+                    <p class="bold">You will be redirected to the app in 5 seconds.</p>
                 </div>
             </body>
             </html>
@@ -228,6 +223,23 @@ def printMsg():
 
     except Exception as e:
         return jsonify({"error": "Error processing request", "message": str(e)}), 500
+    
+@appServer.route('/khalti/result', methods=['POST'])
+def payment_result():
+    data = request.get_json()
+    pidx = data.get('pidx')
+    
+    result = doesItExist(pidx)
+    if result:
+        return jsonify({
+            'status': True,
+            'message': f'Payment for transaction {pidx} was successful.'
+        })
+    else:
+        return jsonify({
+            'status': False,
+            'message': 'Invalid payment information.'
+        })
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)

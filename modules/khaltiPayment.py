@@ -91,7 +91,6 @@ def paymentVerified(pidx):
 
         cursor_main.close()
         conn_main.close()
-        removeFailedPayment(pidx)
 
     except mysql.connector.Error as e:
         print(f"Database error: {e}")
@@ -118,3 +117,26 @@ def removeFailedPayment(pidx):
         conn.close()
     except mysql.connector.Error as e:
         print(f"Database error: {e}")
+
+def doesItExist(pidx):
+    try:
+        conn = mysql.connector.connect(**configx)
+        cursor = conn.cursor()
+        cursor.execute("USE tempDB")
+
+        cursor.execute("SELECT phone_number FROM paymentRecords WHERE pidx = %s", (pidx,))
+        result = cursor.fetchone()
+
+        if result:
+            return True
+        else:
+            return False
+
+    except mysql.connector.Error as e:
+        print(f"Database error: {e}")
+
+    finally:
+        if result == True:
+            removeFailedPayment(pidx)
+        cursor.close()
+        conn.close()
