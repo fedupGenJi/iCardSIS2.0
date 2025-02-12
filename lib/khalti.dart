@@ -2,85 +2,21 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:khalti_checkout_flutter/khalti_checkout_flutter.dart';
-import 'package:app_links/app_links.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'config.dart';
-
+import 'homepage.dart';
 class ICardSISKhaltiPage extends StatefulWidget {
   final String phoneNumber;
-  const ICardSISKhaltiPage({Key? key, required this.phoneNumber}) : super(key: key);
+  final String stdId;
+  const ICardSISKhaltiPage({Key? key, required this.phoneNumber, required this.stdId})
+      : super(key: key);
 
   @override
   _ICardSISKhaltiPageState createState() => _ICardSISKhaltiPageState();
 }
 
-class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage> with WidgetsBindingObserver {
-  late AppLinks _appLinks;
-
-  @override
-  void initState() {
-    super.initState();
-    _initAppLinks();
-    WidgetsBinding.instance.addObserver(this); 
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this); 
-    super.dispose();
-  }
-
-  void _initAppLinks() async {
-    _appLinks = AppLinks();
-
-    _appLinks.uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        print('Received deep link: $uri');
-        _handlePaymentStatus(uri);
-      }
-    });
-
-    Uri? initialLink = await _appLinks.getInitialLink();
-    if (initialLink != null) {
-      print('Initial deep link: $initialLink');
-      _handlePaymentStatus(initialLink);
-    }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-    }
-  }
-
-  void _handlePaymentStatus(Uri uri) {
-    String? status = uri.queryParameters["status"];
-    String? transactionId = uri.queryParameters["transaction_id"] ?? '';
-
-    if (status != null) {
-      String title = (status == "success") ? "Payment Successful" : "Payment Failed";
-      String desc = (status == "success")
-          ? "Transaction ID: $transactionId"
-          : "Something went wrong. Please try again.";
-
-      _showPaymentDialog(title, desc, (status == "success") ? DialogType.success : DialogType.error);
-    } else {
-      _showPaymentDialog("Payment Error", "No payment status received.", DialogType.error);
-    }
-  }
-
-  void _showPaymentDialog(String title, String desc, DialogType dialogType) {
-    AwesomeDialog(
-      context: context,
-      dialogType: dialogType,
-      animType: AnimType.scale,
-      title: title,
-      desc: desc,
-      btnOkOnPress: () {},
-    ).show();
-  }
-
+class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage>
+    with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     TextEditingController amountController = TextEditingController();
@@ -90,7 +26,9 @@ class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage> with WidgetsBin
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
-        title: Text("Payment Page", style: TextStyle(color: secondaryColor, fontWeight: FontWeight.bold)),
+        title: Text("Payment Page",
+            style:
+                TextStyle(color: secondaryColor, fontWeight: FontWeight.bold)),
         backgroundColor: primaryColor,
         iconTheme: IconThemeData(color: secondaryColor),
         elevation: 0,
@@ -116,7 +54,10 @@ class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage> with WidgetsBin
             const SizedBox(height: 50),
             Text(
               "User Phone No: ${widget.phoneNumber}",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: secondaryColor),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: secondaryColor),
             ),
             const SizedBox(height: 40),
             TextField(
@@ -147,10 +88,13 @@ class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage> with WidgetsBin
                   return;
                 }
 
-                String? pidx = await fetchPidxFromServer(amount * 100, widget.phoneNumber);
+                String? pidx =
+                    await fetchPidxFromServer(amount * 100, widget.phoneNumber);
                 if (pidx == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Failed to generate transaction ID (pidx)")),
+                    const SnackBar(
+                        content:
+                            Text("Failed to generate transaction ID (pidx)")),
                   );
                   return;
                 }
@@ -169,18 +113,28 @@ class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage> with WidgetsBin
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("Payment Successful: ${paymentResult.payload?.transactionId}"),
+                        content: Text(
+                            "Payment Successful: ${paymentResult.payload?.transactionId}"),
                       ),
                     );
                     khalti.close(context);
                   },
-                  onMessage: (khalti, {description, statusCode, event, needsPaymentConfirmation}) async {
+                  onMessage: (khalti,
+                      {description,
+                      statusCode,
+                      event,
+                      needsPaymentConfirmation}) async {
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text("Status: $statusCode, Event: $event"),
                       ),
                     );
+                    Future.delayed(Duration(seconds: 5), () {
+                      khalti.close(context);
+                      _sendPaymentStatusToServer(
+                          pidx); //it shouldn't be done to be honest
+                    });
                   },
                   onReturn: () {
                     if (!context.mounted) return;
@@ -197,10 +151,13 @@ class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage> with WidgetsBin
               style: ElevatedButton.styleFrom(
                 backgroundColor: secondaryColor,
                 foregroundColor: primaryColor,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
               ),
-              child: const Text("Proceed", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              child: const Text("Proceed",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -233,5 +190,51 @@ class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage> with WidgetsBin
       debugPrint("Exception in fetchPidxFromServer: $e");
       return null;
     }
+  }
+
+  Future<void> _sendPaymentStatusToServer(String pidx) async {
+    String baseUrl = await Config.baseUrl;
+    final Uri url = Uri.parse('$baseUrl/khalti/result');
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({"pidx": pidx}),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        bool status = data['status'];
+        String message = data['message'];
+
+        if (status) {
+          _showPaymentDialog('Payment Successful', message, DialogType.success);
+        } else {
+          _showPaymentDialog('Payment Failed', message, DialogType.error);
+        }
+      } else {
+        _showPaymentDialog('Payment Error', 'Failed to connect to the server.',
+            DialogType.error);
+      }
+    } catch (e) {
+      _showPaymentDialog(
+          'Payment Error', 'An error occurred: $e', DialogType.error);
+    }
+  }
+
+  void _showPaymentDialog(String title, String desc, DialogType dialogType) {
+    AwesomeDialog(
+      context: context,
+      dialogType: dialogType,
+      animType: AnimType.scale,
+      title: title,
+      desc: desc,
+      btnOkOnPress: () {
+        Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Homepage(stdId: "${widget.stdId}")),
+      );
+      },
+    ).show();
   }
 }

@@ -229,7 +229,7 @@ void _handleFetchFailure() {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        ICardSISKhaltiPage(phoneNumber: _data["phoneNo"]),
+                        ICardSISKhaltiPage(phoneNumber: _data["phoneNo"],stdId: "${widget.stdId}",),
                   ),
                 );
               }),
