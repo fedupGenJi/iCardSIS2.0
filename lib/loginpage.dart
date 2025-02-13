@@ -51,59 +51,59 @@ class _LoginpageState extends State<Loginpage> {
   }
 
   Future<void> _login() async {
-  setState(() {
-    _hasTriedLogin = true;
-    _validateInputs();
-  });
-
-  if (!_isPhoneValid || !_isPasswordValid) return;
-
-  setState(() {
-    _isLoading = true;
-  });
-
-  String phone = _phoneController.text.trim();
-  String password = _passwordController.text.trim();
-
-  try {
-    String baseUrl = await Config.baseUrl;
-    var response = await http.post(
-      Uri.parse("$baseUrl/login"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"phone": phone, "password": password}),
-    );
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> responseData = jsonDecode(response.body);
-      String stdId = responseData["stdId"];
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString("stdId", stdId);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Homepage(stdId: stdId)),
-      );
-    } else {
-      Map<String, dynamic> responseData = jsonDecode(response.body);
-      String message = responseData["message"];
-
-      if (message == "Phone number not registered") {
-        _showErrorDialog("Phone number not registered");
-      } else if (message == "Incorrect password") {
-        _showErrorDialog("Incorrect password");
-      } else {
-        _showErrorDialog("Unexpected error occurred");
-      }
-    }
-  } catch (e) {
-    _showErrorDialog("Server unavailable. Please try again later.");
-  } finally {
     setState(() {
-      _isLoading = false;
+      _hasTriedLogin = true;
+      _validateInputs();
     });
+
+    if (!_isPhoneValid || !_isPasswordValid) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    String phone = _phoneController.text.trim();
+    String password = _passwordController.text.trim();
+
+    try {
+      String baseUrl = await Config.baseUrl;
+      var response = await http.post(
+        Uri.parse("$baseUrl/login"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"phone": phone, "password": password}),
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        String stdId = responseData["stdId"];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("stdId", stdId);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Homepage(stdId: stdId)),
+        );
+      } else {
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        String message = responseData["message"];
+
+        if (message == "Phone number not registered") {
+          _showErrorDialog("Phone number not registered");
+        } else if (message == "Incorrect password") {
+          _showErrorDialog("Incorrect password");
+        } else {
+          _showErrorDialog("Unexpected error occurred");
+        }
+      }
+    } catch (e) {
+      _showErrorDialog("Server unavailable. Please try again later.");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
-}
 
   void _showErrorDialog(String message) {
     AwesomeDialog(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:icardsis/payfine.dart';
 import 'dart:typed_data';
 import 'config.dart';
 import 'loginpage.dart';
@@ -30,41 +31,41 @@ class _HomepageState extends State<Homepage> {
     _fetchData();
   }
 
-Future<void> _logout() async {
+  Future<void> _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('stdId'); 
+    await prefs.remove('stdId');
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Loginpage()), 
+      MaterialPageRoute(builder: (context) => Loginpage()),
     );
   }
 
   Future<void> _fetchData() async {
-  try {
-    String baseUrl = await Config.baseUrl;
-    final response = await http.post(
-      Uri.parse("$baseUrl/homepage"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"id": widget.stdId}),
-    );
+    try {
+      String baseUrl = await Config.baseUrl;
+      final response = await http.post(
+        Uri.parse("$baseUrl/homepage"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"id": widget.stdId}),
+      );
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _data = json.decode(response.body);
-      });
-    } else {
+      if (response.statusCode == 200) {
+        setState(() {
+          _data = json.decode(response.body);
+        });
+      } else {
+        _handleFetchFailure();
+      }
+    } catch (e) {
       _handleFetchFailure();
     }
-  } catch (e) {
-    _handleFetchFailure();
   }
-}
 
-void _handleFetchFailure() {
-  _showErrorDialog("Unable to fetch data. Logging out...");
-  _logout();
-}
+  void _handleFetchFailure() {
+    _showErrorDialog("Unable to fetch data. Logging out...");
+    _logout();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -228,8 +229,10 @@ void _handleFetchFailure() {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        ICardSISKhaltiPage(phoneNumber: _data["phoneNo"],stdId: "${widget.stdId}",),
+                    builder: (context) => ICardSISKhaltiPage(
+                      phoneNumber: _data["phoneNo"],
+                      stdId: "${widget.stdId}",
+                    ),
                   ),
                 );
               }),
@@ -274,22 +277,42 @@ void _handleFetchFailure() {
         mainAxisSpacing: 15,
         crossAxisSpacing: 15,
         children: [
-          _buildGridButton("assets/file.png", "Statement"),
-          _buildGridButton("assets/fine.png", "Pay Fine"),
-          _buildGridButton("assets/subscription.png", "New Subscription"),
-          _buildGridButton("assets/book.png", "Library Log"),
-          _buildGridButton("assets/card.png", "Transport Card"),
-          _buildGridButton("assets/restore.png", "Activity"),
+          _buildGridButton("assets/file.png", "Statement",
+          () {
+                _showDialog("label");
+              }
+          ),
+          _buildGridButton("assets/fine.png", "Pay Fine",
+          () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Payfine(
+                    ),
+                  ),
+                );
+              }
+          ),
+          _buildGridButton("assets/subscription.png", "New Subscription",  () {
+                _showDialog("label");
+              }),
+          _buildGridButton("assets/book.png", "Library Log",  () {
+                _showDialog("label");
+              }),
+          _buildGridButton("assets/card.png", "Transport Card",  () {
+                _showDialog("label");
+              }),
+          _buildGridButton("assets/restore.png", "Activity",  () {
+                _showDialog("label");
+              }),
         ],
       ),
     );
   }
 
-  Widget _buildGridButton(String asset, String label) {
+  Widget _buildGridButton(String asset, String label,VoidCallback onTap) {
     return GestureDetector(
-      onTap: () {
-        _showDialog(label);
-      },
+    onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
