@@ -243,3 +243,114 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("click", function (event) {
+        const updatePopup = document.getElementById("update-popup");
+        const popupContent = document.querySelector(".popup-content");
+        
+        if (event.target.closest("#updatexx-button")) {
+            const idCardContainer = event.target.closest(".small-container");
+            if (idCardContainer) {
+                const studentIdElement = idCardContainer.querySelector("h2");
+                if (studentIdElement) {
+                    const studentId = studentIdElement.textContent.trim();
+                    console.log(`Update button clicked for Student ID: ${studentId}`);
+
+                    const student = studentDatabase.find(st => String(st.studentId) === String(studentId));
+
+                    if (student) {
+                        document.getElementById("popup-student-id").textContent = `Student ID: ${student.studentId}`;
+                        document.getElementById("popup-phone-number").textContent = student.phoneNo;
+                        document.getElementById("popup-email").textContent = student.Gmail;
+
+                        updatePopup.style.display = "flex";
+
+                        document.getElementById("update-pin-btn").onclick = function () {
+                            let newPin = prompt(`Enter new PIN for Student ID ${studentId}:`);
+                            if (newPin) {
+                                alert(`PIN updated to: ${newPin} (not saved yet)`);
+                            }
+                        };
+                    } else {
+                        console.error("Student data not found.");
+                    }
+                }
+            }
+        }
+
+        if (event.target === updatePopup) {
+            updatePopup.style.display = "none";
+        }
+    });
+});
+
+let passwordChanged = false;
+
+function openPasswordPopup() {
+    document.getElementById("password-container").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+}
+
+document.getElementById("overlay").addEventListener("click", function (event) {
+    if (event.target.id === "overlay") {
+        closePasswordPopup();
+    }
+});
+
+function closePasswordPopup() {
+    document.getElementById("password-container").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+
+    document.getElementById("new-password").value = "";
+    document.getElementById("confirm-password").value = "";
+}
+
+function updatePassword() {
+    let newPassword = document.getElementById("new-password").value;
+    let confirmPassword = document.getElementById("confirm-password").value;
+    let popupContent = document.querySelector(".popup-content");
+    let popupMessage = document.getElementById("popup-message");
+    let popupTitle = document.querySelector(".popup-content h2");
+
+    if (newPassword && confirmPassword) {
+        if (newPassword === confirmPassword) {
+            popupContent.classList.add("success");
+            popupContent.classList.remove("errorx");
+            popupTitle.innerHTML = '<span class="success-icon">✔</span> Success';
+            popupMessage.innerText = "Password updated successfully!";
+            passwordChanged = true;
+        } else {
+            popupContent.classList.add("errorx");
+            popupContent.classList.remove("success");
+            popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
+            popupMessage.innerText = "Passwords do not match. Please try again.";
+            passwordChanged = false;
+        }
+        showPopup();
+    } else {
+        popupContent.classList.add("errorx");
+        popupContent.classList.remove("success");
+        popupTitle.innerHTML = '<span class="error-icon">!</span> Error';
+        popupMessage.innerText = "Both fields are required.";
+        passwordChanged = false;
+    }
+    showPopup();
+}
+
+function showPopup() {
+    let popup = document.querySelector(".login-popup");
+    popup.style.display = "flex";
+}
+
+function closePopup() {
+    let popup = document.querySelector(".login-popup");
+    popup.style.display = "none";
+    if(passwordChanged){
+        closePasswordPopup();
+    }
+    if (!passwordChanged) {
+        document.getElementById("password-container").style.display = "block";
+    }
+}
+document.getElementById("close-popup").addEventListener("click", closePopup);

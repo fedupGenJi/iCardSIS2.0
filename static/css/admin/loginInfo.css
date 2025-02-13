@@ -78,7 +78,7 @@ h1.page-title {
     position: absolute;
     top: 50%;
     left: calc(85% + 70px);
-    transform: translateY(-50%);
+    transform: translateY(-100%);
     border: none;
     padding: 0;
     cursor: not-allowed;
@@ -372,4 +372,161 @@ input[type="number"]::-webkit-outer-spin-button {
 
 #custom-confirm-dialog .btn.cancel:hover {
     background-color: #c82333;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: #f8e8d4;
+    padding: 35px;
+    border-radius: 16px;
+    text-align: center;
+    width: 420px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+    color: #4a3b35;
+}
+
+.popup-content h2 {
+    margin-bottom: 18px;
+    color: #6b4f45;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.popup-content p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #5a443d;
+}
+
+.popup-content .button-groupx{
+    margin-top: 40px;
+}
+
+.popup-content button {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 12px 40px;
+    border: none;
+    border-radius: 8px;
+    background: #c09678;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.popup-content button:hover {
+    background: #a37f63;
+    transform: scale(1.05);
+}
+
+.popup-content button:active {
+    transform: scale(0.98);
+}
+
+#update-password-btn {
+    margin-bottom: 20px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fdf3e7;
+    padding: 35px;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
+    border-radius: 14px;
+    width: 380px;
+    z-index: 1002;
+    text-align: center;
+}
+
+.popup h3 {
+    color: #6b4f45;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.popup input {
+    width: 92%;
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid #c4a58b;
+    border-radius: 8px;
+    background: #fff7f0;
+    color: #4a3b35;
+    font-size: 14px;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.popup input:focus {
+    border: 1px solid #a37f63;
+    box-shadow: 0px 0px 6px rgba(163, 127, 99, 0.4);
+    outline: none;
+}
+
+.popup .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.popup button {
+    padding: 12px 30px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.popup button:hover {
+    transform: scale(1.05);
+}
+
+.popup button {
+    background: #c09678;
+    color: white;
+}
+
+.popup button:hover {
+    background: #a37f63;
+}
+
+.popup button.close {
+    background: #e57373;
+}
+
+.popup button.close:hover {
+    background: #d65c5c;
+}
+
+@keyframes fadeIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

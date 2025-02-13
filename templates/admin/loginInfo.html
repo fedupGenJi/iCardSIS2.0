@@ -67,6 +67,30 @@
             </div>
         </div>
 
+        <div id="update-popup" class="popup-overlay" style="display: none;">
+          <div class="popup-content">
+              <h2 id="popup-student-id"></h2>
+              <p>Phone Number: <span id="popup-phone-number"></span></p>
+              <p>Email: <span id="popup-email"></span></p>
+              <div class="button-groupx">
+                <button id="update-password-btn" onclick="openPasswordPopup()">Update Password</button>
+                <button id="update-pin-btn">Update PIN</button>
+              </div>
+          </div>
+      </div>
+
+      <div id="overlay" class="popup-overlay" style="display: none;">
+        <div id="password-container" class="popup">
+            <h3>Enter New Password</h3>
+            <input type="password" id="new-password" placeholder="New Password">
+            <input type="password" id="confirm-password" placeholder="Confirm Password">
+            <div class="button-group">
+              <button onclick="updatePassword()">Submit</button>
+              <button class="close" onclick="closePasswordPopup()">Cancel</button>
+            </div>
+        </div>
+      </div>
+
     </div>
 
     <script src="{{url_for('static',filename='js/admin/loginInfo.js')}}"></script>
