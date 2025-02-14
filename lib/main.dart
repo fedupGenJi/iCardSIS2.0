@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(
-              body: Center(child: CircularProgressIndicator()), // Loading indicator
+              body: Center(
+                  child: CircularProgressIndicator()), // Loading indicator
             );
           }
           if (snapshot.hasData && snapshot.data != null) {

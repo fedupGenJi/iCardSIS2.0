@@ -70,55 +70,60 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     if (_data.isEmpty) {
-      return Scaffold(
-        backgroundColor: backgroundColor,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedContainer(
-                duration: Duration(seconds: 1),
-                curve: Curves.easeInOut,
-                height: 200,
-                width: 200,
-                child: Image.asset("assets/loading-wtf.gif"),
-              ),
-              SizedBox(height: 20),
-              AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    'Database is SLOW:(',
-                    textStyle: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
+      return WillPopScope(
+        onWillPop: () async {
+          return true;
+        },
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedContainer(
+                  duration: Duration(seconds: 1),
+                  curve: Curves.easeInOut,
+                  height: 200,
+                  width: 200,
+                  child: Image.asset("assets/loading-wtf.gif"),
+                ),
+                SizedBox(height: 20),
+                AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Database is SLOW:(',
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
+                      speed: Duration(milliseconds: 100),
                     ),
-                    speed: Duration(milliseconds: 100),
-                  ),
-                  TypewriterAnimatedText(
-                    'BE THERE IN A MOMENT!',
-                    textStyle: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
+                    TypewriterAnimatedText(
+                      'BE THERE IN A MOMENT!',
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
+                      speed: Duration(milliseconds: 100),
                     ),
-                    speed: Duration(milliseconds: 100),
-                  ),
-                  TypewriterAnimatedText(
-                    'Here we go again:(',
-                    textStyle: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
+                    TypewriterAnimatedText(
+                      'Here we go again:(',
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
+                      speed: Duration(milliseconds: 100),
                     ),
-                    speed: Duration(milliseconds: 100),
-                  ),
-                ],
-                repeatForever: true,
-              ),
-              SizedBox(height: 30),
-              CircularProgressIndicator(color: primaryColor),
-            ],
+                  ],
+                  repeatForever: true,
+                ),
+                SizedBox(height: 30),
+                CircularProgressIndicator(color: primaryColor),
+              ],
+            ),
           ),
         ),
       );
@@ -277,42 +282,39 @@ class _HomepageState extends State<Homepage> {
         mainAxisSpacing: 15,
         crossAxisSpacing: 15,
         children: [
-          _buildGridButton("assets/file.png", "Statement",
-          () {
-                _showDialog("label");
-              }
-          ),
-          _buildGridButton("assets/fine.png", "Pay Fine",
-          () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Payfine(
-                    ),
-                  ),
-                );
-              }
-          ),
-          _buildGridButton("assets/subscription.png", "New Subscription",  () {
-                _showDialog("label");
-              }),
-          _buildGridButton("assets/book.png", "Library Log",  () {
-                _showDialog("label");
-              }),
-          _buildGridButton("assets/card.png", "Transport Card",  () {
-                _showDialog("label");
-              }),
-          _buildGridButton("assets/restore.png", "Activity",  () {
-                _showDialog("label");
-              }),
+          _buildGridButton("assets/file.png", "Statement", () {
+            _showDialog("label");
+          }),
+          _buildGridButton("assets/fine.png", "Pay Fine", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Payfine(
+                  stdId: "${widget.stdId}",
+                ),
+              ),
+            );
+          }),
+          _buildGridButton("assets/subscription.png", "New Subscription", () {
+            _showDialog("label");
+          }),
+          _buildGridButton("assets/book.png", "Library Log", () {
+            _showDialog("label");
+          }),
+          _buildGridButton("assets/card.png", "Transport Card", () {
+            _showDialog("label");
+          }),
+          _buildGridButton("assets/restore.png", "Activity", () {
+            _showDialog("label");
+          }),
         ],
       ),
     );
   }
 
-  Widget _buildGridButton(String asset, String label,VoidCallback onTap) {
+  Widget _buildGridButton(String asset, String label, VoidCallback onTap) {
     return GestureDetector(
-    onTap: onTap,
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
