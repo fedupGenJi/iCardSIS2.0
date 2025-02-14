@@ -420,3 +420,24 @@ function closePopup() {
     }
 }
 document.getElementById("close-popup").addEventListener("click", closePopup);
+
+function toggleGroupVisibility(group, imgElement) {
+    let inputs = [];
+
+    if (group === "password-group") {
+        inputs = [document.getElementById("new-password"), document.getElementById("confirm-password")];
+    } else if (group === "pin-group") {
+        inputs = [document.getElementById("new-pin"), document.getElementById("confirm-pin")];
+    }
+
+    let isHidden = inputs[0].type === "password";
+
+    inputs.forEach(input => {
+        input.type = isHidden ? "text" : "password";
+    });
+
+    let images = document.querySelectorAll(`.input-container img[onclick*="${group}"]`);
+    images.forEach(img => {
+        img.src = isHidden ? "../../static/assests/icons/eyes.png" : "../../static/assests/icons/noEyes.png";
+    });
+}

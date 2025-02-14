@@ -82,8 +82,16 @@
       <div id="overlay" class="popup-overlay" style="display: none;">
         <div id="password-container" class="popup">
             <h3>Enter New Password</h3>
-            <input type="password" id="new-password" placeholder="New Password">
-            <input type="password" id="confirm-password" placeholder="Confirm Password">
+            <div class="input-container">
+              <input type="password" id="new-password" placeholder="New Password">
+              <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
+                   class="toggle-visibility" onclick="toggleGroupVisibility('password-group', this)">
+            </div>
+            <div class="input-container">
+              <input type="password" id="confirm-password" placeholder="Confirm Password">
+              <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
+                   class="toggle-visibility" onclick="toggleGroupVisibility('password-group', this)">
+            </div>
             <div class="button-group">
               <button onclick="updatePassword()">Submit</button>
               <button class="close" onclick="closePasswordPopup()">Cancel</button>
@@ -94,8 +102,16 @@
       <div id="overlayxx" class="popup-overlay" style="display: none;">
         <div id="pin-container" class="popup">
             <h3>Enter New Pin</h3>
-            <input type="password" id="new-pin" placeholder="New Pin" maxlength="4" oninput="validatePin(this)">
-            <input type="password" id="confirm-pin" placeholder="Confirm Pin" maxlength="4" oninput="validatePin(this)">
+            <div class="input-container">
+              <input type="password" id="new-pin" placeholder="New Pin" maxlength="4" oninput="validatePin(this)">
+              <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
+                   class="toggle-visibility" onclick="toggleGroupVisibility('pin-group', this)">
+            </div>
+            <div class="input-container">
+              <input type="password" id="confirm-pin" placeholder="Confirm Pin" maxlength="4" oninput="validatePin(this)">
+              <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
+                  class="toggle-visibility" onclick="toggleGroupVisibility('pin-group', this)">
+            </div>
             <div class="button-group">
               <button onclick="updatePin()">Submit</button>
               <button class="close" onclick="closePinPopup()">Cancel</button>
