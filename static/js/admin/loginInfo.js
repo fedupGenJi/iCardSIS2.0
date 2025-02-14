@@ -265,13 +265,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("popup-email").textContent = student.Gmail;
 
                         updatePopup.style.display = "flex";
-
-                        document.getElementById("update-pin-btn").onclick = function () {
-                            let newPin = prompt(`Enter new PIN for Student ID ${studentId}:`);
-                            if (newPin) {
-                                alert(`PIN updated to: ${newPin} (not saved yet)`);
-                            }
-                        };
                     } else {
                         console.error("Student data not found.");
                     }
@@ -286,15 +279,31 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 let passwordChanged = false;
+let pinChanged = false;
 
 function openPasswordPopup() {
     document.getElementById("password-container").style.display = "block";
     document.getElementById("overlay").style.display = "block";
 }
 
+function openPinPopup() {
+    document.getElementById("pin-container").style.display = "block";
+    document.getElementById("overlayxx").style.display = "block";
+}
+
+function validatePin(input) {
+    input.value = input.value.replace(/\D/g, '').slice(0, 4);
+}
+
 document.getElementById("overlay").addEventListener("click", function (event) {
     if (event.target.id === "overlay") {
         closePasswordPopup();
+    }
+});
+
+document.getElementById("overlayxx").addEventListener("click", function (event) {
+    if (event.target.id === "overlayxx") {
+        closePinPopup();
     }
 });
 
@@ -304,6 +313,18 @@ function closePasswordPopup() {
 
     document.getElementById("new-password").value = "";
     document.getElementById("confirm-password").value = "";
+}
+
+function closePinPopup() {
+    document.getElementById("pin-container").style.display = "none";
+    document.getElementById("overlayxx").style.display = "none";
+
+    document.getElementById("new-pin").value = "";
+    document.getElementById("confirm-pin").value = "";
+}
+
+function validatePin(input) {
+    input.value = input.value.replace(/\D/g, '').slice(0, 4);
 }
 
 function updatePassword() {
@@ -338,6 +359,47 @@ function updatePassword() {
     showPopup();
 }
 
+function updatePin() {
+    let newPin = document.getElementById("new-pin").value;
+    let confirmPin = document.getElementById("confirm-pin").value;
+    let popupContent = document.querySelector(".popup-content");
+    let popupMessage = document.getElementById("popup-message");
+    let popupTitle = document.querySelector(".popup-content h2");
+
+    if(newPin.length != 4)
+    {
+        popupContent.classList.add("errorx");
+        popupContent.classList.remove("success");
+        popupTitle.innerHTML = '<span class="error-icon">??</span> Error';
+        popupMessage.innerText = "4 digit pin is required.";
+        pinChanged = false;
+    }
+    else{
+        if (newPin && confirmPin) {
+            if (newPin === confirmPin) {
+                popupContent.classList.add("success");
+                popupContent.classList.remove("errorx");
+                popupTitle.innerHTML = '<span class="success-icon">✔</span> Success';
+                popupMessage.innerText = "Pin updated successfully!";
+                pinChanged = true;
+            } else {
+                popupContent.classList.add("errorx");
+                popupContent.classList.remove("success");
+                popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
+                popupMessage.innerText = "Pin do not match. Please try again.";
+                pinChanged = false;
+            }
+        } else {
+            popupContent.classList.add("errorx");
+            popupContent.classList.remove("success");
+            popupTitle.innerHTML = '<span class="error-icon">!</span> Error';
+            popupMessage.innerText = "Both fields are required.";
+            pinChanged = false;
+        }
+    }
+    showPopup();
+}
+
 function showPopup() {
     let popup = document.querySelector(".login-popup");
     popup.style.display = "flex";
@@ -348,6 +410,10 @@ function closePopup() {
     popup.style.display = "none";
     if(passwordChanged){
         closePasswordPopup();
+    }
+    if(pinChanged)
+    {
+        closePinPopup();
     }
     if (!passwordChanged) {
         document.getElementById("password-container").style.display = "block";

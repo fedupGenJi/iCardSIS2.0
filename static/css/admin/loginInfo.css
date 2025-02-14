@@ -76,7 +76,7 @@ h1.page-title {
 .search-icon-btn {
     background: transparent;
     position: absolute;
-    top: 50%;
+    top: 80%;
     left: calc(85% + 70px);
     transform: translateY(-100%);
     border: none;

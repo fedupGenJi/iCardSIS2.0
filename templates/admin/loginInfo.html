@@ -74,7 +74,7 @@
               <p>Email: <span id="popup-email"></span></p>
               <div class="button-groupx">
                 <button id="update-password-btn" onclick="openPasswordPopup()">Update Password</button>
-                <button id="update-pin-btn">Update PIN</button>
+                <button id="update-pin-btn" onclick="openPinPopup()">Update PIN</button>
               </div>
           </div>
       </div>
@@ -87,6 +87,18 @@
             <div class="button-group">
               <button onclick="updatePassword()">Submit</button>
               <button class="close" onclick="closePasswordPopup()">Cancel</button>
+            </div>
+        </div>
+      </div>
+
+      <div id="overlayxx" class="popup-overlay" style="display: none;">
+        <div id="pin-container" class="popup">
+            <h3>Enter New Pin</h3>
+            <input type="password" id="new-pin" placeholder="New Pin" maxlength="4" oninput="validatePin(this)">
+            <input type="password" id="confirm-pin" placeholder="Confirm Pin" maxlength="4" oninput="validatePin(this)">
+            <div class="button-group">
+              <button onclick="updatePin()">Submit</button>
+              <button class="close" onclick="closePinPopup()">Cancel</button>
             </div>
         </div>
       </div>
