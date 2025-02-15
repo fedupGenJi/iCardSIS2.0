@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:icardsis/activity.dart';
+import 'package:icardsis/librarylog.dart';
 import 'package:icardsis/payfine.dart';
 import 'dart:typed_data';
 import 'config.dart';
@@ -309,7 +310,14 @@ class _HomepageState extends State<Homepage> {
             _showDialog("label");
           }),
           _buildGridButton("assets/book.png", "Library Log", () {
-            _showDialog("label");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LibraryLog(
+                  stdId: "${widget.stdId}",
+                ),
+              ),
+            );
           }),
           _buildGridButton("assets/card.png", "Transport Card", () {
             _showDialog("label");
