@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request, jsonify
-from modules.loginOperation import get_admin_details  
+from modules.loginOperation import get_admin_details, passwordUpdate, pinUpdate
 from modules.registration import *
 import json
 
@@ -117,3 +117,59 @@ def delLogin():
         return jsonify({"success":"Student removed with id:{student_id}"}),200
     else:
         return jsonify({"databaseError":"Database couldn't complete request"}),400
+    
+@admin.route('/api/updatePassword', methods=['PUT'])
+def updatePass():
+    try:
+        data = request.get_json()
+        
+        student_id = data.get('studentId')
+        new_password = data.get('newPassword')
+
+        if not student_id or not new_password:
+            return jsonify({"message": "Missing studentId or newPassword"}), 400
+
+        try:
+            stdId = int(student_id)
+        except ValueError:
+            return jsonify({"message": "Invalid studentId format"}), 400
+
+        result = passwordUpdate(stdId, new_password)
+
+        if result == "success":
+            return jsonify({"message": "Password updated successfully"}), 200
+        elif result == "not_found":
+            return jsonify({"message": "Student ID not found"}), 404
+        else:
+            return jsonify({"message": "Failed to update password"}), 500
+
+    except Exception as e:
+        return jsonify({"message": f"Server error: {str(e)}"}), 500
+
+@admin.route('/api/updatePin', methods=['PUT'])
+def updatePin():
+    try:
+        data = request.get_json()
+        
+        student_id = data.get('studentId')
+        new_pin = data.get('newPin')
+
+        if not student_id or not new_pin:
+            return jsonify({"message": "Missing studentId or newPin"}), 400
+
+        try:
+            stdId = int(student_id)
+        except ValueError:
+            return jsonify({"message": "Invalid studentId format"}), 400
+
+        result = pinUpdate(stdId, new_pin)
+
+        if result == "success":
+            return jsonify({"message": "Pin updated successfully"}), 200
+        elif result == "not_found":
+            return jsonify({"message": "Student ID not found"}), 404
+        else:
+            return jsonify({"message": "Failed to update pin"}), 500
+
+    except Exception as e:
+        return jsonify({"message": f"Server error: {str(e)}"}), 500

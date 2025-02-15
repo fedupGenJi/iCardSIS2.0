@@ -5,6 +5,7 @@ import bcrypt
 import string 
 import random
 import base64
+from modules.operationA import audit_input
 
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -16,7 +17,6 @@ def secure_key():
     characters = string.ascii_letters + string.digits + string.punctuation
     return ''.join(random.choice(characters) for _ in range(length))
 
-""""
 #password-hashing
 def hash_password(plain_password):
     try:
@@ -26,7 +26,7 @@ def hash_password(plain_password):
     except Exception as e:
         print(f"Error hashing password: {e}")
         return None
-"""
+
 #mysql-database connection
 def connect_to_database():
     try:
@@ -129,3 +129,65 @@ def get_admin_details(gmail):
     }
     
     return admin_details
+
+def passwordUpdate(studentId, newPassword):
+    connection = connect_to_database()
+    
+    try:
+        with connection.cursor() as cursor:
+            query = "SELECT phoneNo FROM loginInfo WHERE studentId = %s"
+            cursor.execute(query, (studentId,))
+            result = cursor.fetchone()
+
+            if result:
+                mobile_number = result[0]
+                print(f"Mobile Number found: {mobile_number}")
+
+                # Hash the new password
+                hashed_password = hash_password(newPassword)
+
+                update_query = "UPDATE loginInfo SET password = %s WHERE studentId = %s"
+                cursor.execute(update_query, (hashed_password, studentId))
+                
+                connection.commit()
+                audit_input(studentId,f"Password updated for {mobile_number}")
+                return "success"
+            else:
+                return "not_found"
+
+    except Exception as e:
+        print(f"Database error in passwordUpdate: {str(e)}")
+        return "db_error"
+
+    finally:
+        connection.close()
+
+def pinUpdate(studentId, newPin):
+    connection = connect_to_database()
+    
+    try:
+        with connection.cursor() as cursor:
+            query = "SELECT phoneNo FROM loginInfo WHERE studentId = %s"
+            cursor.execute(query, (studentId,))
+            result = cursor.fetchone()
+
+            if result:
+                mobile_number = result[0]
+                print(f"Mobile Number found: {mobile_number}")
+
+
+                update_query = "UPDATE loginInfo SET pin = %s WHERE studentId = %s"
+                cursor.execute(update_query, (newPin, studentId))
+                
+                connection.commit()
+                audit_input(studentId,f"Pin updated for {mobile_number}")
+                return "success"
+            else:
+                return "not_found"
+
+    except Exception as e:
+        print(f"Database error in passwordUpdate: {str(e)}")
+        return "db_error"
+
+    finally:
+        connection.close()

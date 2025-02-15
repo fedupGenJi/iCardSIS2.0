@@ -244,6 +244,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+let selectedStudentId = null;
+
 document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("click", function (event) {
         const updatePopup = document.getElementById("update-popup");
@@ -255,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const studentIdElement = idCardContainer.querySelector("h2");
                 if (studentIdElement) {
                     const studentId = studentIdElement.textContent.trim();
+                    selectedStudentId = studentId;
                     console.log(`Update button clicked for Student ID: ${studentId}`);
 
                     const student = studentDatabase.find(st => String(st.studentId) === String(studentId));
@@ -282,11 +285,17 @@ let passwordChanged = false;
 let pinChanged = false;
 
 function openPasswordPopup() {
+    if (selectedStudentId) {
+        document.getElementById("password-popup-student-id").textContent = `Student ID: ${selectedStudentId}`;
+    }
     document.getElementById("password-container").style.display = "block";
     document.getElementById("overlay").style.display = "block";
 }
 
 function openPinPopup() {
+    if (selectedStudentId) {
+        document.getElementById("pin-popup-student-id").textContent = `Student ID: ${selectedStudentId}`;
+    }
     document.getElementById("pin-container").style.display = "block";
     document.getElementById("overlayxx").style.display = "block";
 }
@@ -327,15 +336,48 @@ function validatePin(input) {
     input.value = input.value.replace(/\D/g, '').slice(0, 4);
 }
 
-function updatePassword() {
+async function updatePassword() {
     let newPassword = document.getElementById("new-password").value;
     let confirmPassword = document.getElementById("confirm-password").value;
     let popupContent = document.querySelector(".popup-content");
     let popupMessage = document.getElementById("popup-message");
     let popupTitle = document.querySelector(".popup-content h2");
 
-    if (newPassword && confirmPassword) {
-        if (newPassword === confirmPassword) {
+    if (!newPassword || !confirmPassword) {
+        popupContent.classList.add("errorx");
+        popupContent.classList.remove("success");
+        popupTitle.innerHTML = '<span class="error-icon">!</span> Error';
+        popupMessage.innerText = "Both fields are required.";
+        passwordChanged = false;
+        showPopup();
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        popupContent.classList.add("errorx");
+        popupContent.classList.remove("success");
+        popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
+        popupMessage.innerText = "Passwords do not match. Please try again.";
+        passwordChanged = false;
+        showPopup();
+        return;
+    }
+
+    try {
+        let response = await fetch('/api/updatePassword', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                studentId: selectedStudentId,
+                newPassword: newPassword
+            })
+        });
+
+        let data = await response.json();
+
+        if (response.ok) {
             popupContent.classList.add("success");
             popupContent.classList.remove("errorx");
             popupTitle.innerHTML = '<span class="success-icon">✔</span> Success';
@@ -345,21 +387,20 @@ function updatePassword() {
             popupContent.classList.add("errorx");
             popupContent.classList.remove("success");
             popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
-            popupMessage.innerText = "Passwords do not match. Please try again.";
+            popupMessage.innerText = data.message || "Server error. Please try again later.";
             passwordChanged = false;
         }
-        showPopup();
-    } else {
+    } catch (error) {
         popupContent.classList.add("errorx");
         popupContent.classList.remove("success");
-        popupTitle.innerHTML = '<span class="error-icon">!</span> Error';
-        popupMessage.innerText = "Both fields are required.";
+        popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
+        popupMessage.innerText = "Network error. Please try again.";
         passwordChanged = false;
     }
     showPopup();
 }
 
-function updatePin() {
+async function updatePin() {
     let newPin = document.getElementById("new-pin").value;
     let confirmPin = document.getElementById("confirm-pin").value;
     let popupContent = document.querySelector(".popup-content");
@@ -373,29 +414,65 @@ function updatePin() {
         popupTitle.innerHTML = '<span class="error-icon">??</span> Error';
         popupMessage.innerText = "4 digit pin is required.";
         pinChanged = false;
+        showPopup();
+        return;
     }
-    else{
-        if (newPin && confirmPin) {
-            if (newPin === confirmPin) {
-                popupContent.classList.add("success");
-                popupContent.classList.remove("errorx");
-                popupTitle.innerHTML = '<span class="success-icon">✔</span> Success';
-                popupMessage.innerText = "Pin updated successfully!";
-                pinChanged = true;
-            } else {
-                popupContent.classList.add("errorx");
-                popupContent.classList.remove("success");
-                popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
-                popupMessage.innerText = "Pin do not match. Please try again.";
-                pinChanged = false;
-            }
+
+    if(!newPin || !confirmPin)
+    {
+        popupContent.classList.add("errorx");
+        popupContent.classList.remove("success");
+        popupTitle.innerHTML = '<span class="error-icon">!</span> Error';
+        popupMessage.innerText = "Both fields are required.";
+        pinChanged = false;
+        showPopup();
+        return;
+    }
+
+    if(newPin !== confirmPin)
+    {
+        popupContent.classList.add("errorx");
+        popupContent.classList.remove("success");
+        popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
+        popupMessage.innerText = "Pin do not match. Please try again.";
+        pinChanged = false;
+        showPopup();
+        return;
+    }
+    
+    try {
+        let response = await fetch('/api/updatePin', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                studentId: selectedStudentId,
+                newPin: newPin
+            })
+        });
+
+        let data = await response.json();
+
+        if (response.ok) {
+            popupContent.classList.add("success");
+            popupContent.classList.remove("errorx");
+            popupTitle.innerHTML = '<span class="success-icon">✔</span> Success';
+            popupMessage.innerText = "Pin updated successfully!";
+            pinChanged = true;
         } else {
             popupContent.classList.add("errorx");
             popupContent.classList.remove("success");
-            popupTitle.innerHTML = '<span class="error-icon">!</span> Error';
-            popupMessage.innerText = "Both fields are required.";
+            popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
+            popupMessage.innerText = data.message || "Server error. Please try again later.";
             pinChanged = false;
         }
+    } catch (error) {
+        popupContent.classList.add("errorx");
+        popupContent.classList.remove("success");
+        popupTitle.innerHTML = '<span class="error-icon">✖</span> Error';
+        popupMessage.innerText = "Network error. Please try again.";
+        pinChanged = false;
     }
     showPopup();
 }

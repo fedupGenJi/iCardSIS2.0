@@ -82,6 +82,7 @@
       <div id="overlay" class="popup-overlay" style="display: none;">
         <div id="password-container" class="popup">
             <h3>Enter New Password</h3>
+            <p id="password-popup-student-id"></p>
             <div class="input-container">
               <input type="password" id="new-password" placeholder="New Password">
               <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
@@ -102,6 +103,7 @@
       <div id="overlayxx" class="popup-overlay" style="display: none;">
         <div id="pin-container" class="popup">
             <h3>Enter New Pin</h3>
+            <p id="pin-popup-student-id"></p>
             <div class="input-container">
               <input type="password" id="new-pin" placeholder="New Pin" maxlength="4" oninput="validatePin(this)">
               <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
