@@ -1,22 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>iCardSIS-Lend/Return</title>
-    <link rel="website icon" type="png" href="{{url_for('static',filename='assests/images/webIcon.png')}}">
-    <link rel="stylesheet" href="{{url_for('static',filename='css/library/lendReturn.css')}}">
-    <link rel="stylesheet" href="{{url_for('static',filename='css/library/navbar.css')}}">
-</head>
-<body>
+    <link rel="website icon" type="png" href="{{url_for('static',filename='assests/images/webIcon.png')}}"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/lendReturn.css')}}"/>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/navbar.css')}}"/>
+  </head>
+  <body>
 
     <div class="background"></div>
 
-    <div class="navbarpost">
-        {% include 'library/navbar.html' %}
-    </div>
+    <div class="navbarpost">{% include 'library/navbar.html' %}</div>
 
     <h1 class="page-title">Lend/Return Books</h1>
+
+    <div class="homepage-container">
+      <div class="box" id="lendBookBtn">
+        <img src="{{url_for('static',filename='assests/icons/bookTaken.png')}}" alt="Add New Book" class="icon-img"/>
+        <span>Lend Book</span>
+      </div>
+      <div class="box" id="returnBookBtn">
+        <img src="{{url_for('static',filename='assests/icons/bookReturned.png')}}" alt="Expire Book" class="icon-img"/>
+        <span>Return Book</span>
+      </div>
+    </div>
+
+    <div id="lendBookModal" class="modalx">
+        <div class="modalx-content">
+          <h2>Add New Book</h2>
+          <form id="lendBookForm">
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" name="studentId" placeholder="Student ID" maxlength="4" required/>
+      
+            <label for="bookId">Book ID:</label>
+            <input type="text" id="bookId" name="bookId" placeholder="Book ID" required/>
+      
+            <label for="submissionDate">Submission Date:</label>
+            <input type="text" id="submissionDate" name="submissionDate" placeholder="YYYY-MM-DD" required/>
+      
+            <div class="modalx-buttons">
+              <button type="submit">Submit</button>
+              <button type="button" id="closeModalBtn">Close</button>
+            </div>
+          </form>
+        </div>
+    </div>     
+
+    <div id="returnBookModal" class="modalx">
+        <div class="modalx-content">
+          <h2>Add New Book</h2>
+          <form id="returnBookForm">
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentIdx" name="studentId" placeholder="Student ID" maxlength="4" required/>
+      
+            <label for="bookId">Book ID:</label>
+            <input type="text" id="bookIdx" name="bookId" placeholder="Book ID" required/>
+      
+            <div class="modalx-buttons">
+              <button type="submit">Submit</button>
+              <button type="button" id="closeModalBtn">Close</button>
+            </div>
+          </form>
+        </div>
+    </div> 
+    
+    <div id="messageBox" class="hidden">
+        <p id="messageText"></p>
+        <button id="messageButton" onclick="closeMessageBox()">OK</button>
+    </div>
 
     <script src="{{url_for('static',filename='js/library/lendReturn.js')}}"></script>
     <script src="{{url_for('static',filename='js/library/navbar.js')}}"></script>
