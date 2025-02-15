@@ -32,39 +32,13 @@ class _PayfineState extends State<Payfine> {
                   return IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Confirmation'),
-                            content: const Text(
-                                'Do you want to go to the homepage?'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('Cancel'),
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(); // Dismiss the dialog
-                                },
-                              ),
-                              TextButton(
-                                child: const Text('Yes'),
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(); // Dismiss the dialog
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Homepage(
-                                        stdId: "${widget.stdId}",
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          );
-                        },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Homepage(
+                            stdId: "${widget.stdId}",
+                          ),
+                        ),
                       );
                     },
                   );

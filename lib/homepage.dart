@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:icardsis/activity.dart';
 import 'package:icardsis/librarylog.dart';
+import 'package:icardsis/newSubscription.dart';
 import 'package:icardsis/payfine.dart';
 import 'dart:typed_data';
 import 'config.dart';
@@ -84,13 +85,13 @@ class _HomepageState extends State<Homepage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AnimatedContainer(
-                  duration: Duration(seconds: 1),
-                  curve: Curves.easeInOut,
-                  height: 200,
-                  width: 200,
-                  child: Image.asset("assets/loading-wtf.gif"),
-                ),
+                // AnimatedContainer(
+                //   duration: Duration(seconds: 1),
+                //   curve: Curves.easeInOut,
+                //   height: 200,
+                //   width: 200,
+                //   child: Image.asset("assets/loading-wtf.gif"),
+                // ),
                 SizedBox(height: 20),
                 AnimatedTextKit(
                   animatedTexts: [
@@ -306,8 +307,15 @@ class _HomepageState extends State<Homepage> {
               ),
             );
           }),
-          _buildGridButton("assets/subscription.png", "New Subscription", () {
-            _showDialog("label");
+          _buildGridButton("assets/subscription.png", "Bus Subscription", () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewSubscription(
+                  stdId: "${widget.stdId}",
+                ),
+              ),
+            );
           }),
           _buildGridButton("assets/book.png", "Library Log", () {
             Navigator.push(
