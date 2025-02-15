@@ -23,10 +23,10 @@ class _PayfineState extends State<Payfine> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFFFADCD5),
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xFFFADCD5),
               leading: Builder(
                 builder: (BuildContext context) {
                   return IconButton(

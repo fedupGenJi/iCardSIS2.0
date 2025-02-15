@@ -1,18 +1,200 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:icardsis/homepage.dart';
+import 'package:icardsis/newSubscription.dart';
 
 class Transportcard extends StatefulWidget {
-  const Transportcard({super.key});
+  final String stdId;
+  final bool isActive; // Add a boolean field to manage the status
+  const Transportcard({Key? key, required this.stdId, required this.isActive})
+      : super(key: key);
 
   @override
-  State<Transportcard> createState() => _StatementState();
+  State<Transportcard> createState() => transport();
 }
 
-class _StatementState extends State<Transportcard> {
+class transport extends State<Transportcard> {
+  Uint8List? get imageBytes => null;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-      
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Color(0xFFFADCD5),
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            backgroundColor: Color(0xFFFADCD5),
+            leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Homepage(
+                          stdId: "${widget.stdId}",
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          body: Padding(
+            padding: EdgeInsets.all(16.5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Container(
+                      height: 150,
+                      width: 150,
+                      child: Image.asset('assets/ICARDSIS.png'),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      "ICardSIS",
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Righteous',
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Transport Card",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Status: ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      widget.isActive ? "Active " : "Inactive ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                if (!widget.isActive)
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewSubscription(
+                            stdId: "${widget.stdId}",
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text('Buy Bus Pass'),
+                  ),
+                SizedBox(height: 20),
+                widget.isActive
+                    ? Container(
+                        height: 450,
+                        width: 390,
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 150,
+                              width: 150,
+                              child: Image.asset('assets/3135715.png'),
+                            ),
+                            SizedBox(height: 20),
+                            Center(
+                              child: Container(
+                                height: 200,
+                                width: 300,
+                                child: Column(
+                                  children: [
+                                    _buildInfoRow('Name:', 'John Doe'),
+                                    _buildInfoRow('Rout:', 'Lokan thali'),
+                                    _buildInfoRow('Expirey:', '31-12-2025'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(), // Show empty container when card is inactive
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
+}
+
+class _data {}
+
+Widget _buildInfoRow(String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Row(
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+          ),
+        ),
+        SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 20),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    ),
+  );
 }

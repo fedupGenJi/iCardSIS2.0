@@ -7,10 +7,10 @@ class NewSubscription extends StatefulWidget {
   const NewSubscription({Key? key, required this.stdId}) : super(key: key);
 
   @override
-  State<NewSubscription> createState() => _PayfineState();
+  State<NewSubscription> createState() => NewSub();
 }
 
-class _PayfineState extends State<NewSubscription> {
+class NewSub extends State<NewSubscription> {
   final TextEditingController _pinController = TextEditingController();
 
   void _showPinDialog(BuildContext context) {
@@ -65,10 +65,10 @@ class _PayfineState extends State<NewSubscription> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFFFADCD5),
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xFFFADCD5),
               leading: Builder(
                 builder: (BuildContext context) {
                   return IconButton(

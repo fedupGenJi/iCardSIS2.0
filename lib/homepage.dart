@@ -4,6 +4,7 @@ import 'package:icardsis/activity.dart';
 import 'package:icardsis/librarylog.dart';
 import 'package:icardsis/newSubscription.dart';
 import 'package:icardsis/payfine.dart';
+import 'package:icardsis/sendmoney.dart';
 import 'dart:typed_data';
 import 'config.dart';
 import 'loginpage.dart';
@@ -13,6 +14,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'statement.dart';
+import 'transportcard.dart';
 
 class Homepage extends StatefulWidget {
   final String stdId;
@@ -248,7 +250,14 @@ class _HomepageState extends State<Homepage> {
               }),
               SizedBox(width: 10),
               _buildActionButton(Icons.send, "Send Money", () {
-                _showDialog("Send Money");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Sendmoney(
+                      stdId: "${widget.stdId}",
+                    ),
+                  ),
+                );
               }),
             ],
           ),
@@ -328,7 +337,15 @@ class _HomepageState extends State<Homepage> {
             );
           }),
           _buildGridButton("assets/card.png", "Transport Card", () {
-            _showDialog("label");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Transportcard(
+                  stdId: "${widget.stdId}",
+                  isActive: false,
+                ),
+              ),
+            );
           }),
           _buildGridButton("assets/restore.png", "Activity", () {
             Navigator.push(

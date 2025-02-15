@@ -8,10 +8,10 @@ class Report extends StatefulWidget {
   const Report({Key? key, required this.stdId}) : super(key: key);
 
   @override
-  State<Report> createState() => _PayfineState();
+  State<Report> createState() => Reportpage();
 }
 
-class _PayfineState extends State<Report> {
+class Reportpage extends State<Report> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -21,10 +21,10 @@ class _PayfineState extends State<Report> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFFFADCD5),
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xFFFADCD5),
               leading: Builder(
                 builder: (BuildContext context) {
                   return IconButton(
