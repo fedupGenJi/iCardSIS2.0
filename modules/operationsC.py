@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
+from modules.operationsB import audit_input
 import sys
 import os
 import bcrypt
@@ -74,6 +75,9 @@ def sendMoneyx(studentId, amount, phoneNo):
         cursor.execute("UPDATE studentInfo SET balance = balance - %s WHERE studentId = %s", (amount, studentId))
         cursor.execute("UPDATE studentInfo SET balance = balance + %s WHERE studentId = %s", (amount, newStudentId))
         conn.commit()
+
+        audit_input(studentId,f"{amount} sent to {newStudentId}")
+        audit_input(newStudentId,f"{amount} received from {studentId}")
         
         return True, "Money sent successfully"
         
