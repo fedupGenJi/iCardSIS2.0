@@ -19,7 +19,7 @@ def sendSMS(data):
         if not phoneNo:
             raise ValueError("Phone number is required")
 
-        message = f"Hey there, Welcome to ICardSIS<3 \n Your verification token is {otp}"
+        message = f"Hey there, Welcome to ICardSIS \n Your verification token is {otp} \n By: Code Crafters"
 
         conn = http.client.HTTPSConnection("api.sparrowsms.com")
 

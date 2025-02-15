@@ -2,6 +2,9 @@ from flask import Flask,request,jsonify,redirect,render_template_string
 import requests
 import json
 import socket
+import qrcode
+import io
+import base64
 from modules.operationsA import *
 from modules.operationsB import *
 from modules.sparrowSMS import *
@@ -240,6 +243,30 @@ def payment_result():
             'status': False,
             'message': 'Invalid payment information.'
         })
+    
+@appServer.route('/generateQR', methods=['POST'])
+def generateQRs():
+    data = request.json.get("stdId", "")
+    
+    if not data:
+        return jsonify({"error": "No student ID provided"}), 400
+
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill="black", back_color="white")
+
+    buffered = io.BytesIO()
+    img.save(buffered, format="PNG")
+    img_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+    return jsonify({"qr_code": img_base64})
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
