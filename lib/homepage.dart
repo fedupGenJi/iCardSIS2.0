@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:icardsis/activity.dart';
 import 'package:icardsis/payfine.dart';
 import 'dart:typed_data';
 import 'config.dart';
@@ -8,6 +9,8 @@ import 'khalti.dart';
 import 'dart:convert';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'statement.dart';
 
 class Homepage extends StatefulWidget {
   final String stdId;
@@ -283,7 +286,14 @@ class _HomepageState extends State<Homepage> {
         crossAxisSpacing: 15,
         children: [
           _buildGridButton("assets/file.png", "Statement", () {
-            _showDialog("label");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Statement(
+                  stdId: "${widget.stdId}",
+                ),
+              ),
+            );
           }),
           _buildGridButton("assets/fine.png", "Pay Fine", () {
             Navigator.push(
@@ -305,7 +315,14 @@ class _HomepageState extends State<Homepage> {
             _showDialog("label");
           }),
           _buildGridButton("assets/restore.png", "Activity", () {
-            _showDialog("label");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Activity(
+                  stdId: "${widget.stdId}",
+                ),
+              ),
+            );
           }),
         ],
       ),
