@@ -7,6 +7,7 @@ library = Blueprint('library', __name__)
 
 @library.route('/library/homepage')
 def lib_homepage():
+    fineCalculator()
     if not session.get('logged_in'):  
         return redirect(url_for('home')) 
     

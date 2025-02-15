@@ -94,6 +94,8 @@ def takeBookfromStd(studentId, bookId):
         cursor.execute("UPDATE maxBooks SET booksLended = booksLended - 1 WHERE studentID = %s", (studentId,))
         conn.commit()
 
+        audit_input(studentId,f"Book removed with BookId:{bookId}")
+
         cursor.execute("SELECT * FROM book WHERE bookID = %s", (bookId,))
         book = cursor.fetchone()
         if book:
@@ -110,3 +112,50 @@ def takeBookfromStd(studentId, bookId):
         if conn.is_connected():
             cursor.close()
             conn.close()
+
+def fineCalculator():
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="LibraryDB"
+        )
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT sequence, studentID, deadline, days_dued FROM borrowedBooks")
+        borrowed_books = cursor.fetchall()
+
+        current_day = datetime.today().date()
+        # current_day = datetime.strptime("2025-02-18", "%Y-%m-%d").date()
+
+        for sequence, student_id, deadline, days_dued in borrowed_books:
+
+            deadline_date = datetime.strptime(deadline, "%Y-%m-%d").date()
+
+            days_expired = (current_day - deadline_date).days
+
+            if days_expired > 0:
+                new_days = days_expired - days_dued
+
+                if new_days > 0:
+                    fine_amount = new_days * 10
+
+                    cursor.execute("""
+                        INSERT INTO FineTable (studentID, fineAmount) 
+                        VALUES (%s, %s) 
+                        ON DUPLICATE KEY UPDATE fineAmount = fineAmount + VALUES(fineAmount)
+                    """, (student_id, fine_amount))
+
+                    cursor.execute("""
+                        UPDATE borrowedBooks 
+                        SET days_dued = days_dued + %s 
+                        WHERE sequence = %s
+                    """, (new_days, sequence))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+    except mysql.connector.Error as err:
+        print("Error:", err)
