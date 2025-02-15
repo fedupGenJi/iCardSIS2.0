@@ -106,3 +106,18 @@ def lendingBook():
 
     result = lendBooktoStd(studentIdx, bookIdx, submittedDate)
     return jsonify(result)
+
+@library.route('/library/returnBook', methods=['PUT'])
+def returningBook():
+    data = request.json
+    studentId = data.get("studentId")
+    bookId = data.get("bookId")
+
+    if not all([studentId, bookId]):
+        return jsonify({"status": False, "message": "Missing required fields"}), 400
+    
+    studentIdx = int(studentId)
+    bookIdx = int(bookId)
+
+    result = takeBookfromStd(studentIdx, bookIdx)
+    return jsonify(result)

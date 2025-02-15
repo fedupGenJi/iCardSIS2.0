@@ -66,3 +66,47 @@ def lendBooktoStd(studentId, bookId, submittedDate):
             cursor.close()
             conn.close()
 
+def takeBookfromStd(studentId, bookId):
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="LibraryDB"
+        )
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM FineTable WHERE studentID = %s", (studentId,))
+        student = cursor.fetchone()
+        if not student:
+            return {"status": False, "message": "Student not found"}
+
+        cursor.execute("SELECT * FROM borrowedBooks WHERE studentID = %s AND bookID = %s ORDER BY borrowedDate ASC", (studentId, bookId))
+        borrowed_books = cursor.fetchall()
+        if not borrowed_books:
+            return {"status": False, "message": f"Student has not borrowed any books with ID: {bookId}"}
+
+        oldest_book = borrowed_books[0]
+        cursor.execute("DELETE FROM borrowedBooks WHERE studentID = %s AND bookID = %s AND borrowedDate = %s LIMIT 1", 
+                    (studentId, bookId, oldest_book['borrowedDate']))
+        conn.commit()
+
+        cursor.execute("UPDATE maxBooks SET booksLended = booksLended - 1 WHERE studentID = %s", (studentId,))
+        conn.commit()
+
+        cursor.execute("SELECT * FROM book WHERE bookID = %s", (bookId,))
+        book = cursor.fetchone()
+        if book:
+            cursor.execute("UPDATE book SET noInStock = noInStock + 1 WHERE bookID = %s", (bookId,))
+            conn.commit()
+            return {"status": True, "message": "Book returned by student"}
+        else:
+            return {"status": True, "message": "Book received but dumped"}
+
+    except mysql.connector.Error as err:
+        return {"status": False, "message": f"Database error: {err}"}
+
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()

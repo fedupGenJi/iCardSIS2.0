@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     messageButton.addEventListener("click", closeMessageBox);
 
-    returnBookForm.addEventListener("submit", function (event) {
+    returnBookForm.addEventListener("submit", async function (event) {
         event.preventDefault();
         const studentIdInput = document.getElementById("studentIdx").value.trim();
         const bookIdInput = document.getElementById("bookIdx").value.trim();
@@ -178,7 +178,28 @@ document.addEventListener("DOMContentLoaded", function () {
         if (errorMessage) {
             showMessageBox(errorMessage, false);
         } else {
-            showMessageBox("Book returned successfully!", true);
+            try {
+                const response = await fetch("/library/returnBook", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        studentId: studentIdInput,
+                        bookId: bookIdInput
+                    })
+                });
+    
+                const result = await response.json();
+                
+                if (result.status) {
+                    showMessageBox(result.message, true);
+                } else {
+                    showMessageBox(result.message, false);
+                }
+            } catch (error) {
+                showMessageBox("An error occurred while processing your request.", false);
+            }
         }
     });
 });
