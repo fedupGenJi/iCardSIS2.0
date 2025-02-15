@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request, jsonify
 from modules.loginOperation import get_admin_details
 from modules.libraryOperation import *
+from modules.lendReturn import *
 
 library = Blueprint('library', __name__)
 
@@ -89,3 +90,19 @@ def deletingBooks():
         return jsonify({"error": f"No book found with ID: {bookId}"}), 404
     else:
         return jsonify({"databaseError": "Database couldn't complete request"}), 500
+    
+@library.route('/library/lendBook', methods=['PUT'])
+def lendingBook():
+    data = request.json
+    studentId = data.get("studentId")
+    bookId = data.get("bookId")
+    submittedDate = data.get("submittedDate")
+
+    if not all([studentId, bookId, submittedDate]):
+        return jsonify({"status": False, "message": "Missing required fields"}), 400
+    
+    studentIdx = int(studentId)
+    bookIdx = int(bookId)
+
+    result = lendBooktoStd(studentIdx, bookIdx, submittedDate)
+    return jsonify(result)

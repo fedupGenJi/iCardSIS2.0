@@ -70,21 +70,44 @@ document.addEventListener("DOMContentLoaded", function () {
         return date >= minAllowedDate && date <= today;
     }
 
-    lendBookForm.addEventListener("submit", function (event) {
+    lendBookForm.addEventListener("submit", async function (event) {
         event.preventDefault();
+        
         const studentIdInput = document.getElementById("studentId").value.trim();
         const bookIdInput = document.getElementById("bookId").value.trim();
         const submissionDateInput = document.getElementById("submissionDate").value.trim();
         let errorMessage = "";
-
+    
         if (!/^\d{4}$/.test(studentIdInput)) errorMessage += "Student ID must be exactly 4 digits.<br>";
         if (!/^\d+$/.test(bookIdInput)) errorMessage += "Book ID must be a valid integer.<br>";
         if (!isValidDate(submissionDateInput)) errorMessage += "Submission date must be in YYYY-MM-DD format and within 4 years from today.<br>";
-
+    
         if (errorMessage) {
             showMessageBox(errorMessage, false);
         } else {
-            showMessageBox("Form submitted successfully!", true);
+            try {
+                const response = await fetch("/library/lendBook", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        studentId: studentIdInput,
+                        bookId: bookIdInput,
+                        submittedDate: submissionDateInput
+                    })
+                });
+    
+                const result = await response.json();
+                
+                if (result.status) {
+                    showMessageBox(result.message, true);
+                } else {
+                    showMessageBox(result.message, false);
+                }
+            } catch (error) {
+                showMessageBox("An error occurred while processing your request.", false);
+            }
         }
     });
 });
