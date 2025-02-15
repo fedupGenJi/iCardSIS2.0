@@ -10,6 +10,7 @@ from modules.operationsB import *
 from modules.sparrowSMS import *
 from modules.login import *
 from modules.khaltiPayment import *
+from modules.operationsC import *
 
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
@@ -267,6 +268,42 @@ def generateQRs():
     img_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
     return jsonify({"qr_code": img_base64})
+
+@appServer.route('/userinfo/<stdId>', methods=['GET'])
+def getUserInfo(stdId):
+    try:
+        studentId = int(stdId)
+        result = getDataforSM(studentId)
+        
+        if result["result"]:
+            return jsonify(result), 200
+        else:
+            return jsonify({"error": result.get("error", "Unknown error")}), 400
+    except ValueError:
+        return jsonify({"error": "Invalid student ID format"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@appServer.route('/sendMoney', methods=['POST'])
+def sendMoney():
+    try:
+        data = request.get_json()
+        amount = data.get('amount')
+        phone_number = data.get('phone_number')
+        studentId = data.get('student_id')
+
+        if not all([amount, phone_number, studentId]):
+            return jsonify({'error': 'Missing amount, phone number, or student ID'}), 400
+
+        success, message = sendMoneyx(studentId, amount, phone_number)
+
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            return jsonify({'error': message}), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
