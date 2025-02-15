@@ -48,6 +48,14 @@ def create_database_and_tables():
             )
         """)
 
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS maxBooks (
+                studentID INT PRIMARY KEY,
+                booksLended INT DEFAULT 0,
+                FOREIGN KEY (studentID) REFERENCES FineTable(studentID) ON DELETE CASCADE ON UPDATE CASCADE
+            )
+        """)
+
         print("Database and tables created successfully!")
     
     except mysql.connector.Error as error:
