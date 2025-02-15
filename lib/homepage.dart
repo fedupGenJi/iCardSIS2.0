@@ -24,6 +24,51 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
+class QRCodeOverlay extends StatelessWidget {
+  final String base64Image;
+
+  QRCodeOverlay({required this.base64Image});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            color: Colors.black54,
+          ),
+        ),
+        Center(
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.memory(
+                  base64Decode(base64Image),
+                  width: 200,
+                  height: 200,
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Close"),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _HomepageState extends State<Homepage> {
   Map<String, dynamic> _data = {};
   bool _obscureText = true;
@@ -416,9 +461,33 @@ class _HomepageState extends State<Homepage> {
       color: primaryColor,
       child: IconButton(
         icon: Icon(Icons.qr_code, color: Colors.white, size: 50),
-        onPressed: () {},
+        onPressed: _fetchQRCode,
       ),
     );
+  }
+
+  Future<void> _fetchQRCode() async {
+    String baseUrl = await Config.baseUrl;
+    final url = Uri.parse("$baseUrl/generateQR");
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"stdId": widget.stdId}),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      final base64Qr = responseData["qr_code"];
+
+      showDialog(
+        context: context,
+        builder: (context) => QRCodeOverlay(base64Image: base64Qr),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to fetch QR code")),
+      );
+    }
   }
 
   void _showDialog(String title) {

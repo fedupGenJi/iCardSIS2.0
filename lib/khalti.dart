@@ -52,12 +52,31 @@ class _ICardSISKhaltiPageState extends State<ICardSISKhaltiPage>
               ),
             ),
             const SizedBox(height: 50),
+            const SizedBox(height: 10),
             Text(
-              "User Phone No: ${widget.phoneNumber}",
+              "Use number 9800000001 for tests!",
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 10,
                   fontWeight: FontWeight.bold,
                   color: secondaryColor),
+            ),
+            Text(
+              "Use pin 1111 for tests!",
+              style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: secondaryColor),
+            ),
+            Text(
+              "Use otp 987654 for tests!",
+              style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: secondaryColor),
+            ),
+                  Text(
+              "User Phone No: ${widget.phoneNumber}",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: secondaryColor),
             ),
             const SizedBox(height: 40),
             TextField(
