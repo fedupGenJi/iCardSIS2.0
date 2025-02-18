@@ -375,7 +375,7 @@ class _HomepageState extends State<Homepage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => LibraryLog(
+                builder: (context) => LibraryLogPage(
                   stdId: "${widget.stdId}",
                 ),
               ),
