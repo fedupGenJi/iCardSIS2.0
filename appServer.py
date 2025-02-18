@@ -304,6 +304,24 @@ def sendMoney():
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@appServer.route('/librarylog/<stdId>', methods=['GET'])
+def get_user_books(stdId):
+    try:
+        student_id = int(stdId)
+        result = getBooksforId(student_id)
+
+        if result["result"]:
+            books = result.get("books", [])
+            return jsonify(books), 200
+        else:
+            return jsonify([]), 200
+
+    except ValueError:
+        return jsonify([]), 200
+
+    except Exception as e:
+        return jsonify([]), 200
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)

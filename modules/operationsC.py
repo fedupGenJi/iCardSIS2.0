@@ -78,7 +78,7 @@ def sendMoneyx(studentId, amount, phoneNo):
 
         audit_input(studentId,f"{amount} sent to {newStudentId}")
         audit_input(newStudentId,f"{amount} received from {studentId}")
-        
+
         return True, "Money sent successfully"
         
     except Error as e:
@@ -88,3 +88,51 @@ def sendMoneyx(studentId, amount, phoneNo):
         if conn.is_connected():
             cursor.close()
             conn.close()
+
+def getBooksforId(student_id):
+    try:
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="LibraryDB"
+        )
+        cursor = library_conn.cursor(dictionary=True)
+
+        query1 = """
+            SELECT bookId, borrowedDate
+            FROM borrowedBooks
+            WHERE studentId = %s
+        """
+        cursor.execute(query1, (student_id,))
+        borrowed_books = cursor.fetchall()
+
+        if not borrowed_books:
+            cursor.close()
+            library_conn.close()
+            return {"result": False}
+
+        books = []
+        
+        query2 = """
+            SELECT bookName FROM book WHERE bookId = %s
+        """
+        for book in borrowed_books:
+            cursor.execute(query2, (book["bookId"],))
+            book_name_result = cursor.fetchone()
+
+            book["bookName"] = book_name_result["bookName"] if book_name_result else "Unknown"
+            books.append(book)
+
+        cursor.close()
+        library_conn.close()
+
+        return {"result": True, "books": books}
+
+    except mysql.connector.Error as err:
+        print(f"Database error: {err}")
+        return {"result": False} 
+    
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return {"result": False} 
