@@ -322,6 +322,23 @@ def get_user_books(stdId):
 
     except Exception as e:
         return jsonify([]), 200
+    
+@appServer.route('/verifyPin', methods=['POST'])
+def verifyPin():
+    data = request.get_json()
+    studentId = data.get("student_id")
+    studentId = int(studentId)
+    pin = data.get("pin")
+    
+    if not studentId or not pin:
+        return jsonify({"message": "Missing student_id or pin"}), 400
+    
+    result, message = verifyStudentPin(studentId, pin)
+
+    if result:
+        return jsonify({"message": message}), 200
+    else:
+        return jsonify({"message": message}), 401
 
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)

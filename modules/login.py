@@ -88,3 +88,31 @@ def getFromDB(student_id):
         if conn.is_connected():
             cursor.close()
             conn.close()
+
+def verifyStudentPin(studentId, pin):
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            passwd=config.passwd,
+            database="iCardSISDB"
+        )
+        cursor = conn.cursor(dictionary=True)
+
+        query = "SELECT pin FROM loginInfo WHERE studentId = %s"
+        cursor.execute(query, (studentId,))
+        result = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        if result:
+            if result["pin"] == pin:
+                return True, "Successful"
+            else:
+                return False, "Invalid PIN"
+        else:
+            return False, "Student ID not found"
+
+    except mysql.connector.Error as err:
+        return False, f"Database error: {err}"
