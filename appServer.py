@@ -11,6 +11,7 @@ from modules.sparrowSMS import *
 from modules.login import *
 from modules.khaltiPayment import *
 from modules.operationsC import *
+from modules.acitivityStatement import *
 
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
@@ -340,5 +341,22 @@ def verifyPin():
     else:
         return jsonify({"message": message}), 401
 
+@appServer.route('/activity', methods=['POST'])
+def getActivity():
+    try:
+        data = request.get_json()
+        std_id = data.get("stdId")
+        std_id = int(std_id)
+
+        if not std_id:
+            return jsonify({"error": "Missing student ID"}), 400
+
+        activities = activityStudent(std_id, config)
+
+        return jsonify(activities), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
