@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:icardsis/homepage.dart';
+import 'config.dart';
 
 class Statement extends StatefulWidget {
   final String stdId;
@@ -10,92 +14,143 @@ class Statement extends StatefulWidget {
 }
 
 class _StatementState extends State<Statement> {
+  List<Map<String, String>> statements = [];
+  bool isLoading = true;
+  bool dataIsEmpty = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchStatements();
+  }
+
+  Future<void> fetchStatements() async {
+    try {
+      String baseUrl = await Config.baseUrl;
+      final response = await http.post(
+        Uri.parse('$baseUrl/statement'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'stdId': widget.stdId}),
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData = json.decode(response.body);
+        setState(() {
+          statements = jsonData.map<Map<String, String>>((statement) {
+            return {
+              'title': statement['title'].toString(),
+              'description': statement['description'].toString(),
+              'date': statement['date'].toString(),
+              'time': statement['time'].toString(),
+            };
+          }).toList();
+          isLoading = false;
+          dataIsEmpty = statements.isEmpty;
+        });
+      } else {
+        throw Exception('Failed to load statements');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        dataIsEmpty = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: Color(0xFFFADCD5),
-          resizeToAvoidBottomInset: true,
-          appBar: AppBar(
-            backgroundColor: Color(0xFFFADCD5),
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Homepage(
-                                stdId: "${widget.stdId}",
-                              )),
-                    );
-                  },
-                );
-              },
-            ),
-            title: Center(
-              child: Text(
-                "Statement",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
+    if (isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Database is SLOW:(',
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                    speed: const Duration(milliseconds: 100),
+                  ),
+                  TypewriterAnimatedText(
+                    'BE THERE IN A MOMENT!',
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                    speed: const Duration(milliseconds: 100),
+                  ),
+                ],
+                repeatForever: true,
               ),
-            ),
+              const SizedBox(height: 30),
+              const CircularProgressIndicator(color: Colors.red),
+            ],
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 30,
-                ),
-                _buildTransactionCard(
-                  date: "Saturday, February 15",
-                  type: "Ncell topup to 9807806602",
-                  time: "10:38 AM",
-                  amount: "-50.00",
-                  amountColor: Colors.red,
-                ),
-                _buildTransactionCard(
-                  date: "Saturday, February 15",
-                  type: "Money transferred from LAXMI SUNRISE",
-                  time: "10:29 AM",
-                  amount: "+470.00",
-                  amountColor: Colors.green,
-                ),
-                _buildTransactionCard(
-                  date: "Friday, February 14",
-                  type: "Paid for NISUM KIRANA STORE",
-                  time: "07:34 PM",
-                  amount: "-50.00",
-                  amountColor: Colors.red,
-                ),
-              ],
-            ),
+        ),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: Color(0xFFFADCD5),
+      appBar: AppBar(
+        backgroundColor: Color(0xFFFADCD5),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Homepage(stdId: widget.stdId),
+              ),
+            );
+          },
+        ),
+        title: const Center(
+          child: Text(
+            "Statement",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
       ),
+      body: statements.isEmpty
+          ? Center(child: Text("No Statements Available"))
+          : SingleChildScrollView(
+              child: Column(
+                children: statements.map((statement) {
+                  return _buildStatementCard(
+                    title: statement['title'] ?? '',
+                    description: statement['description'] ?? '',
+                    date: statement['date'] ?? '',
+                  );
+                }).toList(),
+              ),
+            ),
     );
   }
 
-  Widget _buildTransactionCard({
+  Widget _buildStatementCard({
+    required String title,
+    required String description,
     required String date,
-    required String type,
-    required String time,
-    required String amount,
-    required Color amountColor,
-    String? action,
   }) {
+    RegExp moneyRegex = RegExp(r'([+-]?\d*\.\d+)');
+    String amount = moneyRegex.firstMatch(description)?.group(0) ?? '0.00';
+    bool isPositive = description.toLowerCase().contains('received') || description.toLowerCase().contains('added');
+    Color amountColor = isPositive ? Colors.green : Colors.red;
+    String formattedAmount = isPositive ? "+$amount" : "-$amount";
+
     return Center(
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
-        height: 150,
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: EdgeInsets.all(14),
         width: 400,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -109,44 +164,36 @@ class _StatementState extends State<Statement> {
             ),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                date,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  SizedBox(height: 8),
+                  Text(description),
+                  SizedBox(height: 8),
+                  Text("$date", style: TextStyle(color: Colors.grey)),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                formattedAmount,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
+                  color: amountColor,
                 ),
               ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(type),
-                  Text(
-                    amount,
-                    style: TextStyle(
-                      color: amountColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Text("Time: $time"),
-              if (action != null)
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text(action),
-                  ),
-                ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
