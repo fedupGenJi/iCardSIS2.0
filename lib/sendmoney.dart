@@ -76,7 +76,100 @@ class _SMoneyState extends State<Sendmoney> {
       return;
     }
 
-    letsPay(amount, phoneNumber);
+    _showPinDialog(context, amount, phoneNumber);
+  }
+
+  void _showPinDialog(BuildContext context, int amount, String phoneNumber) {
+  TextEditingController pinController = TextEditingController();
+
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Center(
+          child: Text(
+            "Enter PIN",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Confirm payment of Rs ${amount.toString()} to $phoneNumber",
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: pinController,
+              obscureText: true,
+              keyboardType: TextInputType.number,
+              maxLength: 4,
+              decoration: InputDecoration(
+                hintText: "PIN",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                counterText: "",
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showWarningDialog("Payment has been cancelled");
+            },
+            child: Text("Cancel", style: TextStyle(color: Colors.red)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (pinController.text.length == 4) {
+                Navigator.pop(context);
+                await _verifyPin(context, pinController.text, amount, phoneNumber);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Please enter a 4-digit PIN")),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text("Pay"),
+          ),
+        ],
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+      );
+    },
+  );
+}
+
+  Future<void> _verifyPin(
+      BuildContext context, String pin, int amount, String phoneNumber) async {
+    String baseUrl = await Config.baseUrl;
+    final response = await http.post(
+      Uri.parse('$baseUrl/verifyPin'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({"student_id": "${widget.stdId}", "pin": pin}),
+    );
+
+    if (response.statusCode == 200) {
+      letsPay(amount, phoneNumber);
+    } else {
+      _showErrorDialog(jsonDecode(response.body)['message']);
+    }
   }
 
   Future<void> letsPay(int amount, String phoneNumber) async {
