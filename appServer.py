@@ -358,5 +358,22 @@ def getActivity():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@appServer.route('/statement', methods=['POST'])
+def getStatement():
+    try:
+        data = request.get_json()
+        std_id = data.get("stdId")
+        std_id = int(std_id)
+
+        if not std_id:
+            return jsonify({"error": "Missing student ID"}), 400
+
+        statements = statementStudent(std_id,config)
+
+        return jsonify(statements), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)

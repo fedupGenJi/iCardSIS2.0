@@ -12,6 +12,18 @@ def determineTitle(action):
         return "Library Lend/Return"
     else:
         return "General Activity"
+    
+def determineTitleforStatement(action):
+    if "paid" in action.lower():
+        return "Fines"
+    elif "balance" in action.lower():
+        return "Khalti"
+    elif "sent" in action.lower():
+        return "Friends"
+    elif "received" in action.lower():
+        return "Friends"
+    else:
+        return "General Activity"
 
 def activityStudent(student_id, config):
     audit_conn = mysql.connector.connect(
@@ -49,6 +61,8 @@ def activityStudent(student_id, config):
             continue
         if "sent" in action.lower():
             continue
+        if "paid" in action.lower():
+            continue
         
         title = determineTitle(action)
         
@@ -56,6 +70,54 @@ def activityStudent(student_id, config):
             "title": title,
             "description": action,
             "date": timestamp
+        })
+    
+    cursor.close()
+    audit_conn.close()
+
+    return student_activities
+
+def statementStudent(student_id, config):
+    audit_conn = mysql.connector.connect(
+        host="localhost",
+        user=config.user,
+        password=config.passwd,
+        database="auditDB"
+    )
+    
+    cursor = audit_conn.cursor(dictionary=True)
+    
+    table_name = f"Student-{student_id}"
+    
+    create_table_query = f"""
+    CREATE TABLE IF NOT EXISTS `{table_name}` (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        action VARCHAR(255) NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    """
+    cursor.execute(create_table_query)
+
+    cursor.execute(f"SELECT action, timestamp FROM `{table_name}`")
+    records = cursor.fetchall()
+
+    student_activities = []
+    
+    keywords = ["balance", "received", "sent", "paid"]
+    
+    for record in records:
+        action = record['action']
+        date = record['timestamp'].strftime("%Y-%m-%d")
+        
+        if not any(keyword in action.lower() for keyword in keywords):
+            continue
+        
+        title = determineTitleforStatement(action)
+        
+        student_activities.append({
+            "title": title,
+            "description": action,
+            "date": date,
         })
     
     cursor.close()
