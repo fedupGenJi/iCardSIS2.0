@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KU-iCardSIS</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/homepage.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+</head>
+<body>
+    <div id="intro-container">
+        <img src="{{url_for('static', filename='images/logo.png')}}" alt="University Logo" id="logo">
+        <h1>KU-iCardSIS</h1>
+        <h2>ADMIN</h2>
+    </div>
+
+    <div class="navbarpostt hidden">
+        {% include 'navbar.html' %}
+    </div>
+
+    <div class="homepage-container hidden">
+        <div class="box" onclick="location.href='#'">
+            <img src="{{url_for('static',filename='images/new-register.png')}}" alt="New Student" class="icon-img">
+            <span>New Student Registration</span>
+        </div>
+        <div class="box" onclick="location.href='#'">
+            <img src="{{url_for('static',filename='images/edit-database.png')}}" alt="Student Details" class="icon-img">
+            <span>Student Details</span>
+        </div>
+        <div class="box" onclick="location.href='#'">
+            <img src="{{url_for('static',filename='images/mobile-query.png')}}" alt="Mobile App Query" class="icon-img">
+            <span>Mobile App Query</span>
+        </div>
+    </div>
+
+    <script src="{{url_for('static',filename='js/homepage.js')}}"></script>
+</body>
+</html>
