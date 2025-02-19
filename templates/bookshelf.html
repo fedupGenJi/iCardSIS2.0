@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KU-iCardSIS</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bookshelf.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/navbar.css')}}">
+</head>
+
+<body>
+
+
+
+
+    <div class="navbarpostt hidden">
+        {% include 'navbar.html' %}
+    </div>
+
+
+
+    <div class="background"> </div>
+   
+
+    <div class="bookshelf-container">
+        <h1 class="heading">Bookshelf</h1>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search book..." onkeyup="searchBooks()">
+        </div>
+        <div class="book-modal" id="bookshelf-modal">
+            <table id="shelf-table" class="book-table">
+                <thead>
+                    <div class="fields">
+                    <tr>
+                        <th>Book Id</th>
+                        <th>Book Name</th>
+                        <th>Stock Available</th>
+                    </tr>
+                </div>
+                </thead>
+                <tbody>
+                    {% for bookshelves in bookshelves %}
+                    <tr>
+                        
+                        <td>{{ bookshelves.id }}</td>
+                        <td>{{ bookshelves.name }}</td>
+                        <td>{{ bookshelves.number }}</td>
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="{{url_for('static',filename='js/bookshelf.js')}}"></script>
+    <script src="{{url_for('static',filename='js/navbar.js')}}"></script>
+
+</body>
+
+</html>
