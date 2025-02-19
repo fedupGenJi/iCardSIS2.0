@@ -388,7 +388,7 @@ class _HomepageState extends State<Homepage> {
               MaterialPageRoute(
                 builder: (context) => Transportcard(
                   stdId: "${widget.stdId}",
-                  isActive: false,
+                  balance: double.parse("${_data["balance"]}"),
                 ),
               ),
             );
