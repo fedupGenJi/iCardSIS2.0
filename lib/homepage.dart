@@ -367,6 +367,7 @@ class _HomepageState extends State<Homepage> {
               MaterialPageRoute(
                 builder: (context) => NewSubscription(
                   stdId: "${widget.stdId}",
+                  balance: double.parse("${_data["balance"]}"),
                 ),
               ),
             );

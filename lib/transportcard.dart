@@ -110,6 +110,7 @@ class transport extends State<Transportcard> {
                         MaterialPageRoute(
                           builder: (context) => NewSubscription(
                             stdId: "${widget.stdId}",
+                            balance: 0,
                           ),
                         ),
                       );

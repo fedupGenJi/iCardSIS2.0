@@ -1,58 +1,195 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
+import 'package:http/http.dart' as http;
+import 'package:icardsis/config.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class NewSubscription extends StatefulWidget {
   final String stdId;
-  const NewSubscription({Key? key, required this.stdId}) : super(key: key);
+  final double balance;
+  const NewSubscription({Key? key, required this.stdId, required this.balance})
+      : super(key: key);
 
   @override
   State<NewSubscription> createState() => NewSub();
 }
 
+class SubscriptionInfo {
+  final String studentId;
+  final String route;
+  final int amount;
+
+  SubscriptionInfo(
+      {required this.studentId, required this.route, required this.amount});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'studentId': studentId,
+      'route': route,
+      'amount': amount,
+    };
+  }
+}
+
 class NewSub extends State<NewSubscription> {
-  final TextEditingController _pinController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  late double currentBalance;
+  String? selectedRoute;
+  int? selectedAmount;
+
+  @override
+  void initState() {
+    super.initState();
+    currentBalance = widget.balance;
+  }
 
   void _showPinDialog(BuildContext context) {
+    TextEditingController pinController = TextEditingController();
+
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      barrierDismissible: false,
+      builder: (context) {
         return AlertDialog(
-          title: Text('Enter Transfer Pin'),
-          content: TextField(
-            controller: _pinController,
-            decoration: InputDecoration(hintText: 'Transfer Pin'),
-            obscureText: true,
-            keyboardType: TextInputType.number,
-            maxLength: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
+          title: Center(
+            child: Text(
+              "Enter PIN",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Confirm payment of Rs ${selectedAmount.toString()} for $selectedRoute",
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: pinController,
+                obscureText: true,
+                keyboardType: TextInputType.number,
+                maxLength: 4,
+                decoration: InputDecoration(
+                  hintText: "PIN",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                  counterText: "",
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          actions: [
             TextButton(
               onPressed: () {
-                if (_pinController.text.length == 4) {
-                  // Handle the transfer pin logic here
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text('Transfer Pin: ${_pinController.text}')),
-                  );
+                Navigator.pop(context);
+                _showDialog(
+                    "Error", "Payment has been cancelled.", DialogType.error);
+              },
+              child: Text("Cancel", style: TextStyle(color: Colors.red)),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (pinController.text.length == 4) {
+                  Navigator.pop(context);
+                  await _verifyPin(context, pinController.text);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Pin must be 4 digits long')),
+                    SnackBar(content: Text("Please enter a 4-digit PIN")),
                   );
                 }
               },
-              child: Text('Confirm'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text("Pay"),
             ),
           ],
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
         );
       },
     );
+  }
+
+  Future<void> _verifyPin(BuildContext context, String pin) async {
+    try {
+      String baseUrl = await Config.baseUrl;
+      final response = await http.post(
+        Uri.parse('$baseUrl/verifyPin'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"student_id": widget.stdId, "pin": pin}),
+      );
+
+      if (response.statusCode == 200) {
+        SubscriptionInfo subscriptionInfo = SubscriptionInfo(
+          studentId: widget.stdId,
+          route: selectedRoute!,
+          amount: selectedAmount!,
+        );
+        await sendSubscriptionRequest(subscriptionInfo);
+      } else {
+        _showDialog(
+            "Error", jsonDecode(response.body)['message'], DialogType.error);
+      }
+    } catch (e) {
+      _showDialog("Error", e.toString(), DialogType.error);
+    }
+  }
+
+  Future<dynamic> sendSubscriptionRequest(SubscriptionInfo info) async {
+    try {
+      String baseUrl = await Config.baseUrl;
+      Uri url = Uri.parse('$baseUrl/buySubscription/pay');
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(info.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        _showDialog(
+            'Success', 'Payment processed successfully', DialogType.success);
+        return jsonDecode(response.body);
+      } else {
+        _showDialog('Error', 'Failed to process payment', DialogType.error);
+        throw Exception('Failed to process payment: ${response.statusCode}');
+      }
+    } catch (e) {
+      _showDialog('Error', e.toString(), DialogType.error);
+      return {'error': e.toString()};
+    }
+  }
+
+  void _showDialog(String title, String desc, DialogType type) {
+    AwesomeDialog(
+      context: context,
+      dialogType: type,
+      animType: AnimType.bottomSlide,
+      title: title,
+      desc: desc,
+      btnOkOnPress: () {},
+    ).show();
+  }
+
+  void selectSubscription(String route, int price) {
+    setState(() {
+      selectedRoute = route;
+      selectedAmount = price;
+    });
+    _showPinDialog(context);
   }
 
   @override
@@ -60,9 +197,7 @@ class NewSub extends State<NewSubscription> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+      onWillPop: () async => false,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -70,27 +205,23 @@ class NewSub extends State<NewSubscription> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             backgroundColor: Color(0xFFFADCD5),
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Homepage(
-                          stdId: "${widget.stdId}",
-                        ),
-                      ),
-                    );
-                  },
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Homepage(
+                      stdId: widget.stdId,
+                    ),
+                  ),
                 );
               },
             ),
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -114,12 +245,11 @@ class NewSub extends State<NewSubscription> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 0, horizontal: screenWidth * 0.2),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.2),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           "Balance: Rs ",
@@ -130,7 +260,7 @@ class NewSub extends State<NewSubscription> {
                         ),
                         Flexible(
                           child: Text(
-                            "250",
+                            "$currentBalance",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: screenWidth * 0.05,
@@ -143,7 +273,7 @@ class NewSub extends State<NewSubscription> {
                   SizedBox(height: 30),
                   Center(
                     child: Text(
-                      "Bye Subscription",
+                      "Buy Subscription",
                       style: TextStyle(
                         fontSize: screenWidth * 0.075,
                         fontWeight: FontWeight.w600,
@@ -151,120 +281,62 @@ class NewSub extends State<NewSubscription> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  SizedBox(
-                    width: screenWidth * 0.9,
-                    child: DataTable(
-                      columns: [
-                        DataColumn(
-                          label: Center(
-                            child: Text(
-                              'Route',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          blurRadius: 8,
+                          offset: Offset(0, 3),
                         ),
-                        DataColumn(
-                          label: Center(
-                            child: Text(
-                              'Price',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                      ],
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columnSpacing: 20,
+                        headingRowHeight: 50,
+                        headingTextStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-                        DataColumn(label: Text('')),
-                      ],
-                      rows: [
-                        DataRow(cells: [
-                          DataCell(
-                            Center(child: Text('28-Kilo to Sanga')),
-                          ),
-                          DataCell(
-                            Center(child: Text('Rs. 1500')),
-                          ),
-                          DataCell(
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _showPinDialog(context);
-                                },
-                                child: Text('Purchase'),
+                        dataTextStyle: TextStyle(fontSize: 14),
+                        columns: [
+                          DataColumn(
+                            label: Center(
+                              child: Text(
+                                'Route',
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(
-                            Center(child: Text('28-Kilo to Radhe Radhe')),
-                          ),
-                          DataCell(
-                            Center(child: Text('Rs. 2000')),
-                          ),
-                          DataCell(
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _showPinDialog(context);
-                                },
-                                child: Text('Purchase'),
+                          DataColumn(
+                            label: Center(
+                              child: Text(
+                                'Price',
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(
-                            Center(child: Text('28-Kilo to Lokanthali')),
-                          ),
-                          DataCell(
-                            Center(child: Text('Rs. 2250')),
-                          ),
-                          DataCell(
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _showPinDialog(context);
-                                },
-                                child: Text('Purchase'),
-                              ),
-                            ),
-                          ),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(
-                            Center(child: Text('28-Kilo to Koteshor')),
-                          ),
-                          DataCell(
-                            Center(child: Text('Rs. 2500')),
-                          ),
-                          DataCell(
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _showPinDialog(context);
-                                },
-                                child: Text('Purchase'),
-                              ),
-                            ),
-                          ),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(
-                            Center(child: Text('28-Kilo to Ratna Park')),
-                          ),
-                          DataCell(
-                            Center(child: Text('Rs. 2750')),
-                          ),
-                          DataCell(
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _showPinDialog(context);
-                                },
-                                child: Text('Purchase'),
-                              ),
-                            ),
-                          ),
-                        ]),
-                      ],
+                          DataColumn(label: Text('')),
+                        ],
+                        rows: [
+                          _buildDataRow(context, '28-Kilo to Dhulikhel', 1200,
+                              screenWidth),
+                          _buildDataRow(
+                              context, '28-Kilo to Sanga', 1500, screenWidth),
+                          _buildDataRow(context, '28-Kilo to Radhe Radhe', 2000,
+                              screenWidth),
+                          _buildDataRow(context, '28-Kilo to Lokanthali', 2250,
+                              screenWidth),
+                          _buildDataRow(context, '28-Kilo to Koteshor', 2500,
+                              screenWidth),
+                          _buildDataRow(context, '28-Kilo to Ratna Park', 2750,
+                              screenWidth),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -274,5 +346,38 @@ class NewSub extends State<NewSubscription> {
         ),
       ),
     );
+  }
+
+  DataRow _buildDataRow(
+      BuildContext context, String route, int price, double screenWidth) {
+    return DataRow(cells: [
+      DataCell(
+        Center(child: Text(route)),
+      ),
+      DataCell(
+        Center(child: Text('Rs. $price')),
+      ),
+      DataCell(
+        Center(
+          child: ElevatedButton(
+            onPressed: () {
+              if (price > currentBalance) {
+                _showDialog(
+                    "Warning", "Insufficient Balance", DialogType.warning);
+                return;
+              }
+              selectSubscription(route, price);
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text('Purchase'),
+          ),
+        ),
+      ),
+    ]);
   }
 }
