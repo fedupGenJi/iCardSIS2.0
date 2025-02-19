@@ -165,8 +165,6 @@ class transport extends State<Transportcard> {
   }
 }
 
-class _data {}
-
 Widget _buildInfoRow(String label, String value) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 4),

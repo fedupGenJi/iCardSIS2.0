@@ -117,18 +117,6 @@ class _LoginpageState extends State<Loginpage> {
     ).show();
   }
 
-  void _showSuccessDialog(String message) {
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.success,
-      animType: AnimType.scale,
-      title: "Success",
-      desc: message,
-      btnOkOnPress: () {},
-      btnOkColor: Colors.green,
-    ).show();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

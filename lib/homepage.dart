@@ -490,24 +490,6 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
-  void _showDialog(String title) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text("You clicked $title!"),
-          actions: [
-            TextButton(
-              child: Text("Close"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _showPopup() {
     showDialog(
       context: context,
