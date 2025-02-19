@@ -18,6 +18,8 @@ class transport extends State<Transportcard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -47,45 +49,39 @@ class transport extends State<Transportcard> {
               },
             ),
           ),
-          body: Padding(
-            padding: EdgeInsets.all(16.5),
+          body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 10),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       height: 150,
-                      width: 150,
+                      width: screenWidth * 0.4,
                       child: Image.asset('assets/ICARDSIS.png'),
                     ),
-                    SizedBox(
-                      width: 30,
-                    ),
+                    SizedBox(width: screenWidth * 0.1),
                     Text(
                       "ICardSIS",
                       style: TextStyle(
-                        fontSize: 40,
+                        fontSize: screenWidth * 0.08,
                         fontWeight: FontWeight.w600,
                         fontFamily: 'Righteous',
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 10),
                 Text(
                   "Transport Card",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
+                    fontSize: screenWidth * 0.06,
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -93,14 +89,14 @@ class transport extends State<Transportcard> {
                       "Status: ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 30,
+                        fontSize: screenWidth * 0.06,
                       ),
                     ),
                     Text(
                       widget.isActive ? "Active " : "Inactive ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 30,
+                        fontSize: screenWidth * 0.06,
                       ),
                     ),
                   ],
@@ -123,8 +119,7 @@ class transport extends State<Transportcard> {
                 SizedBox(height: 20),
                 widget.isActive
                     ? Container(
-                        height: 450,
-                        width: 390,
+                        width: screenWidth * 0.9,
                         padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
@@ -142,14 +137,12 @@ class transport extends State<Transportcard> {
                           children: [
                             Container(
                               height: 150,
-                              width: 150,
+                              width: screenWidth * 0.4,
                               child: Image.asset('assets/3135715.png'),
                             ),
                             SizedBox(height: 20),
                             Center(
                               child: Container(
-                                height: 200,
-                                width: 300,
                                 child: Column(
                                   children: [
                                     _buildInfoRow('Name:', 'John Doe'),
@@ -183,7 +176,7 @@ Widget _buildInfoRow(String label, String value) {
           label,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25,
+            fontSize: 20,
           ),
         ),
         SizedBox(width: 8),
