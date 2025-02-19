@@ -176,7 +176,7 @@ def subscriptionPayment(stdId, amount, route):
         cursor.execute(query, values)
 
         conn.commit()
-        audit_input(stdId, f"Bus subscription has been added for {amounto}. Balance deducted.")
+        audit_input(stdId, f"Bus subscription has been bought for {amounto}. Balance deducted.")
 
         return True
 
