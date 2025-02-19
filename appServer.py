@@ -375,5 +375,21 @@ def getStatement():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@appServer.route('/library/fines', methods=['GET'])
+def getFineData():
+    std_id = request.args.get('stdId')
+    stdId = int(std_id)
+    
+    if not std_id:
+        return jsonify({"error": "Student ID is required"}), 400
+    
+    result, balance, fine = getAmounts(stdId)
+    #print(balance,fine)
+    
+    if result:
+        return jsonify({"balance": balance, "fine": fine})
+    else:
+        return jsonify({"balance": 0, "fine": 0})
+    
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)

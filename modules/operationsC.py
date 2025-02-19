@@ -136,3 +136,36 @@ def getBooksforId(student_id):
     except Exception as e:
         print(f"Unexpected error: {e}")
         return {"result": False} 
+    
+def getAmounts(stdId):
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            passwd=config.passwd,
+            database="iCardSISDB"
+        )
+        cursor = conn.cursor()
+        cursor.execute("SELECT balance FROM studentInfo WHERE studentId = %s", (stdId,))
+        balance_result = cursor.fetchone()
+        conn.close()
+        
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            passwd=config.passwd,
+            database="LibraryDB"
+        )
+        library_cursor = library_conn.cursor()
+        library_cursor.execute("SELECT fineAmount FROM FineTable WHERE studentId = %s", (stdId,))
+        fine_result = library_cursor.fetchone()
+        library_conn.close()
+
+        balance = int(balance_result[0]) if balance_result else 0
+        fine = fine_result[0] if fine_result else 0
+
+        return True, balance, fine
+
+    except mysql.connector.Error as err:
+        print("Error:", err)
+        return False, 0, 0
