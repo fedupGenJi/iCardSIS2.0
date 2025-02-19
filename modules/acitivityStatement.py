@@ -24,6 +24,8 @@ def determineTitleforStatement(action):
         return "Friends"
     elif "received" in action.lower():
         return "Friends"
+    elif "bought" in action.lower():
+        return "Subscription"
     else:
         return "General Activity"
 

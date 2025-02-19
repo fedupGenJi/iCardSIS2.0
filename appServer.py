@@ -437,5 +437,33 @@ def buy_subscription():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+@appServer.route('/busSubscription/verifyStatus', methods=['GET'])
+def verifyStatus():
+    student_id = request.args.get('studentId')
+    
+    if not student_id:
+        return jsonify({"error": "Missing studentId"}), 400
+    
+    stdId = int(student_id)
+    result = getStatus(stdId)
+
+    return jsonify(result)
+
+@appServer.route('/busSubscription/getData', methods=['GET'])
+def getSubscriptionData():
+    student_id = request.args.get('studentId')
+
+    if not student_id:
+        return jsonify({"success": False, "message": "Missing studentId", "data": None}), 400
+
+    try:
+        stdId = int(student_id)
+    except ValueError:
+        return jsonify({"success": False, "message": "Invalid studentId", "data": None}), 400
+
+    subscription_response = getDataForTransportCard(stdId)
+
+    return jsonify(subscription_response["data"])
+
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)

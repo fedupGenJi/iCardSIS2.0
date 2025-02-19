@@ -1,5 +1,6 @@
 import mysql.connector
 import datetime
+import base64
 import sys
 import os
 import bcrypt
@@ -187,3 +188,74 @@ def subscriptionPayment(stdId, amount, route):
     finally:
         cursor.close()
         conn.close()
+    
+def getStatus(studentId):
+    conn = mysql.connector.connect(
+        host="localhost",
+        user=config.user,
+        password=config.passwd,
+        database="iCardSISDB"
+    )
+
+    cursor = conn.cursor()
+    query = "SELECT status FROM transport WHERE studentId = %s"
+    cursor.execute(query, (studentId,))
+    result = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if result and result[0] == "ACTIVE":
+        return True
+    else:
+        return False
+    
+def getDataForTransportCard(studentId):
+    conn = mysql.connector.connect(
+        host="localhost",
+        user=config.user,
+        password=config.passwd,
+        database="iCardSISDB"
+    )
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT firstName, middleName, lastName, photo 
+        FROM studentInfo 
+        WHERE studentId = %s
+    """, (studentId,))
+    student = cursor.fetchone()
+
+    if not student:
+        return {"success": False, "message": "Student not found", "data": None}
+
+    full_name = " ".join(filter(None, [student["firstName"], student["middleName"], student["lastName"]]))
+
+    cursor.execute("""
+        SELECT status, daysRemaining, deadline, route
+        FROM transport 
+        WHERE studentId = %s
+    """, (studentId,))
+    subscription = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if not subscription:
+        return {"success": False, "message": "Transport subscription not found", "data": None}
+    
+    photo_base64 = base64.b64encode(student["photo"]).decode('utf-8') if student["photo"] else ""
+
+    return {
+        "success": True,
+        "message": "Data retrieved successfully",
+        "data": {
+            "id": studentId,
+            "name": full_name,
+            "subscription_status": subscription["status"],
+            "photo": photo_base64,
+            "daysRemaining": subscription["daysRemaining"],
+            "deadline": subscription["deadline"],
+            "route": subscription["route"]
+        }
+    }
