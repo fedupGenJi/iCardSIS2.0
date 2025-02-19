@@ -391,5 +391,28 @@ def getFineData():
     else:
         return jsonify({"balance": 0, "fine": 0})
     
+@appServer.route('/library/payFine', methods=['POST'])
+def payFine():
+    try:
+        data = request.get_json()
+        amount = data.get("amount")
+        student_id = data.get("student_id")
+
+        if not all([amount, student_id]):
+            return jsonify({"error": "Missing required fields"}), 400
+        
+        stdId = int(student_id)
+        amount = int(amount)
+
+        payment_success = payingFine(stdId, amount, config)
+
+        if payment_success:
+            return jsonify({"message": "Fine payment successful"}), 200
+        else:
+            return jsonify({"error": "Payment failed"}), 400
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)

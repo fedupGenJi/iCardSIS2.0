@@ -1,5 +1,7 @@
 import mysql.connector
+from mysql.connector import Error
 from datetime import datetime
+from modules.operationsB import audit_input
 
 def determineTitle(action):
     if "login" in action.lower():
@@ -124,3 +126,59 @@ def statementStudent(student_id, config):
     audit_conn.close()
 
     return student_activities
+
+def payingFine(stdId, amount, config):
+    try:
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            passwd=config.passwd,
+            database="LibraryDB"
+        )
+        conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            passwd=config.passwd,
+            database="iCardSISDB"
+        )
+        
+        library_cursor = library_conn.cursor()
+        student_cursor = conn.cursor()
+        
+        library_update_query = """
+        UPDATE FineTable
+        SET fineAmount = fineAmount - %s
+        WHERE studentId = %s
+        """
+        library_cursor.execute(library_update_query, (amount, stdId))
+        
+        student_update_query = """
+        UPDATE studentInfo
+        SET balance = balance - %s
+        WHERE studentId = %s
+        """
+        student_cursor.execute(student_update_query, (amount, stdId))
+        
+        if library_cursor.rowcount > 0 and student_cursor.rowcount > 0:
+            library_conn.commit()
+            conn.commit()
+            audit_input(stdId,f"Fine paid of Rs. {amount}")
+            return True
+        else:
+            library_conn.rollback()
+            conn.rollback()
+            return False
+    
+    except Error as e:
+        print("Error:", e)
+        return False
+    
+    finally:
+        if library_cursor:
+            library_cursor.close()
+        if student_cursor:
+            student_cursor.close()
+        if library_conn:
+            library_conn.close()
+        if conn:
+            conn.close()
