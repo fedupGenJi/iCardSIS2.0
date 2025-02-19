@@ -1,0 +1,15 @@
+virtualenv env
+.\env\Scripts\activate.ps1
+
+pip install flask 
+pip install mysql-connector-python
+pip install bcrypt
+pip install ngrok 
+pip install qrcode[pil]
+
+config.py
+user = 
+passwd = 
+sparrowToken =
+khaltiKey =
+ngrokurl = {After ngrok http ip_address:1000}
