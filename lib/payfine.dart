@@ -75,13 +75,28 @@ class _PayfineState extends State<Payfine> {
   }
 
   void _showDialog(String title, String desc, DialogType type) {
+    bool isSuccess = false;
+    if (type == DialogType.success) {
+      isSuccess = true;
+    }
     AwesomeDialog(
       context: context,
       dialogType: type,
       animType: AnimType.bottomSlide,
       title: title,
       desc: desc,
-      btnOkOnPress: () {},
+      btnOkOnPress: () {
+        if (isSuccess) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Homepage(
+                stdId: widget.stdId,
+              ),
+            ),
+          );
+        }
+      },
     ).show();
   }
 
