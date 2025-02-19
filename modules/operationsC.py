@@ -169,3 +169,101 @@ def getAmounts(stdId):
     except mysql.connector.Error as err:
         print("Error:", err)
         return False, 0, 0
+    
+def getDataForReport(studentId):
+    try:
+        library_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            passwd=config.passwd,
+            database="LibraryDB"
+        )
+        cursor = library_conn.cursor(dictionary=True)
+
+        query = """
+            SELECT bookId, days_dued 
+            FROM borrowedBooks 
+            WHERE studentId = %s
+        """
+        cursor.execute(query, (studentId,))
+        borrowed_books = cursor.fetchall()
+
+        temp_conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            passwd=config.passwd,
+            database="tempDB"
+        )
+        temp_cursor = temp_conn.cursor()
+        temp_cursor.execute("""
+            CREATE TABLE IF NOT EXISTS error_reports (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                studentId INT NOT NULL,
+                bookId INT NOT NULL,
+                daysDued INT NOT NULL,
+                status VARCHAR(20) DEFAULT 'Pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        temp_cursor.execute("SELECT bookId FROM error_reports WHERE studentId = %s", (studentId,))
+        error_books = {row[0] for row in temp_cursor.fetchall()}
+
+        filtered_books = [book for book in borrowed_books if book['bookId'] not in error_books]
+
+        has_borrowed = len(filtered_books) > 0
+        
+        return {
+            "has_borrowed": has_borrowed,
+            "borrowed_books": filtered_books
+        }
+    
+    except Error as err:
+        print(f"Error: {err}")
+        return {"has_borrowed": False, "borrowed_books": []}
+    
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'library_conn' in locals() and library_conn.is_connected():
+            library_conn.close()
+        if 'temp_cursor' in locals():
+            temp_cursor.close()
+        if 'temp_conn' in locals() and temp_conn.is_connected():
+            temp_conn.close()
+
+def reportStore(student_id, book_id, days_dued):
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user=config.user,
+            password=config.passwd,
+            database="tempDB"
+        )
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS error_reports (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                studentId INT NOT NULL,
+                bookId INT NOT NULL,
+                daysDued INT NOT NULL,
+                status VARCHAR(20) DEFAULT 'Pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        cursor.execute("""
+            INSERT INTO error_reports (studentId, bookId, daysDued) 
+            VALUES (%s, %s, %s)
+        """, (student_id, book_id, days_dued))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        audit_input(student_id, f"A report issued for book with id: {book_id}")
+
+        return True, "Report submitted successfully!"
+    except mysql.connector.Error as err:
+        return False, str(err)

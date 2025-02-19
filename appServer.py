@@ -465,5 +465,47 @@ def getSubscriptionData():
 
     return jsonify(subscription_response["data"])
 
+@appServer.route('/errorReport/get', methods=['GET'])
+def getLibraryData():
+    student_id = request.args.get('studentId')
+
+    if not student_id:
+        return jsonify({"success": False, "message": "Missing studentId", "data": None}), 400
+
+    try:
+        stdId = int(student_id)
+    except ValueError:
+        return jsonify({"success": False, "message": "Invalid studentId", "data": None}), 400
+
+    booksValue = getDataForReport(stdId)
+
+    return jsonify({"success": True, "message": "Data fetched successfully", "data": booksValue["borrowed_books"]}), 200
+
+@appServer.route('/errorReport/report', methods=['POST'])
+def reportIssue():
+    try:
+        student_id = request.args.get('studentId')
+        data = request.json
+
+        if not student_id or not data.get("bookId") or not data.get("days_dued"):
+            return jsonify({"success": False, "message": "Missing required fields"}), 400
+
+        try:
+            student_id = int(student_id)
+            book_id = int(data["bookId"])
+            days_dued = int(data["days_dued"])
+        except ValueError:
+            return jsonify({"success": False, "message": "Invalid data format"}), 400
+
+        success, message = reportStore(student_id, book_id, days_dued)
+
+        if success:
+            return jsonify({"success": True, "message": message}), 200
+        else:
+            return jsonify({"success": False, "message": message}), 500
+
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
