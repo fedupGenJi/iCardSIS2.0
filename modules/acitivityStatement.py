@@ -129,6 +129,9 @@ def statementStudent(student_id, config):
 
 def payingFine(stdId, amount, config):
     try:
+
+        amounta = float(amount)
+
         library_conn = mysql.connector.connect(
             host="localhost",
             user=config.user,
@@ -150,7 +153,7 @@ def payingFine(stdId, amount, config):
         SET fineAmount = fineAmount - %s
         WHERE studentId = %s
         """
-        library_cursor.execute(library_update_query, (amount, stdId))
+        library_cursor.execute(library_update_query, (amounta, stdId))
         
         student_update_query = """
         UPDATE studentInfo
@@ -162,7 +165,7 @@ def payingFine(stdId, amount, config):
         if library_cursor.rowcount > 0 and student_cursor.rowcount > 0:
             library_conn.commit()
             conn.commit()
-            audit_input(stdId,f"Fine paid of Rs. {amount}")
+            audit_input(stdId,f"Fine paid of Rs. {amounta}")
             return True
         else:
             library_conn.rollback()
