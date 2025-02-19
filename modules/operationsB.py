@@ -1,4 +1,5 @@
 import mysql.connector
+import datetime
 import sys
 import os
 import bcrypt
@@ -124,3 +125,65 @@ def audit_input(student_id, message):
             audit_cursor.close()
         if audit_conn:
             audit_conn.close()
+
+def subscriptionPayment(stdId, amount, route):
+    amounto = float(amount)
+    
+    conn = mysql.connector.connect(
+        host="localhost",
+        user=config.user,
+        password=config.passwd,
+        database="iCardSISDB"
+    )
+    
+    cursor = conn.cursor()
+
+    today = datetime.date.today()
+    deadline = today + datetime.timedelta(days=30)
+    daysRemaining = 30
+    status = "ACTIVE"
+    
+    fetch_balance_query = "SELECT balance FROM studentInfo WHERE studentId = %s"
+    update_balance_query = "UPDATE studentInfo SET balance = balance - %s WHERE studentId = %s AND balance >= %s"
+
+    query = """
+        INSERT INTO transport (studentId, route, status, deadline, daysRemaining)
+        VALUES (%s, %s, %s, %s, %s)
+        ON DUPLICATE KEY UPDATE 
+        route = VALUES(route),
+        status = VALUES(status), 
+        deadline = VALUES(deadline), 
+        daysRemaining = VALUES(daysRemaining)
+    """
+    
+    try:
+        cursor.execute(fetch_balance_query, (stdId,))
+        result = cursor.fetchone()
+
+        if result is None:
+            print("Student ID not found.")
+            return False
+
+        current_balance = result[0]
+
+        if current_balance < amounto:
+            print("Insufficient balance.")
+            return False
+
+        cursor.execute(update_balance_query, (amounto, stdId, amounto))
+
+        values = (stdId, route, status, deadline, daysRemaining)
+        cursor.execute(query, values)
+
+        conn.commit()
+        audit_input(stdId, f"Bus subscription has been added for {amounto}. Balance deducted.")
+
+        return True
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        conn.rollback()
+        return False
+    finally:
+        cursor.close()
+        conn.close()

@@ -414,5 +414,28 @@ def payFine():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@appServer.route('/buySubscription/pay', methods=['POST'])
+def buy_subscription():
+    try:
+        data = request.get_json()
+        
+        required_fields = ['studentId', 'route', 'amount']
+        if not all(field in data for field in required_fields):
+            return jsonify({'error': 'Missing required fields'}), 400
+        
+        student_id = int(data['studentId'])
+        route = data['route']
+        amount = int(data['amount'])
+        # print(student_id, amount, route)
+
+        payment_success = subscriptionPayment(student_id, amount, route)
+        
+        if payment_success:
+            return jsonify({'message': 'Payment successful', 'studentId': student_id, 'amount': amount}), 200
+        else:
+            return jsonify({'error': 'Payment failed'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 if __name__ == '__main__':
     appServer.run(host=ip_address, port=1000, debug=False)
