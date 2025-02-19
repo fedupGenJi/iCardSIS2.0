@@ -1,0 +1,33 @@
+# Dart & Flutter build artifacts
+.dart_tool/
+.build/
+.pub-cache/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-versions
+
+# IDE & Editor Files
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# Dependency & Lock Files (If you want each developer to resolve dependencies individually)
+pubspec.lock
+
+# Generated Code
+generated/
+build/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Ignore user-specific configuration files
+*.log
+*.env
+*.bak
