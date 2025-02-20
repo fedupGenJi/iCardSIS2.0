@@ -142,7 +142,7 @@ def process_payment():
         }
 
         response = requests.post(KHALTI_URL, headers=headers, data=payload)
-        #print(response.text)
+        # print(response.text)
 
         if response.status_code == 200:
             response_data = response.json()

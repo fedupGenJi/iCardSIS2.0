@@ -4,8 +4,9 @@ virtualenv env
 pip install flask 
 pip install mysql-connector-python
 pip install bcrypt
-pip install ngrok 
+pip install pyngrok 
 pip install qrcode[pil]
+pip install requests
 
 config.py
 user = 
