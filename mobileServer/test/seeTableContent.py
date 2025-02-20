@@ -13,7 +13,7 @@ def main():
             host="localhost",
             user=config.user,
             password=config.passwd,
-            database="tempDB"
+            database="iCardSISDB"
         )
         
         cursor = conn.cursor()

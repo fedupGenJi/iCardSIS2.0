@@ -146,15 +146,15 @@ def subscriptionPayment(stdId, amount, route):
     
     fetch_balance_query = "SELECT balance FROM studentInfo WHERE studentId = %s"
     update_balance_query = "UPDATE studentInfo SET balance = balance - %s WHERE studentId = %s AND balance >= %s"
-
-    query = """
+    check_student_query = "SELECT COUNT(*) FROM transport WHERE studentId = %s"
+    update_transport_query = """
+        UPDATE transport 
+        SET route = %s, status = %s, deadline = %s, daysRemaining = %s 
+        WHERE studentId = %s
+    """
+    insert_transport_query = """
         INSERT INTO transport (studentId, route, status, deadline, daysRemaining)
         VALUES (%s, %s, %s, %s, %s)
-        ON DUPLICATE KEY UPDATE 
-        route = VALUES(route),
-        status = VALUES(status), 
-        deadline = VALUES(deadline), 
-        daysRemaining = VALUES(daysRemaining)
     """
     
     try:
@@ -172,9 +172,14 @@ def subscriptionPayment(stdId, amount, route):
             return False
 
         cursor.execute(update_balance_query, (amounto, stdId, amounto))
-
-        values = (stdId, route, status, deadline, daysRemaining)
-        cursor.execute(query, values)
+        
+        cursor.execute(check_student_query, (stdId,))
+        exists = cursor.fetchone()[0]
+        
+        if exists:
+            cursor.execute(update_transport_query, (route, status, deadline, daysRemaining, stdId))
+        else:
+            cursor.execute(insert_transport_query, (stdId, route, status, deadline, daysRemaining))
 
         conn.commit()
         audit_input(stdId, f"Bus subscription has been bought for {amounto}. Balance deducted.")
@@ -190,6 +195,8 @@ def subscriptionPayment(stdId, amount, route):
         conn.close()
     
 def getStatus(studentId):
+    result = None
+    
     conn = mysql.connector.connect(
         host="localhost",
         user=config.user,
@@ -200,15 +207,13 @@ def getStatus(studentId):
     cursor = conn.cursor()
     query = "SELECT status FROM transport WHERE studentId = %s"
     cursor.execute(query, (studentId,))
+    
     result = cursor.fetchone()
 
     cursor.close()
     conn.close()
 
-    if result and result[0] == "ACTIVE":
-        return True
-    else:
-        return False
+    return result is not None and result[0] == "ACTIVE"
     
 def getDataForTransportCard(studentId):
     conn = mysql.connector.connect(
