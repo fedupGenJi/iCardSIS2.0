@@ -140,4 +140,42 @@ def delBookId(book):
     finally:
         if library_conn.is_connected():
             cursor.close()
-            library_conn.close()
+            library_conn.close() 
+
+def getErrorReports():
+    try:
+        configx = {
+            'host': 'localhost',
+            'user': config.user,         
+            'password': config.passwd
+        }
+
+        conn = mysql.connector.connect(**configx)
+        cursor = conn.cursor()
+
+        cursor.execute("CREATE DATABASE IF NOT EXISTS tempDB")
+        cursor.execute("USE tempDB")
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS error_reports (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                studentId INT NOT NULL,
+                bookId INT NOT NULL,
+                daysDued INT NOT NULL,
+                status VARCHAR(20) DEFAULT 'Pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        cursor.execute("SELECT studentId, bookId FROM error_reports")
+        results = cursor.fetchall()
+
+        error_reports = [{"bookId": row[1], "studentId": row[0]} for row in results]
+
+        cursor.close()
+        conn.close()
+
+        return error_reports
+
+    except Error as e:
+        print("Error:", e)
+        return []

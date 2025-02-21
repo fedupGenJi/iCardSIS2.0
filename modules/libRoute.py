@@ -122,3 +122,18 @@ def returningBook():
 
     result = takeBookfromStd(studentIdx, bookIdx)
     return jsonify(result)
+
+@library.route("/api/error-reports", methods=["GET"])
+def get_error_reports():
+    error_reports = getErrorReports()
+    return jsonify(error_reports)
+
+@library.route("/api/approve", methods=["POST"])
+def approve():
+    data = request.json
+    return jsonify({"message": f"Approved Book ID {data['bookId']} for Student ID {data['studentId']}!"})
+
+@library.route("/api/decline", methods=["POST"])
+def decline():
+    data = request.json
+    return jsonify({"message": f"Declined Book ID {data['bookId']} for Student ID {data['studentId']}!"})     

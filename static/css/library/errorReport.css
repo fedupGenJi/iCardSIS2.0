@@ -1,0 +1,182 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background-color: #f4f4f4;
+}
+
+.navbarpostt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.background {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: url("../../assests/images/hihi.jpg") no-repeat center;
+    background-size: cover;
+    z-index: -1;
+    filter: blur(10px);
+}
+
+.heading {
+    position: relative;
+    top: 100px;
+    text-align: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.error-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 120px;
+    width: 80%;
+}
+
+.error-card {
+    background: white;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
+}
+
+.error-card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.error-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.button-container {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.approve-btn,
+.decline-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.approve-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.decline-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.approve-btn:hover {
+    background-color: #388E3C;
+}
+
+.decline-btn:hover {
+    background-color: #D32F2F;
+}
+
+.login-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-popup .popup-content {
+    background: #f6fff9;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+    border: 2px solid #28a745;
+    position: relative;
+}
+
+.login-popup .popup-content h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-popup .popup-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.login-popup .close-btn {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.login-popup .close-btn:hover {
+    opacity: 0.9;
+}
+
+.login-popup .popup-content.error {
+    background: #fff4f4;
+    border: 2px solid #dc3545;
+}
+
+.login-popup .success-icon,
+.login-popup .error-icon {
+    font-size: 24px;
+    margin-right: 5px;
+}
+
+.login-popup .success-icon {
+    color: #28a745;
+}
+
+.login-popup .error-icon {
+    color: #dc3545;
+}
