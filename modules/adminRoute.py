@@ -7,6 +7,7 @@ admin = Blueprint('admin', __name__)
 
 @admin.route('/admin/homepage')
 def admin_homepage():
+    updatingTransport()
     if not session.get('logged_in'):  
         return redirect(url_for('home')) 
     
