@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCardSIS - Error Report</title>
+    <link rel="website icon" type="png" href="{{url_for('static', filename='assests/images/webIcon.png')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/library/errorReport.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/library/navbar.css')}}">
+</head>
+<body>
+    <div class="background"></div>
+
+    <div class="navbarpostt hidden">
+        {% include 'library/navbar.html' %}
+    </div>
+
+    <h1 class="heading">Error Report</h1>
+
+    <div id="errorContainer" class="error-container">
+
+    </div>
+
+    <script src="{{url_for('static', filename='js/library/errorReport.js')}}"></script>
+    <script src="{{url_for('static', filename='js/library/navbar.js')}}"></script>
+</body>
+</html>

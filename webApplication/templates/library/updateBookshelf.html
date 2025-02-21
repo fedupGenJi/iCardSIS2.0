@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCardSIS-Update BookShelf</title>
+    <link rel="website icon" type="png" href="{{url_for('static',filename='assests/images/webIcon.png')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/updateBookshelf.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/navbar.css')}}"> 
+</head>
+<body>
+    
+    <div class="background"></div>
+
+    <div class="navbarpost">
+        {% include 'library/navbar.html' %}
+    </div>
+
+    <h1 class="page-title">Update Bookshelf</h1>
+
+    <div class="homepage-container">
+        <div class="box" id = "addBookBtn">
+            <img src="{{url_for('static',filename='assests/icons/addBook.png')}}" alt="Add New Book" class="icon-img">
+            <span>Add Books</span>
+        </div>
+        <div class="box" id = "removeBookBtn" >
+            <img src="{{url_for('static',filename='assests/icons/removeBook.png')}}" alt="Expire Book" class="icon-img">
+            <span>Remove Books</span>
+        </div>
+    </div>
+
+    <div class="popup-container" id="popupContainer">
+        <div class="popup">
+            <h2>Add New Book</h2>
+            <input type="text" id="bookId" placeholder="Book ID">
+            <input type="text" id="bookName" placeholder="Book Name">
+            <input type="number" id="bookCount" placeholder="Number of Books">
+            <div class="popup-buttons">
+                <button class="submit-btn" onclick="submitBook()">Submit</button>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class = "popup-container" id = "popupContainerxx">
+        <div class="popup">
+            <h2>Remove Books</h2>
+            <input type="text" id="bookIdx" placeholder="Book ID">
+            <input type="number" id="bookCountx" placeholder="Number of Books">
+            <div class="popup-buttons">
+                <button class="submit-btn" onclick="submitBookxx()">Submit</button>
+                <button class="close-btn" onclick="closePopupxx()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageBox" class="hidden">
+        <p id="messageText"></p>
+        <button id="messageButton" onclick="closeMessageBox()">OK</button>
+    </div>
+    
+    <script src="{{url_for('static',filename='js/library/updateBookshelf.js')}}"></script>
+    <script src="{{url_for('static',filename='js/library/navbar.js')}}"></script>
+</body>
+</html>

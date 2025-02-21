@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCardSIS-Login Info</title>
+    <link rel="website icon" type="png" href="{{url_for('static',filename='assests/images/webIcon.png')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin/loginInfo.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin/navbar.css')}}">
+</head>
+<body>
+    <div class="background"></div>
+
+    <div class="navbarpost">
+        {% include 'admin/navbar.html' %}
+    </div>
+
+    <h1 class="page-title">Registered Users</h1>
+
+    <div class="searchbox-container">
+        <input type="number" id="studentIdd" class="searchbox" placeholder="Search using ID">
+        <button class="search-icon-btn" id="searchBtn" disabled>
+          <img src="{{url_for('static', filename='assests/icons/loupe.png')}}" alt="Search Icon" class="search-icon">
+        </button>
+    </div>
+
+    <div class="content">
+        <div class="data-container">
+          <template id="id-card-template">
+            <div class="small-container">
+                <div class="id-details">
+                  <h2></h2>
+                  <p><strong>Phone Number:</strong> <span class="phone-number"></span></p>
+                  <p><strong>PIN:</strong> <span class="pin"></span></p>
+                  <p><strong>Password:</strong> <span class="password"></span></p>
+                  <p><strong>Email:</strong> <span class="email"></span></p>
+                </div>
+                <div class="action-buttons">
+                  <button id="updatexx-button" class="icon-btn update-btn">
+                    <img src="{{url_for('static', filename='assests/icons/update.png')}}">
+                    <span>Update</span>
+                  </button>
+                  <button id="deletexx-button" class="icon-btn delete-btn">
+                    <img src="{{url_for('static', filename='assests/icons/delete.png')}}">
+                    <span>Delete</span>
+                  </button>
+                </div>
+              </div>
+          </template>
+        </div> 
+        
+        <div class="login-popup">
+            <div class="popup-content">
+                <h2></h2>
+                <p id="popup-message"></p>
+                <button class="close-btn" id="close-popup">Close</button>
+            </div>
+        </div>
+
+        <div id="custom-confirm-dialog" class="popupModal" style="display:none;">
+            <div class="modal-content">
+                <p id="confirm-message">Are you sure?</p>
+                <div class="modal-buttons">
+                    <button id="confirm-yes" class="btn confirm">Yes</button>
+                    <button id="confirm-no" class="btn cancel">No</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="update-popup" class="popup-overlay" style="display: none;">
+          <div class="popup-content">
+              <h2 id="popup-student-id"></h2>
+              <p>Phone Number: <span id="popup-phone-number"></span></p>
+              <p>Email: <span id="popup-email"></span></p>
+              <div class="button-groupx">
+                <button id="update-password-btn" onclick="openPasswordPopup()">Update Password</button>
+                <button id="update-pin-btn" onclick="openPinPopup()">Update PIN</button>
+              </div>
+          </div>
+      </div>
+
+      <div id="overlay" class="popup-overlay" style="display: none;">
+        <div id="password-container" class="popup">
+            <h3>Enter New Password</h3>
+            <p id="password-popup-student-id"></p>
+            <div class="input-container">
+              <input type="password" id="new-password" placeholder="New Password">
+              <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
+                   class="toggle-visibility" onclick="toggleGroupVisibility('password-group', this)">
+            </div>
+            <div class="input-container">
+              <input type="password" id="confirm-password" placeholder="Confirm Password">
+              <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
+                   class="toggle-visibility" onclick="toggleGroupVisibility('password-group', this)">
+            </div>
+            <div class="button-group">
+              <button onclick="updatePassword()">Submit</button>
+              <button class="close" onclick="closePasswordPopup()">Cancel</button>
+            </div>
+        </div>
+      </div>
+
+      <div id="overlayxx" class="popup-overlay" style="display: none;">
+        <div id="pin-container" class="popup">
+            <h3>Enter New Pin</h3>
+            <p id="pin-popup-student-id"></p>
+            <div class="input-container">
+              <input type="password" id="new-pin" placeholder="New Pin" maxlength="4" oninput="validatePin(this)">
+              <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
+                   class="toggle-visibility" onclick="toggleGroupVisibility('pin-group', this)">
+            </div>
+            <div class="input-container">
+              <input type="password" id="confirm-pin" placeholder="Confirm Pin" maxlength="4" oninput="validatePin(this)">
+              <img src="{{ url_for('static', filename='assests/icons/noEyes.png') }}" 
+                  class="toggle-visibility" onclick="toggleGroupVisibility('pin-group', this)">
+            </div>
+            <div class="button-group">
+              <button onclick="updatePin()">Submit</button>
+              <button class="close" onclick="closePinPopup()">Cancel</button>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="{{url_for('static',filename='js/admin/loginInfo.js')}}"></script>
+    <script src="{{url_for('static',filename='js/admin/navbar.js')}}"></script>
+</body>
+</html>

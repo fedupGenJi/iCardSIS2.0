@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCardSIS-BookShelf</title>
+    <link rel="website icon" type="png" href="{{url_for('static',filename='assests/images/webIcon.png')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/bookShelf.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/library/navbar.css')}}"> 
+</head>
+<body>
+
+    <div class="background"> </div>
+
+    <div class="navbarpostt hidden">
+        {% include 'library/navbar.html' %}
+    </div>
+
+    <h1 class="heading">Bookshelf</h1>
+
+    <div class="searchbox-container">
+        <input type="number" id="studentIdd" class="searchbox" placeholder="Search using ID">
+        <button class="search-icon-btn" id="searchBtn" disabled>
+          <img src="{{url_for('static', filename='assests/icons/loupe.png')}}" alt="Search Icon" class="search-icon">
+        </button>
+    </div>
+
+    <div class="bookshelf-container">
+        <div class="book-modal" id="bookshelf-modal">
+            <div class="table-container">
+                <table id="shelf-table" class="book-table">
+                    <thead>
+                        <tr>
+                            <th>Book Id</th>
+                            <th>Book Name</th>
+                            <th>Stock Available</th>
+                            <th>DELETE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bookshelves in bookshelves %}
+                        <tr> 
+                            <td>{{ bookshelves.id }}</td>
+                            <td>{{ bookshelves.name }}</td>
+                            <td>{{ bookshelves.number }}</td>
+                            <td>
+                                <button id='${{ bookshelves.id }}' class="DeleteButton" onclick="DeleteButton('{{ bookshelves.id }}')">
+                                    <img src="{{url_for('static', filename='assests/icons/removeBook.png')}}">
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-popup">
+        <div class="popup-content">
+            <h2></h2>
+            <p id="popup-message"></p>
+            <button class="close-btn" id="close-popup">Close</button>
+        </div>
+    </div>
+
+    <div id="custom-confirm-dialog" class="popupModal" style="display:none;">
+        <div class="modal-content">
+            <p id="confirm-message">Are you sure?</p>
+            <div class="modal-buttons">
+                <button id="confirm-yes" class="btn confirm">Yes</button>
+                <button id="confirm-no" class="btn cancel">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{url_for('static',filename='js/library/bookShelf.js')}}"></script>
+    <script src="{{url_for('static',filename='js/library/navbar.js')}}"></script>
+</body>
+</html>
