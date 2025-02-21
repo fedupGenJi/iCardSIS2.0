@@ -67,4 +67,4 @@ def logout():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    adminOperations.run(host= ip_address, port=4000, debug=True)
+    adminOperations.run(host= ip_address, port=4000, debug=False)

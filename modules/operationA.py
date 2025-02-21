@@ -136,28 +136,31 @@ def updatingTransport():
         database="iCardSISDB"
     )
     cursor = connection.cursor()
-    
+
     try:
         cursor.execute("SELECT studentId, deadline FROM transport")
         rows = cursor.fetchall()
-        
+
         current_date = datetime.now().date()
-        
+
         for student_id, deadline in rows:
+            if isinstance(deadline, str):
+                deadline = datetime.strptime(deadline, "%Y-%m-%d").date()
+
             days_remaining = (deadline - current_date).days
-            
+
             if days_remaining < 0:
                 cursor.execute("DELETE FROM transport WHERE studentId = %s", (student_id,))
                 connection.commit()
-                
+
                 audit_input(student_id, "Bus subscription has expired")
             else:
                 cursor.execute("UPDATE transport SET daysRemaining = %s WHERE studentId = %s", (days_remaining, student_id))
                 connection.commit()
-    
+
     except mysql.connector.Error as err:
         print("Error:", err)
-    
+
     finally:
         cursor.close()
         connection.close()
