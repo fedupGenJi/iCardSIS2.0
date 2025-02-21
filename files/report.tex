@@ -1,0 +1,652 @@
+\documentclass[a4paper,14pt]{article}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{setspace}
+\usepackage[margin=2.5cm, left=3cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\usepackage{titletoc}
+\usepackage{ragged2e}
+\usepackage[hidelinks]{hyperref}
+
+\setcounter{secnumdepth}{0} 
+\setcounter{tocdepth}{2} 
+\renewcommand{\contentsname}{Table of Contents}
+\setstretch{1.5}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\textbf{\thepage}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\pagenumbering{gobble}
+
+
+
+\begin{document}
+	
+	\begin{center}
+		{\Large \textbf{Kathmandu University}} \\
+		{\Large \textbf{Department of Computer Science and Engineering}} \\
+		{\Large \textbf{Dhulikhel, Kavre}}  
+		\vspace{1.5cm}
+		
+		\includegraphics[width=3cm]{logo.png} 
+		\vspace{1.5cm}
+		
+		{\Large \textbf{A Project Report on}} \\  
+		{\Large \textbf{``iCardSIS''}}  
+		\vspace{1cm}
+		
+		{\Large \textbf{[Code No: COMP 206]}}  
+		\vspace{1cm}
+		
+		{\Large \textbf{(For partial fulfillment of 2\textsuperscript{nd} Year/1\textsuperscript{st} Semester in Computer Science/Engineering)}}  
+		\vspace{1cm}
+		
+		{\Large \textbf{Submitted by:}} \\
+		{\Large \textbf{Suprabha Bhuju (02)}} \\
+		{\Large \textbf{Jagat K.C (07)}} \\
+		{\Large \textbf{Saurav Maske (16)}} \\
+		{\Large \textbf{Aarju Taujale (29)}} \\
+		{\Large \textbf{Aakash Thakur (30)}}  
+		\vspace{1cm}
+		
+		{\Large \textbf{Submitted to:}}\\
+		\vspace{1cm}  
+		{\Large \textbf{Suman Shrestha}}  
+		\vspace{1cm}
+		
+		{\Large \textbf{Department of Computer Science and Engineering}}  
+		\vspace{1cm}
+		
+		{\Large \textbf{Submission Date: 02/18/2025}}  
+	\end{center}
+	
+	\newpage  
+	\pagenumbering{roman}
+	
+	\noindent{\Large \section*{Acknowledgment}}
+	\addcontentsline{toc}{section}{Acknowledgment}
+	\vspace{0.5cm}
+	
+	\setstretch{1.5}
+	\noindent \normalsize
+	\justifying {Without the substantial contribution of numerous individuals who provided insightful feedback, suggestions, crucial information, and encouragement, this project could not have been accomplished.\\
+		First and foremost, we would like to express our sincere gratitude to our Project Supervisor, Asst. Prof. Manoj Shakya for his expert guidance, dedicated time, and constant support. His dedication, approachable nature, valuable insights and encouragement motivated us to strive for excellence and go beyond limitations. \\
+		We also extend our sincere appreciation towards the Department of Computer Science and Engineering (DOCSE) for allowing us to endeavor this project “iCardSIS”. This project helped us familiarize ourselves with the requisite tools and technologies required to design and develop a functional, appealing, and effective website and application.\\
+		We especially acknowledge Khalti and Sparrow SMS for generously providing their APIs, which played a crucial role in making our project more functional and impactful. Their seamless and reliable services significantly helped to enhance the overall user experience in our project. We appreciate their technical support teams, who were available to assist us. Their guidance helped us with the exploration and implementation of these new technologies for the first time.\\
+		Furthermore, we are appreciative of all the valuable information gathered from various research papers, academic journals, and websites. These resources helped us to overcome technical challenges and strengthen our understanding. 
+	}
+	
+	\newpage  
+	\begin{center}
+		\section*{Bona Fide Certificate}
+		\addcontentsline{toc}{section}{Bona Fide Certificate}
+		\vspace{0.5cm}
+		
+		This project work on \\
+		\textbf{``iCardSIS''} \\
+		is a bona fide work of \\
+		Suprabha Bhuju (02) \\
+		Jagat K.C (07) \\
+		Saurav Maske (16) \\
+		Aarju Taujale (29) \\
+		Aakash Thakur (30) \\
+		who carried out the project under my supervision. \\
+		\vspace{2cm}
+	\end{center}
+	
+	\noindent
+	\textbf{Project Supervisor:} \\
+	
+	\noindent
+	\hspace{0cm} \rule{6cm}{0.4pt}\\
+	\noindent
+	Mr. Manoj Shakya \\
+	Assistant Professor \\
+	Department of Computer Science and Engineering \\
+	Date: 02/18/2025
+	
+	\newpage
+	\noindent{\Large \section*{Abstract}}
+	\addcontentsline{toc}{section}{Abstract}
+	\vspace{0.5cm}
+	
+	{\setstretch{1.5}
+		\noindent \normalsize
+		\justifying {
+			As digitalization continues to advance, traditional ID cards seem to be inefficient. Generally physical ID cards are used in canteen, library and transportation fare payments which takes a lot of time and can be error prone. To resolve this problem, our team Code Crafters has developed “iCardSIS”, which is a digital student ID card with integrated student information system. Students can access this application within their mobile phones for accessing their personal information, checking library logs, making a payment of canteen purchases, library fines, and  transportation fares, checking balance on one’s card, etc.. The project was developed using Python, MySQL, HTML, CSS, Java Script, Caddy and Dart/Flutter, ensuring user-friendly interface and compatibility with various devices. It is structured around the objective of cutting down paperwork, increasing security, and ensuring convenience to the students.\\
+			\textit{Keywords: Python, MySQL, HTML, CSS, Java Script, Dart/Flutter, Caddy}
+		}
+		
+		\newpage
+		\tableofcontents
+		
+		\newpage
+		\listoffigures
+		\addcontentsline{toc}{section}{List of Figures}}
+		\vspace{0.5cm}
+		
+		\newpage
+		\noindent{\Large \section*{Acronyms/Abbreviation}}
+		\addcontentsline{toc}{section}{Acronyms/Abbreviation}
+		\setstretch{1.5}
+		\noindent \normalsize
+		\begin{tabbing}
+			\hspace{1.5cm} \= \kill
+			MySQL \> My Structured Query Language \\
+			HTML  \> Hyper Text Markup Language \\
+			CSS   \> Cascading Style Sheets \\
+			SIS  \> Student Information System\\
+			API \> Application Programming Interface\\
+			UI \> User Interface\\
+			UX \> User Experience\\
+			SMS \> Short Message Service\\
+			QA \> Quality Assurance\\
+			ER \> Entity Relationship\\
+			PIDX \> Product Identity\\
+			
+			
+		\end{tabbing}
+		
+		\newpage
+		\pagenumbering{arabic}
+		\noindent{\Large \section*{1. Introduction}}
+		\addcontentsline{toc}{section}{1. Introduction}
+		
+		
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying In today’s digital age, it is prominent for academic institutions to integrate digital tools and technologies in order to meet the demands of an increasingly digital world. Incorporating digital attributes not only helps institutions enhance their services but also provides a more convenient experience for both students and faculty. “iCardSIS” suitably exemplifies such a trend. The name “iCardSIS” involves two parts where “iCard” represents a digital identity card and “SIS” which stands for "Student Information System", the software used to manage student data. Combined, the name “iCardSIS” serves as an identification card and a platform for managing data concerning the students. 
+			
+			
+		\vspace{0.5cm}   	
+		\noindent{\Large \subsection*{1.1 Background}}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying 
+			
+			\vspace{0.5cm}  
+		\addcontentsline{toc}{subsection}{1.1 Background}
+			{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying Higher education is undergoing a significant technological shift as institutions are adopting modern technologies to improve their operations. However, there are still challenges that hinder progress. For instance, traditional methods such as physical ID cards and manual record-keeping systems are still in use. These outdated systems, which manage student identities and transactions like canteen payments, library checkouts, and transportation subscriptions, are often time consuming and error prone.\\			
+			To address these challenges, academic institutions from all across the globe are now adopting digital platforms. It is now focusing on digital or multipurpose ID cards and advanced SIS that can be easily assessed through mobile phones. These systems allow students to keep their records in their mobile phones. As institutions aim for efficiency, the need to update these systems becomes more significant, making way for more streamlined, accurate, and user-friendly digital solutions.
+			
+		\vspace{0.5cm}    
+		\noindent{\Large \subsection*{1.2 Objectives}}
+		\addcontentsline{toc}{subsection}{1.2 Objectives}
+			{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying Our project aims to accomplish the following objectives:
+			\begin{itemize}
+				\item To allow students to carry their college credentials digitally on their mobile phones which makes access to campus facilities and services easier and faster.
+				\item To simplify and secure everyday transactions, such as canteen purchases, library fines, and transportation subscriptions, all through their mobile-based digital ID cards.
+				\item To ensure the safety of student data by introducing strong authorization measures.
+				\item To reduce the risks associated with the use of physical ID cards.	\end{itemize}
+	    \newpage
+		\noindent{\Large \subsection*{1.3 Motivation and Significance}}
+		\addcontentsline{toc}{subsection}{1.3 Motivation and Significance}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying The growing need to modernize college operations and improve student experiences encouraged us to select “iCardSIS” as our project. Traditional ID card systems can be inconvenient, with long queues and manual operations. Physical ID cards can be lost, broken, or misplaced, which causes problems for students while making canteen purchases, borrowing books from the library, etc.. iCardSIS aims to resolve these problems by providing access to secure and easy transactions, saving time by reducing waiting time, reducing the administrative works, etc.. We intend to use digital technology to develop a more efficient, secure, and user-friendly system that benefits both students and staff.
+			
+		\vspace{0.5cm}
+		
+		\newpage
+		
+		\noindent{\Large \section*{2. Project Planning and Management}}
+		\addcontentsline{toc}{section}{2. Project Planning and Management}
+		
+		\vspace{0.5cm}
+		
+		\noindent{\Large \subsection*{2.1 Project Plan}}
+		\addcontentsline{toc}{subsection}{2.1 Project Plan}
+			{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying \begin{enumerate}
+				\item \textbf{Phase 1: Planning and Requirement Analysis }
+				\begin{itemize}
+					\item Define project scope and objectives.
+					\item Conduct meetings with the supervisor.
+					\item Identify key features and functionalities.
+					\item Research existing digital ID solutions.
+				\end{itemize}
+				
+				\item \textbf{Phase 2: System Design \& Architecture }
+				\begin{itemize}
+					\item Design system architecture (frontend, backend, and database).
+					\item Develop wireframes and UI/UX prototypes.
+				\end{itemize}
+				
+				\item \textbf{Phase 3: Backend \& Database Development }
+				\begin{itemize}
+					\item Set up a MySQL database for student information, transactions, and logs.
+					\item Develop a backend using Python (Flask) to handle requests and authentication.
+					\item Implement API integrations for payments and SMS notifications.
+				\end{itemize}
+				
+				\item \textbf{Phase 4: Frontend \& Mobile App Development }
+				\begin{itemize}
+					\item Develop mobile application using Dart/Flutter.
+					\item Develop web frontend using HTML, CSS, and JavaScript.
+					\item Integrate UI with backend services.
+				\end{itemize}
+				
+				\item \textbf{Phase 5: Testing \& Debugging }
+				\begin{itemize}
+					\item Perform unit testing for each module.
+					\item Conduct user testing with selected students and faculty.
+					\item Debug and optimize performance issues.
+					\item Prepare final project documentation and reports.
+				\end{itemize}
+				
+			\end{enumerate}
+		\vspace{0.5cm}    
+			\newpage
+		\noindent \textbf{Database Schemas:}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=16cm]{KUDatabase.png}
+			\caption{Database Schema - iCardSIS Database}
+			\label{fig:Database Schema - iCardSIS Database}
+		\end{figure}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=16cm]{Libdb.png}
+			\caption{Database Schema - Library Database}
+			\label{fig:Database Schema - Library Database}
+		\end{figure}
+		\newpage
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=16cm]{Audit.png}
+			\caption{Database Schema - Audit Database}
+			\label{fig:Database Schema - Audit Database}
+		\end{figure}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=16cm]{Temp.png}
+			\caption{Database Schema - Temp Database}
+			\label{fig:Database Schema - Temp Database}
+		\end{figure}
+		\newpage
+		\noindent{\Large \subsection*{2.2 Roles and Responsibilities}}
+		\addcontentsline{toc}{subsection}{2.2 Roles and Responsibilities}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying \begin{itemize}
+				\item \textbf{Suprabha Bhuju - Team Lead and Communication Manager}
+				\begin{itemize}
+					\item Led the team and coordinated project progress to meet deadlines.
+					\item Communicated with various companies for all necessary APIs and resources.
+					\item Contributed to the PowerPoint designs and report writing for the project.
+					\item Worked on snippets of the admin web application.
+					\item Used modern technologies like \LaTeX{} to manage project documentation standards.
+				\end{itemize}
+				
+				\item \textbf{Saurav Maske - Full-Stack Developer and Project Planner}
+				\begin{itemize}
+					\item Helped troubleshoot various project management and task coordination issues.
+					\item Was flexible in performing backend and frontend tasks as needed.
+					\item Addressed logical problems in coding and operations.
+					\item Created visual figures for project documentation and reports.
+					\item Ensured that all components of the project worked well together.
+				\end{itemize}
+				
+				\item \textbf{Aarju Taujale - Frontend Developer and Presentation Designer}
+				\begin{itemize}
+					\item Developed the front-end for the web application admin page.
+					\item Worked intensively on UI and improving the overall user experience.
+					\item Created PowerPoint presentations for project demonstrations.
+					\item Assisted in project documentation and visual figures.
+				\end{itemize}
+				
+				\item \textbf{Jagat KC - Project Designer and Mobile App Developer}
+				\begin{itemize}
+					\item Designed the overall architecture and visual interface of the project.
+					\item Developed the mobile application for the project.
+					\item Created visual designs and branding for the project.
+					\item Ensured UI consistency between mobile and web applications.
+				\end{itemize}
+				
+				\item \textbf{Aakash Thakur - Database and Backend Developer}
+				\begin{itemize}
+					\item Designed and maintained the database for efficient data management.
+					\item Developed backend logic to facilitate data operations and application routes.
+					\item Integrated the backend with the frontend for seamless data interaction.
+					\item Developed the admin registration for the web application.
+				\end{itemize}
+				
+			\end{itemize}
+		\vspace{0.5cm}
+		\noindent{\Large \subsection*{2.3 Development Methodology}}
+		\addcontentsline{toc}{subsection}{2.3 Development Methodology}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying In this project, the \textbf{Waterfall Model} was adopted as the methodology due to its structured and sequential approach, ensuring that each phase is completed before moving on to the next. This approach allowed for a clear roadmap and systematic progress through each phase. The project was designed to progress through the following stages:
+			
+			\begin{enumerate}
+				\item \textbf{Analysis} – Gathering and analyzing the project requirements.
+				\item \textbf{System Design} – Designing the architecture and detailed system components.
+				\item \textbf{Implementation} – Developing the code and building the system.
+				\item \textbf{Testing} – Verifying that the system functions without errors.
+				\item \textbf{Deployment} – Releasing the system to the end-users.
+				\item \textbf{Maintenance} – Fixing issues and updating the system.
+			\end{enumerate}
+			
+		\vspace{0.5cm}
+		
+		\newpage
+		
+		\noindent{\Large \section*{3. Implementation}}
+		\addcontentsline{toc}{section}{3. Implementation}
+		\vspace{0.5cm}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying The realization of the concept of digitizing student ID cards via iCardSIS followed a strict
+			sequential approach for project development which consists of several phases.
+		
+		\noindent{\Large \subsection*{3.1 Development Phases}}
+		\addcontentsline{toc}{subsection}{3.1 Development Phases}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying \begin{itemize}
+				\item \textbf{Research and Analysis:} Before the beginning of the project, many ideas were brainstormed. We explored the problem domain and determined the feasibility of the project. This phase involved gathering data, studying existing solutions, and defining a clear project roadmap. By the end of this phase, a clear understanding of the project’s requirements and potential solutions was achieved, setting a strong foundation for its design and development.
+				
+				\item \textbf{System Design:} The system structure, database designs, and UI/UX designs were completed before the actual programming or coding phase. It was an important step toward visualizing the idea and how the actual system would look like. These designs were improvised with the progress of the project according to necessity. Tools like Figma, draw.io, Lucidchart, and DrawSQL were used to make UI/UX designs, database schemas, and system architecture.
+				
+				\begin{itemize}
+					\item \textbf{Admin Page:} 
+					\href{https://www.figma.com/design/xpEOuhvu0LM2jiCI0Tz14c/Untitled?node-id=0-1&p=f&t=lDXXVtaxPlAWCjQE-0}{Click here to view the Admin Page on Figma}.
+					
+					\item \textbf{Librarian Page:} 
+					\href{https://www.figma.com/design/xpEOuhvu0LM2jiCI0Tz14c/Untitled?node-id=230-89&p=f&t=3ufbitsFo2T2aDHW-0}{Click here to view the Librarian Page on Figma}.
+				\end{itemize}
+				
+				\vspace{0.5cm}
+				\newpage 
+				\noindent \textbf{Use Case Diagrams:}
+				
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=16cm]{admin.png}
+					\caption{Admin Use Case Diagram}
+					\label{fig:admin-use-case}
+				\end{figure}
+				\newpage
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=16cm]{Library.png}
+					\caption{Librarian Use Case Diagram}
+					\label{fig:librarian-use-case}
+				\end{figure}
+				\newpage
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=16cm]{Mobileapp.png}
+					\caption{Mobile App Use Case Diagram}
+					\label{fig:mobileapp-use-case}
+				\end{figure}
+				
+				\vspace{1.5cm} 
+				\newpage
+				\noindent \textbf{Workflow Diagrams:}
+				
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=16cm]{adminworkflow.png}
+					\caption{Admin Workflow Diagram}
+					\label{fig:admin-workflow}
+				\end{figure}
+				\newpage
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=16cm]{studentworkflow.png}
+					\caption{Student Workflow Diagram}
+					\label{fig:student-workflow}
+				\end{figure}
+				
+					\newpage
+				\noindent \textbf{Activity Diagrams:}
+					\begin{figure}[h!]
+					\centering
+					\includegraphics[width=16cm]{ActivityDiagram.png}
+					\caption{Activity Diagram}
+					\label{fig:Activity Diagram}
+				\end{figure}
+				
+					\newpage
+				\noindent \textbf{ER Diagrams:}
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=16cm]{ERDiagram.png}
+					\caption{ER Diagram}
+					\label{fig:ER Diagram}
+				\end{figure}
+			
+				
+				\item \textbf{Programming:} A Mobile Application for students and two Web Applications for KU-Admin and KU-Librarian were created. The code for the mobile app was written using Flutter for the frontend, Python for the backend, and MySQL as the database management system. The web applications were made using web development technologies like HTML and CSS for frontend, Python for backend development, and MySQL as the database. Flask was used as a web application framework. Bcrypt was used as a security tool. Ngrok, Applinks, and JavaScript were implemented for making connections. Moreover, Khalti API was used for payment verification along with SparrowSMS API for SMS verification.
+				
+				\item \textbf{Testing:} The testing was conducted during the project duration with thoroughness, ensuring that the system is functioning well without any problems. This phase involved testing functionality, performance, and security. Various tests, including checking the functionality of user/admin logins and registrations and adding/transferring balance functions, were conducted. Extensive verification was done to ensure the error-free seamless interaction of modules. Security testing was also performed to protect user data and prevent unauthorized access.
+			\end{itemize}
+			
+		\vspace{0.5cm}   
+		\newpage
+		\noindent{\Large \subsection*{3.2 Technical Challenges}}
+		\addcontentsline{toc}{subsection}{3.2 Technical Challenges}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying During the implementation of the project, various challenges were encountered. These challenges required creative problem-solving to overcome. Mainly, the challenges were faced while implementing the payment processes.
+			
+			\begin{itemize}
+				\item \textbf{Challenge 1: Outdated Documentation}
+				\begin{itemize}
+					\item \textbf{Description:} The documentation available online for the API provided by Khalti was outdated, which caused an issue while writing code for the balance-adding functionality.
+					\item \textbf{Solution:} A personalized request was made with the Khalti team to solve the issues faced while developing the payment function for the iCardSIS app.
+				\end{itemize}
+				
+				\item \textbf{Challenge 2: Limited Application of Test API}
+				\begin{itemize}
+					\item \textbf{Description:} The test API only allowed a few demo mobile numbers to make payment requests. For practical application of our system, this was a major challenge.
+					\item \textbf{Solution:} A temporary database was created that stored PIDX generated after making transactions on user requests. This allowed us to get rid of the uniformity for paying ID and requesting ID.
+				\end{itemize}
+			
+			\item \textbf{Challenge 3: Frequent Bad Requests Due to Backend Limitations}
+			\begin{itemize}
+				\item \textbf{Description:} As many users were accessing the system, there were numerous data entry requests. However, the database and response mechanisms were not well-prepared, leading to errors during processing.
+				
+				\item \textbf{Solution:} Each loophole found during unit testing was addressed as an individual issue and fixed accordingly.
+				
+			\end{itemize}
+		\end{itemize}
+		\vspace{0.5cm}
+		\newpage
+		\noindent{\Large \subsection*{3.3 Technical Requirements}}
+		\addcontentsline{toc}{subsection}{3.3 Technical Requirements}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying \begin{itemize}
+				\item \textbf{Hardware Requirements:}
+				\begin{itemize}
+					\item Any personal computer with a minimum of i3 processor and 4GB RAM.
+					\item Mobile phone with a minimum of Android 9 and 4GB RAM.
+				\end{itemize}
+				
+				\item \textbf{Software Requirements:}
+				\begin{itemize}
+					\item \textbf{Tools and Technologies Used:}
+					\begin{itemize}
+						\item Flutter
+						\item HTML
+						\item CSS
+						\item JavaScript
+						\item MySQL
+						\item Python
+						\item Flask
+						\item Khalti API
+						\item Bcrypt
+						\item SparrowSMS
+						\item Ngrok
+						
+					\end{itemize}
+				\end{itemize}
+			\end{itemize}
+			
+		\vspace{0.5cm}
+		
+		\newpage
+		
+		\noindent{\Large \section*{4. Testing and Control}}
+		\addcontentsline{toc}{section}{4. Testing and Control}
+		\vspace{0.5cm}
+		
+		\noindent{\Large \subsection*{4.1 Testing Strategies}}
+		\addcontentsline{toc}{subsection}{4.1 Testing Strategies}
+			{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying In our third-semester project, which included a web application, a Flutter app, and a Flask backend, we implemented several testing strategies to ensure a smooth and error-free development process. These strategies included:
+			
+			\begin{itemize}
+				\item \textbf{Unit Testing:}
+				\begin{itemize}
+					\item \textbf{Flutter:} We developed unit tests to validate individual functions, such as input validation for user registration and login.
+					\item \textbf{Flask:} Unit tests were created to verify backend API endpoints, ensuring correct response codes and data validation.
+					\item \textbf{Web Application:} We also wrote unit tests to check the operations on each page and implemented proper data validation.
+				\end{itemize}
+				
+				\item \textbf{Integration Testing:}
+				\begin{itemize}
+					\item This phase tested the interaction between the front end and the Flask backend. We simulated API calls to confirm that data exchange occurred seamlessly.
+				\end{itemize}
+				
+				\item \textbf{System Testing:}
+				\begin{itemize}
+					\item We conducted a comprehensive end-to-end test to ensure that users could complete essential tasks (such as user registration, login, and data retrieval) without encountering errors.
+				\end{itemize}
+				
+				\item \textbf{Regression Testing:}
+				\begin{itemize}
+					\item Whenever a new feature was added or the codebase was modified, we performed regression tests to confirm that existing features remained unaffected.
+				\end{itemize}
+				
+			\end{itemize}
+		\vspace{0.5cm}    
+		\noindent{\Large \subsection*{4.2 Quality Assurance}}
+		\addcontentsline{toc}{subsection}{4.2 Quality Assurance}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying To uphold high-quality code and functionality, we adopted the following QA practices during the project:
+			
+			\begin{itemize}
+				\item \textbf{Code Reviews:}
+				\begin{itemize}
+					\item Team members reviewed each other's code to spot potential bugs and ensure compliance with coding standards.
+				\end{itemize}
+				
+				\item \textbf{Continuous Improvement:}
+				\begin{itemize}
+					\item We held regular feedback sessions to refine the project and enhance overall functionality and user experience.
+				\end{itemize}
+			\end{itemize}
+			
+		\vspace{0.5cm}
+		\noindent{\Large \subsection*{4.3 Progress Tracking}}
+		\addcontentsline{toc}{subsection}{4.3 Progress Tracking}{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying Effective progress tracking was crucial in keeping us on schedule and meeting our milestones throughout the semester. The following strategies were implemented:
+			
+			\begin{itemize}
+				\item \textbf{Daily Stand-ups:}
+				\begin{itemize}
+					\item Brief team meetings allowed us to communicate completed tasks, current tasks, and any blockers, ensuring smooth collaboration and quick problem resolution.
+				\end{itemize}
+				
+				\item \textbf{Performance Metrics:}
+				\begin{itemize}
+					\item We monitored app performance metrics such as load time, API response time, and error rates to guarantee optimal performance during demonstrations.
+				\end{itemize}
+			\end{itemize}
+			
+			By implementing these strategies, we successfully developed and tested our project.
+			
+		\vspace{0.5cm}
+		
+		\newpage
+		
+		\noindent{\Large \section*{5. Key Achievements And Outcomes}}
+		\addcontentsline{toc}{section}{5. Key Achievements And Outcomes}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying \begin{itemize}
+				\item \textbf{Web Applications for Admin Operations:} Developed two web applications based on Kathmandu University's (KU) system of operations, including admin registration and operations tracking. Achieved a near-prototype version of the system, with significant progress in tracking activities using the KU student ID card.
+				
+				\item \textbf{User Email Integration:} Integrated an email notification system that allowed users to reimburse and update their details securely, enhancing the platform’s user experience and operational efficiency.
+				
+				\item \textbf{Security Enhancements:} Implemented advanced security measures to develop a production-level web application, ensuring data protection and compliance with industry standards.
+				
+				\item \textbf{Flutter Mobile Application:} Developed a mobile application using Flutter that incorporates SMS verification to ensure secure user authentication. The app fetched critical information linked to the KU student ID card and displayed it in a consolidated view, providing users with easy access to their data.
+				
+				\item \textbf{Khalti API Integration:} Integrated the Khalti API to enable users to add balances, demonstrating the seamless use of mainstream banking services available in Nepal.
+			\end{itemize} 
+		\vspace{0.5cm}
+		
+		\newpage
+		
+		\noindent{\Large \section*{6. Limitations}}
+		\addcontentsline{toc}{section}{6. Limitations}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying \begin{itemize}
+				\item \textbf{Canteen System Not Implemented:} The project does not include a canteen management system due to time constraints and complexity. Since there already exists a solid system for the canteen management, it could be refurbished easily to meet the needs of our application.
+				
+				\item \textbf{Limited Data Storage for Students:} The system has restricted data storage capacity for student records, which may impact scalability and long-term data retention. This limitation may hinder the growth of the system over time if the number of students increases significantly.
+				
+				\item \textbf{Exclusion of Teacher and Class Representative Roles:} The roles of teachers and class representatives were not implemented. If included, these roles could have functioned as a combined force, integrating notice board updates, classroom activities, and event notifications. This would enhance student engagement and ensure that important information is effectively communicated, preventing students from missing any crucial updates.
+				
+				\item \textbf{No Automated Notifications for Library and Other Activities:} The system does not send automated reminders for overdue books or other academic activities, which may lead to missed deadlines. Introducing automated notifications would improve the overall efficiency of the system and ensure that students remain on top of their responsibilities.
+			\end{itemize} 
+		\vspace{0.5cm}
+		
+		\newpage
+		
+		\noindent{\Large \section*{7. Conclusion and Suggestions}}
+		\addcontentsline{toc}{section}{7. Conclusion and Suggestions}
+		\vspace{0.5cm}
+		\noindent{\Large \subsection*{7.1 Summary}}
+		\addcontentsline{toc}{subsection}{7.1 Summary}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying In conclusion, the traditional physical ID cards used by Kathmandu University (KU) students have proven to be slow, inconvenient, and prone to errors, leading to inefficiencies in daily operations. Our team, "CodeCrafters," has developed \textit{iCardSIS} to address these issues by providing a digital solution. This innovative platform allows students to use their mobile phones to perform tasks traditionally done by the physical ID card of Kathmandu University, such as borrowing library books, managing transportation subscriptions, and recharging balances, all through a single app. \\By utilizing Python, HTML, MySQL, Flutter, and JavaScript, we have ensured a user-friendly interface and compatibility across various devices. The implementation of \textit{iCardSIS} is expected to enhance efficiency, reduce administrative burdens, offer convenience to students, and ensure secure transactions. This digital transformation eliminates the need for physical ID cards, streamlining processes and providing a modern, efficient solution for students. 
+		\vspace{0.5cm}    
+		\noindent{\Large \subsection*{7.2 Suggested Improvements}}
+		\addcontentsline{toc}{subsection}{7.2 Suggested Improvements}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying \begin{itemize}
+				\item \textbf{Fingerprint Option for Login and Fund Transfer:} Implement a fingerprint authentication feature for user login and secure fund transfer. This enhancement will improve security by providing a biometric option, reducing reliance on traditional password-based methods.
+				
+				\item \textbf{App for Teachers:} Currently, the app is only available for students. A future enhancement would be to develop a separate app or extend the existing app for the teachers, allowing them to access important information, manage classes, and track student activities.
+				
+				\item \textbf{Direct Meal Ordering in Canteen:} Integrate a meal ordering feature directly into the app for students and staff, allowing them to browse the canteen menu, place orders, and make payments, all from within the app.
+			\end{itemize}
+		\vspace{0.5cm}
+		
+		\newpage
+		\noindent{\Large \section*{8. References}}
+		\addcontentsline{toc}{section}{8. References}
+		{\setstretch{1.5}
+			\noindent \normalsize
+			\justifying \begin{itemize}
+				\item Rajasekar, S., \& Kanimozhi, R. (2023). A study on digital payment usage among the student community in Tiruchirappalli city of Tamil Nadu.
+				\item Solomon, 2012. Perception and Attitude towards e–Payment System among University Students.
+				\item Hamid, N. R. \& Cheng, A. W. (2013). A risk perception analysis on the use of electronic payment systems by young adults.
+				\item Seamless cashless payment system for canteen, cafeteria, and food courts. (n.d.). LinkedIn.
+				\item UniNow. (n.d.). The digital student ID card of Magdeburg-Stendal University of Applied Sciences.
+				\item Darmawan, E., \& Santoso, S. (2019). Development and evaluation of digital ID card as a portfolio portal. IJNMT (International Journal of New Media Technology), 5(2), 83-89. \url{https://doi.org/10.31937/ijnmt.v5i2.1069}
+				\item http://docs.khalti.com
+			\end{itemize}
+	
+			
+	\end{document}
