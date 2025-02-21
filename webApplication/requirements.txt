@@ -1,0 +1,12 @@
+config.py
+
+user = ""
+passwd = ""
+
+
+virtualenv env
+.\env\Scripts\activate.ps1
+
+pip install flask
+pip install mysql-connector-python
+pip install bcrypt
